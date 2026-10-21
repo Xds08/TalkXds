@@ -44,8 +44,8 @@ button,input{font:inherit}button{cursor:pointer;border:0}.hidden{display:none!im
 </section>
 <script type="module">
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
-const SUPABASE_URL = 'COLE_AQUI_A_URL_DO_SUPABASE';
-const SUPABASE_ANON_KEY = 'COLE_AQUI_A_CHAVE_ANON_PUBLICA';
+const SUPABASE_URL = 'https://ohxjcxkhayugkxffgync.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_i5Hr0p_LCgVzFhtIB8PQQg_Z1fTuM9s';
 const configured = SUPABASE_URL.startsWith('https://') && !SUPABASE_URL.includes('COLE_AQUI');
 const sb = configured ? createClient(SUPABASE_URL,SUPABASE_ANON_KEY) : null;
 const $ = id=>document.getElementById(id);
