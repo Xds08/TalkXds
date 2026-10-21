@@ -7,8 +7,8 @@ Protótipo web de chat com identidade visual vermelha, branca e azul, brilho neo
 2. Em **SQL Editor**, execute todo o conteúdo de `setup.sql`.
 3. Em **Project Settings → API**, copie o **Project URL** e a chave pública **anon/publishable**.
 4. Abra `index.html` e substitua:
-   - `https://ohxjcxkhayugkxffgync.supabase.co`
-   - `sb_publishable_i5Hr0p_LCgVzFhtIB8PQQg_Z1fTuM9s`
+   - `COLE_AQUI_A_URL_DO_SUPABASE`
+   - `COLE_AQUI_A_CHAVE_ANON_PUBLICA`
 5. Não coloque a `service_role` key no navegador. A chave pública anon é apropriada para frontend quando as políticas RLS estão ativadas.
 
 ## 2. Ativar login com GitHub
