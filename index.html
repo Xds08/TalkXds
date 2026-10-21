@@ -1,255 +1,543 @@
-/* TALKXDS — NOVO VISUAL INSPIRADO NO WHATSAPP */
-:root {
-  --bg: #e9edef;
-  --panel: #ffffff;
-  --panel2: #e9edef;
-  --green: #00a884;
-  --text: #111b21;
-  --muted: #667781;
+<!DOCTYPE html>  <html lang="pt-BR">    <head>    
+<meta charset="UTF-8">    
+<meta name="viewport" content="width=device-width, initial-scale=1">    
+<meta name="theme-color" content="#0b1020">    
+<title>TalkXds — T.X</title>    
+<style>    
+:root{--bg:#080d19;--panel:#101a2c;--red:#ff2348;--blue:#168bff;--white:#f6f8ff;--muted:#9eabc2;--line:#25344d}    
+*{box-sizing:border-box}    
+body{margin:0;background:radial-gradient(ellipse at 15% 0%,#281020,transparent 35%),radial-gradient(ellipse at 100% 20%,#092b50,transparent 38%),var(--bg);color:var(--white);font:15px/1.45 system-ui,Arial,sans-serif;min-height:100vh}    
+button,input{font:inherit}button{cursor:pointer;border:0}.hidden{display:none!important}    
+.brand{display:flex;align-items:center;gap:12px;font-weight:900}    
+.logo{width:48px;height:48px;border-radius:16px;display:grid;place-items:center;background:linear-gradient(135deg,var(--red),#9d1234 55%,var(--blue));font-size:20px}    
+.brand small{display:block;color:var(--muted);font-size:11px;letter-spacing:3px}    
+.auth-wrap{min-height:100vh;display:grid;place-items:center;padding:20px}    
+.auth{width:min(440px,100%);background:#0e1728;border:1px solid #ffffff15;border-radius:24px;padding:26px;box-shadow:0 20px 90px #0008}    
+.auth .brand{margin-bottom:22px}.muted{color:var(--muted)}    
+.tabs{display:grid;grid-template-columns:1fr 1fr;gap:8px;background:#080e1a;padding:5px;border-radius:12px;margin:20px 0}    
+.tabs button{padding:10px;border-radius:9px;background:transparent;color:var(--muted)}    
+.tabs button.active{background:#15233a;color:white}    
+.field{margin:12px 0}.field label{display:block;font-size:12px;color:var(--muted);margin-bottom:6px}    
+.field input{width:100%;padding:13px;background:#080e1a;border:1px solid var(--line);border-radius:11px;color:white}    
+.primary{width:100%;padding:13px;border-radius:11px;background:linear-gradient(100deg,var(--red),#df173f 55%,#126ee6);color:white;font-weight:800}    
+.secondary{padding:10px;border-radius:10px;background:#15233a;color:#dce8ff;border:1px solid #2a3a54}    
+.danger{padding:9px 10px;border-radius:9px;background:#431927;color:#ffc0cc;border:1px solid #743047}    
+.github{width:100%;padding:12px;border-radius:11px;background:#1b2940;color:white;margin-top:10px}    
+.status{font-size:13px;margin:12px 0;color:#ffb3c0;min-height:18px;overflow-wrap:anywhere}    
+.notice{font-size:12px;color:var(--muted);margin-top:14px}    
+.app{height:100vh;height:100dvh;display:grid;grid-template-columns:320px 1fr;max-width:1500px;margin:auto}    
+.sidebar{background:#0b1322;border-right:1px solid var(--line);display:flex;flex-direction:column;min-height:0}    
+.side-head{padding:20px;border-bottom:1px solid var(--line)}.side-head .brand{margin-bottom:16px}    
+.search{width:100%;padding:12px;background:#111d30;border:1px solid var(--line);border-radius:12px;color:white}    
+.list-title{padding:16px 20px 8px;color:var(--muted);font-size:11px;letter-spacing:2px}    
+.chat-list{overflow:auto;flex:1}.chat-item{display:flex;align-items:center;gap:12px;padding:14px;cursor:pointer;border-left:3px solid transparent}    
+.chat-item:hover{background:#142239;border-left-color:var(--red)}    
+.avatar{width:42px;height:42px;flex:none;border-radius:50%;display:grid;place-items:center;background:linear-gradient(140deg,#ff2348,#126ee6);font-weight:900}    
+.chat-item strong,.chat-item small{display:block;overflow-wrap:anywhere}.chat-item small{color:var(--muted);font-size:12px}    
+.side-foot{padding:12px;border-top:1px solid var(--line);display:flex;align-items:center;gap:7px;flex-wrap:wrap}    
+.userline{flex:1;min-width:80px}.userline strong,.userline small{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.userline small{color:var(--muted)}    
+.main{display:flex;flex-direction:column;min-width:0;min-height:0;background:#0c1423}    
+.welcome{margin:auto;text-align:center;padding:25px;max-width:500px}.welcome .logo{margin:0 auto 18px;width:70px;height:70px;font-size:26px}    
+.topbar{padding:14px 20px;display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--line);background:#0b1322}    
+.who{flex:1;min-width:0}.who strong,.who small{display:block;overflow-wrap:anywhere}.who small{color:var(--muted)}    
+.messages{padding:20px;overflow:auto;flex:1;display:flex;flex-direction:column;gap:12px}    
+.bubble{max-width:min(78%,600px);padding:11px 14px;border-radius:15px;background:#17253a;align-self:flex-start;overflow-wrap:anywhere;white-space:pre-wrap}    
+.bubble.mine{align-self:flex-end;background:linear-gradient(130deg,#7f1836,#153e70)}    
+.bubble small{display:block;color:#b4c4dc;font-size:10px;text-align:right;margin-top:5px}    
+.composer{padding:12px;display:flex;gap:8px;border-top:1px solid var(--line);background:#0b1322}    
+.composer input{flex:1;min-width:0;background:#111d30;border:1px solid var(--line);border-radius:12px;padding:12px;color:white}    
+.send{padding:0 16px;border-radius:12px;background:var(--red);color:white;font-weight:800}    
+.empty{margin:auto;color:var(--muted);text-align:center;padding:24px}    
+@media(max-width:700px){.app{grid-template-columns:1fr}.app.chat-open .sidebar{display:none}.main{display:none}.app.chat-open .main{display:flex}.side-head{padding:14px}.side-foot{gap:5px;padding:9px}.auth{padding:22px}.topbar{padding:12px}.messages{padding:14px}.bubble{max-width:88%}}    
+</style>    
+</head>    
+<body>  <section id="authScreen" class="auth-wrap">    
+ <div class="auth">    
+  <div class="brand"><div class="logo">T.X</div><div>TalkXds<small>CONEXÃO SEM LIMITES</small></div></div>    
+  <p class="muted">Seu espaço para conversar com todo mundo.</p>    
+  <div class="tabs">    
+   <button id="loginTab" class="active" type="button">Entrar</button>    
+   <button id="signupTab" type="button">Criar conta</button>    
+  </div>    
+  <form id="authForm">    
+   <div id="nameField" class="field hidden"><label>Nome de exibição</label><input id="displayName" maxlength="40" placeholder="Como quer ser chamado?"></div>    
+   <div class="field"><label>E-mail</label><input id="email" type="email" autocomplete="email" required placeholder="voce@email.com"></div>    
+   <div class="field"><label>Senha</label><input id="password" type="password" minlength="6" autocomplete="current-password" required placeholder="Mínimo de 6 caracteres"></div>    
+   <div id="phoneField" class="field hidden"><label>Telefone (opcional)</label><input id="phone" type="tel" placeholder="+55 11 99999-9999"></div>    
+   <button id="submitAuth" class="primary" type="submit">Entrar no TalkXds</button>    
+  </form>    
+  <button id="forgotPassword" class="secondary" style="width:100%;margin-top:10px" type="button">Esqueci minha senha</button>    
+  <button id="githubBtn" class="github" type="button">↗ Continuar com GitHub</button>    
+  <div id="authStatus" class="status" role="status" aria-live="polite"></div>    
+  <div class="notice">Nunca compartilhe sua senha.</div>    
+ </div>    
+</section>  <section id="appScreen" class="app hidden">    
+ <aside class="sidebar">    
+  <div class="side-head">    
+   <div class="brand"><div class="logo">T.X</div><div>TalkXds<small>CHAT • CONECTAR • COMPARTILHAR</small></div></div>    
+   <input id="searchUsers" class="search" placeholder="Buscar usuários…" autocomplete="off">    
+  </div>    
+  <div class="list-title">Usuários</div>    
+  <div id="chatList" class="chat-list"><div class="empty">Carregando usuários…</div></div>    
+  <div class="side-foot">    
+   <div id="myAvatar" class="avatar">T</div>    
+   <div class="userline"><strong id="myName">Minha conta</strong><small id="myEmail"></small></div>    
+   <button id="editProfileBtn" class="secondary" type="button">Perfil</button>    
+   <button id="deleteAccountBtn" class="danger" type="button">Excluir conta</button>    
+   <button id="logoutBtn" class="secondary" type="button">Sair</button>    
+  </div>    
+ </aside>    
+ <main class="main">    
+  <div id="welcome" class="welcome"><div class="logo">T.X</div><h2>Bem-vindo ao TalkXds</h2><p class="muted">Encontre amigos e comece uma conversa.</p><button id="findFriends" class="primary" style="max-width:220px">Encontrar amigos</button></div>    
+  <div id="chatView" class="hidden" style="display:flex;flex-direction:column;min-height:0;flex:1">    
+   <header class="topbar"><button id="backBtn" class="secondary" type="button">←</button><div id="peerAvatar" class="avatar">T</div><div class="who"><strong id="peerName">Conversa</strong><small id="peerEmail"></small></div></header>    
+   <div id="messages" class="messages"></div>    
+   <form id="composer" class="composer"><input id="messageInput" maxlength="4000" placeholder="Escreva uma mensagem…" autocomplete="off" required><button class="send" type="submit">Enviar ➤</button></form>    
+  </div>    
+ </main>    
+</section>  <script type="module">    
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';    const SUPABASE_URL = 'https://ohxjcxkhayugkxffgync.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_i5Hr0p_LCgVzFhtIB8PQQg_Z1fTuM9s';
+const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+const $ = id => document.getElementById(id);
+
+let mode = 'login';
+let me = null;
+let activeUser = null;
+let refreshTimer = null;
+let recoveryHandled = false;
+
+function status(message) {
+$('authStatus').textContent = message || '';
 }
 
-body {
-  background: #d1d7db !important;
-  color: #111b21 !important;
-  font-family: Arial, Helvetica, sans-serif;
+function setMode(next) {
+mode = next;
+$('loginTab').classList.toggle('active', mode === 'login');
+$('signupTab').classList.toggle('active', mode === 'signup');
+$('nameField').classList.toggle('hidden', mode !== 'signup');
+$('phoneField').classList.toggle('hidden', mode !== 'signup');
+$('forgotPassword').classList.toggle('hidden', mode !== 'login');
+$('submitAuth').textContent = mode === 'login' ? 'Entrar no TalkXds' : 'Criar minha conta';
+$('password').autocomplete = mode === 'login' ? 'current-password' : 'new-password';
+status('');
 }
 
-#auth {
-  background: linear-gradient(135deg,#075e54,#00a884);
+$('loginTab').onclick = () => setMode('login');
+$('signupTab').onclick = () => setMode('signup');
+
+function escapeHtml(value = '') {
+return String(value).replace(/[&<>"']/g, char => ({
+'&':'&', '<':'<', '>':'>', '"':'"', "'":'''
+}[char]));
 }
 
-#auth .card {
-  background: #ffffff;
-  color: #111b21;
-  box-shadow: 0 12px 40px #0002;
-  border-radius: 18px;
-  padding: 28px;
+function showApp(user) {
+if (!user) return;
+me = user;
+$('authScreen').classList.add('hidden');
+$('appScreen').classList.remove('hidden');
+const name = user.user_metadata?.display_name ||
+user.user_metadata?.name || user.email?.split('@')[0] || 'TalkXds';
+$('myEmail').textContent = user.email || '';
+$('myName').textContent = name;
+$('myAvatar').textContent = name[0]?.toUpperCase() || 'T';
+loadUsers();
 }
 
-#auth input {
-  background: #f0f2f5;
-  color: #111b21;
-  border: 1px solid #d8dfe3;
-  padding: 14px;
+function showAuth() {
+me = null;
+activeUser = null;
+$('appScreen').classList.add('hidden');
+$('authScreen').classList.remove('hidden');
+$('chatView').classList.add('hidden');
+$('welcome').classList.remove('hidden');
+$('appScreen').classList.remove('chat-open');
+if (refreshTimer) clearInterval(refreshTimer);
+refreshTimer = null;
 }
 
-#auth button {
-  background: #00a884;
-  color: white;
-  border-radius: 9px;
+async function syncProfile(user, displayName, phone = '') {
+const { error } = await sb.from('profiles').upsert({
+id: user.id,
+display_name: displayName || user.email?.split('@')[0] || 'Usuário',
+email: user.email,
+phone
+}, { onConflict: 'id' });
+
+if (error) console.warn('Perfil ainda não sincronizado:', error.message);
 }
 
-#auth button#toggle,
-#auth button#forgot,
-#auth button#google {
-  background: #edf2f3;
-  color: #075e54;
+$('authForm').addEventListener('submit', async event => {
+event.preventDefault();
+status('Aguarde…');
+
+const email = $('email').value.trim();
+const password = $('password').value;
+
+try {
+if (mode === 'signup') {
+const displayName = $('displayName').value.trim();
+
+if (displayName.length < 2 || displayName.length > 40) {    
+    status('O nome precisa ter entre 2 e 40 caracteres.');    
+    return;    
+  }    
+
+  const { data, error } = await sb.auth.signUp({    
+    email,    
+    password,    
+    options: {    
+      data: {    
+        display_name: displayName,    
+        phone: $('phone').value.trim()    
+      }    
+    }    
+  });    
+
+  if (error) throw error;    
+
+  if (data.session && data.user) {    
+    await syncProfile(data.user, displayName, $('phone').value.trim());    
+    showApp(data.user);    
+    status('');    
+  } else {    
+    status('Cadastro recebido. Se for solicitada confirmação por e-mail, confirme antes de entrar.');    
+  }    
+} else {    
+  const { data, error } = await sb.auth.signInWithPassword({ email, password });    
+  if (error) throw error;    
+  showApp(data.user);    
+  status('');    
 }
 
-#app {
-  background: #efeae2;
-  box-shadow: 0 0 30px #0001;
+} catch (error) {
+status(error.message || 'Não foi possível autenticar.');
+}
+});
+
+$('forgotPassword').onclick = async () => {
+const email = $('email').value.trim();
+
+if (!email) {
+status('Digite seu e-mail no campo acima primeiro.');
+$('email').focus();
+return;
 }
 
-#app aside {
-  background: #ffffff;
-  border-right: 1px solid #dce2e5;
-  padding: 18px 12px;
-  display: flex;
-  flex-direction: column;
+status('Solicitando recuperação de senha…');
+
+try {
+const { error } = await sb.auth.resetPasswordForEmail(email, {
+redirectTo: location.origin + location.pathname
+});
+
+if (error) throw error;    
+
+status('Se o endereço estiver cadastrado, você receberá um link de recuperação. Confira o spam também.');
+
+} catch (error) {
+status('Erro ao solicitar recuperação: ' + error.message);
+}
+};
+
+async function handlePasswordRecovery() {
+if (recoveryHandled) return;
+recoveryHandled = true;
+
+const newPassword = prompt('Digite sua nova senha (mínimo de 6 caracteres):');
+
+if (newPassword === null) {
+status('Recuperação cancelada. Abra o link do e-mail novamente para tentar.');
+recoveryHandled = false;
+return;
 }
 
-#app .logo {
-  color: #008f75;
-  font-size: 27px;
-  text-align: left;
-  padding: 8px;
+if (newPassword.length < 6) {
+alert('A senha precisa ter pelo menos 6 caracteres. Abra o link do e-mail novamente.');
+recoveryHandled = false;
+return;
 }
 
-#app aside input {
-  background: #f0f2f5;
-  color: #111b21;
-  border: 1px solid transparent;
-  border-radius: 9px;
+try {
+const { error } = await sb.auth.updateUser({ password: newPassword });
+if (error) throw error;
+
+alert('Senha alterada com sucesso! Entre usando sua nova senha.');    
+await sb.auth.signOut();    
+showAuth();
+
+} catch (error) {
+alert('Não foi possível alterar a senha: ' + error.message);
+recoveryHandled = false;
+}
 }
 
-#app aside input:focus {
-  border-color: #00a884;
-  outline: none;
+$('githubBtn').onclick = async () => {
+try {
+const { error } = await sb.auth.signInWithOAuth({
+provider: 'github',
+options: { redirectTo: location.origin + location.pathname }
+});
+if (error) throw error;
+} catch (error) {
+status('Erro no login com GitHub: ' + error.message);
+}
+};
+
+$('logoutBtn').onclick = async () => {
+const { error } = await sb.auth.signOut();
+if (error) {
+alert('Não foi possível sair: ' + error.message);
+return;
+}
+showAuth();
+};
+
+$('editProfileBtn').onclick = async () => {
+if (!me) return;
+
+const currentName = me.user_metadata?.display_name ||
+me.email?.split('@')[0] || '';
+
+const newName = prompt('Digite seu nome de exibição:', currentName);
+if (newName === null) return;
+
+const displayName = newName.trim();
+
+if (displayName.length < 2 || displayName.length > 40) {
+alert('O nome deve ter entre 2 e 40 caracteres.');
+return;
 }
 
-#app aside button {
-  background: #00a884;
-  color: #ffffff;
-  border-radius: 9px;
+try {
+const { data, error } = await sb.auth.updateUser({
+data: { display_name: displayName }
+});
+if (error) throw error;
+
+me = data.user;    
+$('myName').textContent = displayName;    
+$('myAvatar').textContent = displayName[0].toUpperCase();    
+
+const { error: profileError } = await sb.from('profiles')    
+  .update({ display_name: displayName })    
+  .eq('id', me.id);    
+
+if (profileError) {    
+  alert('O nome da conta foi atualizado, mas o perfil público não. Será necessário conferir as permissões da tabela profiles.');    
+} else {    
+  alert('Nome atualizado!');    
+  await loadUsers();    
 }
 
-#app aside button#logout {
-  background: #edf2f3;
-  color: #54656f;
+} catch (error) {
+alert('Não foi possível atualizar o nome: ' + error.message);
+}
+};
+
+$('deleteAccountBtn').onclick = async () => {
+if (!me) return;
+
+const confirmation = prompt(
+'A exclusão da conta pode apagar seu perfil e os dados associados.\n\nDigite EXCLUIR para confirmar:'
+);
+
+if (confirmation !== 'EXCLUIR') {
+if (confirmation !== null) alert('Cancelado. Sua conta continua ativa.');
+return;
 }
 
-#users {
-  margin-top: 8px;
+if (!confirm('Tem certeza? Esta ação não pode ser desfeita.')) return;
+
+$('deleteAccountBtn').disabled = true;
+
+try {
+const { error } = await sb.rpc('delete_my_account');
+if (error) throw error;
+
+await sb.auth.signOut();    
+showAuth();    
+alert('Conta excluída.');
+
+} catch (error) {
+alert('A exclusão ainda precisa ser configurada no servidor Supabase. Sua conta não foi apagada. Detalhe: ' + error.message);
+} finally {
+$('deleteAccountBtn').disabled = false;
+}
+};
+
+$('findFriends').onclick = () => {
+$('searchUsers').focus();
+loadUsers();
+};
+
+$('searchUsers').addEventListener('input', () => loadUsers());
+
+$('backBtn').onclick = () => {
+$('appScreen').classList.remove('chat-open');
+$('chatView').classList.add('hidden');
+$('welcome').classList.remove('hidden');
+activeUser = null;
+if (refreshTimer) clearInterval(refreshTimer);
+refreshTimer = null;
+};
+
+async function loadUsers() {
+if (!me) return;
+
+const search = $('searchUsers').value.trim();
+let query = sb.from('profiles')
+.select('id,display_name,email')
+.neq('id', me.id)
+.order('display_name')
+.limit(60);
+
+if (search) {
+query = query.or(display_name.ilike.%${search}%,email.ilike.%${search}%);
 }
 
-.user {
-  padding: 15px 12px;
-  border-bottom: 1px solid #edf0f2;
-  color: #111b21;
-  transition: background .15s;
+const { data, error } = await query;
+
+if (error) {
+$('chatList').innerHTML = '<div class="empty">Não foi possível carregar usuários. Confira as permissões da tabela profiles.</div>';
+return;
 }
 
-.user:hover {
-  background: #f0f2f5;
+$('chatList').innerHTML = '';
+
+if (!data || data.length === 0) {
+$('chatList').innerHTML = '<div class="empty">Nenhum usuário encontrado ainda. Convide seus amigos para criar uma conta!</div>';
+return;
 }
 
-#main {
-  background: #efeae2;
+for (const user of data) {
+const name = user.display_name || user.email?.split('@')[0] || 'Usuário';
+const item = document.createElement('div');
+item.className = 'chat-item';
+
+const avatar = document.createElement('div');    
+avatar.className = 'avatar';    
+avatar.textContent = name[0]?.toUpperCase() || 'T';    
+
+const details = document.createElement('div');    
+const strong = document.createElement('strong');    
+strong.textContent = name;    
+const small = document.createElement('small');    
+small.textContent = user.email || 'TalkXds';    
+
+details.append(strong, small);    
+item.append(avatar, details);    
+item.onclick = () => openChat(user);    
+$('chatList').appendChild(item);
+
+}
 }
 
-#header {
-  min-height: 72px;
-  display: flex;
-  align-items: center;
-  background: #f0f2f5;
-  border-bottom: 1px solid #dfe3e5;
-  padding: 12px 20px;
-  color: #111b21;
-  box-shadow: 0 1px 2px #0001;
+async function openChat(user) {
+activeUser = user;
+$('appScreen').classList.add('chat-open');
+$('welcome').classList.add('hidden');
+$('chatView').classList.remove('hidden');
+
+const name = user.display_name || user.email?.split('@')[0] || 'Usuário';
+$('peerName').textContent = name;
+$('peerEmail').textContent = user.email || '';
+$('peerAvatar').textContent = name[0]?.toUpperCase() || 'T';
+
+await loadMessages();
+
+if (refreshTimer) clearInterval(refreshTimer);
+refreshTimer = setInterval(loadMessages, 5000);
 }
 
-#header strong {
-  font-size: 16px;
+async function loadMessages() {
+if (!me || !activeUser) return;
+
+const { data, error } = await sb.from('messages')
+.select('id,sender_id,receiver_id,body,created_at')
+.or(and(sender_id.eq.${me.id},receiver_id.eq.${activeUser.id}),and(sender_id.eq.${activeUser.id},receiver_id.eq.${me.id}))
+.order('created_at')
+.limit(200);
+
+if (error) {
+$('messages').innerHTML = '<div class="empty">Não foi possível carregar mensagens. Confira o SQL e as políticas RLS.</div>';
+return;
 }
 
-#header small {
-  color: #667781;
+const box = $('messages');
+const nearBottom = box.scrollHeight - box.clientHeight - box.scrollTop < 100;
+box.innerHTML = '';
+
+for (const message of data || []) {
+const bubble = document.createElement('div');
+bubble.className = 'bubble' + (message.sender_id === me.id ? ' mine' : '');
+
+const text = document.createElement('span');    
+text.textContent = message.body || '';    
+
+const time = document.createElement('small');    
+time.textContent = new Date(message.created_at).toLocaleTimeString('pt-BR', {    
+  hour: '2-digit', minute: '2-digit'    
+});    
+
+bubble.append(text, time);    
+box.appendChild(bubble);
+
 }
 
-#messages {
-  padding: 22px clamp(12px,4vw,55px);
-  gap: 10px;
-  background-color: #efeae2;
-  background-image:
-    radial-gradient(#c8c1b6 0.6px, transparent 0.6px);
-  background-size: 18px 18px;
+if (nearBottom) box.scrollTop = box.scrollHeight;
 }
 
-.msg {
-  position: relative;
-  max-width: min(75%,520px);
-  padding: 9px 12px;
-  background: #ffffff;
-  color: #111b21;
-  border-radius: 10px;
-  box-shadow: 0 1px 1px #0001;
-  line-height: 1.45;
-  overflow-wrap: anywhere;
+$('composer').addEventListener('submit', async event => {
+event.preventDefault();
+if (!me || !activeUser) return;
+
+const body = $('messageInput').value.trim();
+if (!body) return;
+
+$('messageInput').value = '';
+
+const { error } = await sb.from('messages').insert({
+sender_id: me.id,
+receiver_id: activeUser.id,
+body
+});
+
+if (error) {
+$('messageInput').value = body;
+alert('Falha ao enviar: ' + error.message);
+return;
 }
 
-.msg.mine {
-  background: #d9fdd3;
-  color: #111b21;
-  align-self: flex-end;
+await loadMessages();
+});
+
+sb.auth.onAuthStateChange((event, session) => {
+if (event === 'PASSWORD_RECOVERY') {
+setTimeout(() => handlePasswordRecovery(), 0);
+return;
 }
 
-.msg small {
-  display: inline-block;
-  margin-top: 5px;
-  color: #667781;
-  font-size: 10px;
+if (session?.user) {
+showApp(session.user);
+} else if (!me) {
+showAuth();
+}
+});
+
+const { data: sessionData, error: sessionError } = await sb.auth.getSession();
+
+if (sessionError) {
+status('Erro ao verificar a sessão: ' + sessionError.message);
+} else if (sessionData.session?.user) {
+showApp(sessionData.session.user);
 }
 
-.msg img,
-.msg video {
-  border-radius: 8px;
-  display: block;
-  margin: 5px 0;
+// Trata também links de recuperação que já abriram com uma sessão ativa.
+if (sessionData.session?.user && location.hash.includes('type=recovery')) {
+setTimeout(() => handlePasswordRecovery(), 300);
 }
+</script>  </body>
 
-.msg audio {
-  max-width: 100%;
-}
-
-#compose {
-  background: #f0f2f5;
-  padding: 12px 16px;
-  gap: 10px;
-  border-top: 1px solid #e0e5e8;
-}
-
-#compose input {
-  background: #ffffff;
-  color: #111b21;
-  border: 0;
-  border-radius: 24px;
-  padding: 14px 18px;
-  box-shadow: 0 1px 2px #0001;
-}
-
-#compose button {
-  min-width: 43px;
-  min-height: 43px;
-  border-radius: 50%;
-  background: #00a884;
-  color: #ffffff;
-  font-size: 16px;
-}
-
-#compose button#attach,
-#compose button#record {
-  background: transparent;
-  color: #54656f;
-  font-size: 22px;
-}
-
-#status {
-  color: #667781;
-  font-size: 12px;
-}
-
-@media (min-width: 900px) {
-  #app aside {
-    width: 350px;
-    max-width: 35%;
-  }
-
-  #messages {
-    padding-left: clamp(25px,5vw,90px);
-    padding-right: clamp(25px,5vw,90px);
-  }
-}
-
-@media (max-width: 650px) {
-  #app aside {
-    max-height: 48%;
-    padding: 12px;
-  }
-
-  #app .logo {
-    font-size: 24px;
-  }
-
-  #header {
-    min-height: 62px;
-    padding: 10px 12px;
-  }
-
-  #messages {
-    padding: 14px 9px;
-  }
-
-  .msg {
-    max-width: 88%;
-  }
-
-  #compose {
-    padding: 8px;
-    gap: 5px;
-  }
-
-  #compose input {
-    padding: 12px;
-  }
-}
+</html>    Pronto substitua com todas as funções novas
