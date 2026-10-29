@@ -1,34 +1,87 @@
 <!DOCTYPE html>
-<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<style>
-body{margin:0;background:#0a0a18;color:#fff;font-family:Arial}
-.header{padding:16px;background:#141428;border-bottom:2px solid #ff0033;display:flex;justify-content:space-between;align-items:center}
-.header b{font-size:20px;letter-spacing:1px}
-.add{width:36px;height:36px;border-radius:50%;border:0;background:linear-gradient(90deg,#ff0033,#00ccff);color:#fff;font-size:22px;font-weight:bold;cursor:pointer}
-.lista{padding:10px}
-.contato{padding:14px 12px;margin:8px 0;background:#141428;border:1px solid #0066ff;border-radius:14px;display:flex;align-items:center;gap:12px;cursor:pointer}
-.contato:active{transform:scale(0.98)}
-.avatar{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#ff0033,#0066ff);display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:18px}
-.nome{font-weight:bold}
-.msg{font-size:13px;color:#8a8ab0;margin-top:2px}
-</style>
-</head><body>
-<div class="header"><b>XdsTalk</b><button class="add" onclick="addAmigo()">+</button></div>
-<div class="lista" id="lista"></div>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Talk Xds</title>
+<link rel="stylesheet" href="estilo.css">
+</head>
+<body>
 
-<script>
-const amigosFixos=[
- {n:"João",m:"E aí, bora no XdsTalk?"},
- {n:"Maria",m:"conectando você ao mundo!"},
- {n:"Grupo Fortaleza",m:"Fala galera 👊"},
- {n:"Pedro",m:"Bora jogar hoje?"},
- {n:"Ana",m:"Oi, sumido!"},
- {n:"Lucas Fortaleza",m:"To na praia"},
- {n:"Kevinho",m:"Manda o pix kkk"},
- {n:"Mãe",m:"Já jantou?"}
-];
+<div class="app">
+  <div class="sidebar">
+    <div class="header">
+      <div class="logo">Talk <span>Xds</span></div>
+      <div>🔍 📹 ⋮</div>
+    </div>
+    <div class="tabs">
+      <div class="ativo">Chats</div>
+      <div>Contatos</div>
+      <div>Calls</div>
+    </div>
+    <div class="search"><input id="busca" placeholder="Buscar chats..."></div>
+    <div id="listaContatos">
+      <div class="contato" onclick="abrirChat('geral')">
+        <div class="avatar">TX</div>
+        <div><b>Chat Geral Talk Xds</b><br><small>Entra ai galera!</small></div>
+      </div>
+    </div>
+  </div>
 
-function getAmigos(){
-  const extras=JSON.parse(localStorage.getItem('amigos_extra')||'[]');
-  return [...amigosFixos,...extras];
+  <div class="chat-area">
+    <div class="chat-header">
+      <div class="avatar">TX</div>
+      <div><b>Chat Geral</b><br><small style="color:green;">Online</small></div>
+    </div>
+    <div class="mensagens" id="mensagens"></div>
+    <div class="input-area">
+      <input id="msgInput" placeholder="Digite uma mensagem...">
+      <button class="btn-enviar" onclick="enviar()">➤</button>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getFirestore, collection, addDoc, query, orderBy, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+const firebaseConfig = {
+  apiKey: "SUA_API_KEY_DO_xdstalk-c597b",
+  authDomain: "xdstalk-c597b.firebaseapp.com",
+  projectId: "xdstalk-c597b"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const auth = getAuth(app);
+
+const mensagensDiv = document.getElementById('mensagens');
+
+const q = query(collection(db, "mensagens"), orderBy("hora"));
+onSnapshot(q, (snap)=>{
+  mensagensDiv.innerHTML = "";
+  snap.forEach(doc=>{
+    const m = doc.data();
+    const div = document.createElement('div');
+    div.className = 'balao ' + (m.uid === auth.currentUser?.uid ? 'enviado' : 'recebido');
+    div.innerHTML = `<b>${m.nome||''}</b><br>${m.texto}`;
+    mensagensDiv.appendChild(div);
+  });
+  mensagensDiv.scrollTop = mensagensDiv.scrollHeight;
+});
+
+window.enviar = async ()=>{
+  const input = document.getElementById('msgInput');
+  if(!input.value) return;
+  await addDoc(collection(db, "mensagens"), {
+    texto: input.value,
+    nome: auth.currentUser?.email || 'Anon',
+    uid: auth.currentUser?.uid || 'anon',
+    hora: serverTimestamp()
+  });
+  input.value = "";
 }
+</script>
+</body>
+</html>
