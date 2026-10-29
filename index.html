@@ -6,37 +6,68 @@
 <title>Talk Xds</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:Arial}
-body{background:linear-gradient(135deg,#1565C0,#E53935);display:flex;justify-content:center;align-items:center;height:100vh}
+body{background:linear-gradient(135deg,#1565C0,#E53935);display:flex;justify-content:center;align-items:center;min-height:100vh;padding:20px 0}
 .box{background:#fff;padding:30px;border-radius:20px;width:92%;max-width:360px;display:flex;flex-direction:column;gap:12px;text-align:center}
 .logo{font-size:38px;font-weight:900;color:#1565C0} .logo span{color:#E53935}
-input{padding:13px 16px;border-radius:25px;border:none;background:#f0f2f5;outline:none}
-button{padding:13px;border-radius:25px;border:none;font-weight:bold;cursor:pointer}
+input{padding:13px 16px;border-radius:25px;border:none;background:#f0f2f5;outline:none;width:100%}
+button{padding:13px;border-radius:25px;border:none;font-weight:bold;cursor:pointer;width:100%}
 .btn1{background:#E53935;color:#fff} .btn2{background:#fff;color:#1565C0;border:2px solid #1565C0}
 .link{color:#1565C0;font-size:13px;cursor:pointer;text-align:right}
 .divisor{display:flex;align-items:center;gap:8px;margin:5px 0;color:#888;font-size:12px}
 .divisor div{flex:1;height:1px;background:#ddd}
+.btn-social{background:#fff;border:1px solid #ddd;color:#333;font-weight:600;display:flex;align-items:center;justify-content:center;gap:8px}
+.hidden{display:none}
+#phone-area{background:#f8f9ff;padding:15px;border-radius:15px;border:1px dashed #1565C0;display:flex;flex-direction:column;gap:10px}
 </style>
 </head>
 <body>
 <div class="box">
 <div class="logo">Talk <span>Xds</span></div>
 <p style="color:#555">Entre na sua conta</p>
+
+<div id="login-normal" style="display:flex;flex-direction:column;gap:12px;width:100%">
 <input id="nome" placeholder="Seu nome (pra criar)">
-<input id="email" placeholder="E-mail ou telefone">
+<input id="email" placeholder="E-mail">
 <input id="senha" type="password" placeholder="Senha">
 <div class="link" id="esqueceu">Esqueceu a senha?</div>
 <button class="btn1" id="btnEntrar">ENTRAR</button>
 <button class="btn2" id="btnCriar">CRIAR CONTA</button>
-<div class="divisor"><div></div>OU<div></div></div>
-<button class="btn2" id="btnGoogle" style="background:#fff;border:1px solid #ddd">🌐 Continuar com Google</button>
-<div id="msg" style="font-size:12px;color:red"></div>
 </div>
+
+<div class="divisor"><div></div>OU<div></div></div>
+
+<button class="btn-social" id="btnGoogle">🌐 Continuar com Google</button>
+<button class="btn-social" id="btnCelular">📱 Continuar com celular</button>
+<button class="btn-social" id="btnFacebook" style="color:#1877F2;border-color:#1877F2">📘 Continuar com Facebook</button>
+<button class="btn-social" id="btnEmail">✉️ Continuar com e-mail</button>
+
+<div id="phone-area" class="hidden">
+<input id="phone" placeholder="+55 88 9XXXX-XXXX">
+<div id="recaptcha-container"></div>
+<button class="btn1" id="btnEnviarSMS">Enviar código SMS</button>
+<input id="codigo" placeholder="Digite o código de 6 dígitos" class="hidden">
+<button class="btn2 hidden" id="btnVerificar">Verificar código</button>
+<button class="btn2" id="btnVoltar" style="border:none;font-size:12px">Voltar</button>
+</div>
+
+<div id="msg" style="font-size:12px;color:red;min-height:16px"></div>
+</div>
+
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile, sendPasswordResetEmail, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile, sendPasswordResetEmail, GoogleAuthProvider, FacebookAuthProvider, signInWithPopup, RecaptchaVerifier, signInWithPhoneNumber } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
 const firebaseConfig = { apiKey:"AIzaSyDnjiFQtTu8A5vZ3NHEIl_zG9ylMKTv6b8", authDomain:"talkxds.firebaseapp.com", projectId:"talkxds", storageBucket:"talkxds.firebasestorage.app", messagingSenderId:"757013602887", appId:"1:757013602887:web:6627ff87623d698e7d8762" };
-const app=initializeApp(firebaseConfig); const auth=getAuth(app);
+const app=initializeApp(firebaseConfig); 
+const auth=getAuth(app);
 const msg=document.getElementById('msg');
+
+let confirmationResult = null;
+
+// Recaptcha
+window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', { size: 'normal', callback: ()=>{} });
+
+// Normal login
 document.getElementById('btnCriar').onclick=async()=>{
   try{ const n=document.getElementById('nome').value; const e=document.getElementById('email').value; const s=document.getElementById('senha').value;
   if(!n||!e||!s){msg.innerText="Preencha tudo";return;} const c=await createUserWithEmailAndPassword(auth,e,s); await updateProfile(c.user,{displayName:n}); location.href="chats.html"; }catch(err){msg.innerText=err.message;}
@@ -46,6 +77,38 @@ document.getElementById('btnEntrar').onclick=async()=>{
 }
 document.getElementById('esqueceu').onclick=async()=>{ const e=document.getElementById('email').value; if(!e){msg.innerText="Digite e-mail primeiro";return;} await sendPasswordResetEmail(auth,e); msg.style.color="green"; msg.innerText="Link enviado!"; }
 document.getElementById('btnGoogle').onclick=async()=>{ const p=new GoogleAuthProvider(); await signInWithPopup(auth,p); location.href="chats.html"; }
+document.getElementById('btnFacebook').onclick=async()=>{ try{ const p=new FacebookAuthProvider(); await signInWithPopup(auth,p); location.href="chats.html"; }catch(e){ msg.innerText="Ative Facebook em Firebase > Authentication > Sign-in method"; } }
+document.getElementById('btnEmail').onclick=()=>{ document.getElementById('phone-area').classList.add('hidden'); document.getElementById('login-normal').classList.remove('hidden'); document.getElementById('email').focus(); }
+
+// CELULAR - SMS
+document.getElementById('btnCelular').onclick=()=>{
+  document.getElementById('login-normal').classList.add('hidden');
+  document.getElementById('phone-area').classList.remove('hidden');
+  msg.innerText="Digite seu número com DDD: ex +5588999999999";
+}
+document.getElementById('btnVoltar').onclick=()=>{
+  document.getElementById('phone-area').classList.add('hidden');
+  document.getElementById('login-normal').classList.remove('hidden');
+  document.getElementById('codigo').classList.add('hidden');
+  document.getElementById('btnVerificar').classList.add('hidden');
+  msg.innerText="";
+}
+document.getElementById('btnEnviarSMS').onclick=async()=>{
+  const phone = document.getElementById('phone').value;
+  if(!phone){msg.innerText="Digite o número com +55";return;}
+  try{
+    msg.style.color="#1565C0"; msg.innerText="Enviando SMS...";
+    confirmationResult = await signInWithPhoneNumber(auth, phone, window.recaptchaVerifier);
+    msg.style.color="green"; msg.innerText="Código enviado! Digite abaixo";
+    document.getElementById('codigo').classList.remove('hidden');
+    document.getElementById('btnVerificar').classList.remove('hidden');
+  }catch(err){ msg.style.color="red"; msg.innerText=err.message; window.recaptchaVerifier.render().then(id=>{grecaptcha.reset(id)}); }
+}
+document.getElementById('btnVerificar').onclick=async()=>{
+  const code = document.getElementById('codigo').value;
+  if(!code){msg.innerText="Digite o código";return;}
+  try{ await confirmationResult.confirm(code); location.href="chats.html"; }catch(err){ msg.innerText="Código inválido"; }
+}
 </script>
 </body>
 </html>
