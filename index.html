@@ -1,32 +1,56 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>XdsTalk - Login</title>
+<title>XdsTalk</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
 <style>
-body{font-family:Arial;background:#111;color:#fff;display:flex;justify-content:center;align-items:center;height:100vh;margin:0}
-.box{background:#222;padding:30px;border-radius:12px;width:300px;text-align:center}
-input{width:100%;padding:10px;margin:8px 0;border-radius:6px;border:none;box-sizing:border-box}
-button{width:100%;padding:10px;background:#00ff88;color:#000;border:none;border-radius:6px;font-weight:bold;cursor:pointer;margin-top:10px}
-button:hover{background:#00cc6a}
-#msg{margin-top:15px;font-size:14px}
+*{box-sizing:border-box;font-family:'Inter',sans-serif}
+body{margin:0;height:100vh;display:flex;justify-content:center;align-items:center;background:radial-gradient(circle at top, #1a1a2e, #0f0f0f);color:#fff}
+.container{background:rgba(255,255,255,0.06);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.1);padding:35px;border-radius:24px;width:340px;box-shadow:0 20px 60px rgba(0,0,0,0.5)}
+.logo{text-align:center;margin-bottom:25px}
+.logo h1{margin:0;font-size:32px;font-weight:800;background:linear-gradient(90deg,#00ff88,#00d4ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.logo p{margin:5px 0 0;color:#aaa;font-size:13px}
+.input-group{position:relative;margin:12px 0}
+.input-group input{width:100%;padding:14px 14px 14px 42px;background:#151515;border:1px solid #2a2a2a;border-radius:12px;color:#fff;outline:none;transition:.2s}
+.input-group input:focus{border-color:#00ff88;box-shadow:0 0 0 3px rgba(0,255,136,0.15)}
+.input-group span{position:absolute;left:12px;top:50%;transform:translateY(-50%);opacity:.6}
+.btn{width:100%;padding:14px;border:none;border-radius:12px;font-weight:700;font-size:15px;cursor:pointer;transition:.2s;margin-top:10px}
+.btn-primary{background:linear-gradient(90deg,#00ff88,#00d4ff);color:#000}
+.btn-primary:hover{transform:scale(1.02);filter:brightness(1.1)}
+.btn-secondary{background:#222;color:#fff;border:1px solid #333}
+.btn-secondary:hover{background:#2a2a2a}
+.divider{display:flex;align-items:center;gap:10px;margin:18px 0;color:#555;font-size:12px}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:#222}
+#msg{text-align:center;margin-top:16px;font-size:13px;min-height:18px}
+.success{color:#00ff88}
+.error{color:#ff5a5a}
 </style>
 </head>
 <body>
-<div class="box">
-<h2>XdsTalk</h2>
-<input type="email" id="email" placeholder="Email">
-<input type="password" id="password" placeholder="Senha (min 6 letras)">
-<button id="btnCriar">Criar Conta</button>
-<button id="btnEntrar">Entrar</button>
+<div class="container">
+<div class="logo">
+<h1>XdsTalk</h1>
+<p>Converse com o mundo</p>
+</div>
+<div class="input-group">
+<span>📧</span>
+<input type="email" id="email" placeholder="Seu email">
+</div>
+<div class="input-group">
+<span>🔒</span>
+<input type="password" id="password" placeholder="Sua senha">
+</div>
+<button class="btn btn-primary" id="btnCriar">Criar minha conta</button>
+<div class="divider">ou</div>
+<button class="btn btn-secondary" id="btnEntrar">Já tenho conta - Entrar</button>
 <div id="msg"></div>
 </div>
-
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-
 const firebaseConfig = {
   apiKey: "AIzaSyA8UtD8cNIAeqVeHbeZVDmxVzcEo9ZNUN4",
   authDomain: "xdstalk-c597b.firebaseapp.com",
@@ -36,36 +60,36 @@ const firebaseConfig = {
   appId: "1:852750985311:web:e659289d031e5f1a3153ea",
   measurementId: "G-WYM9LV0TXC"
 };
-
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const msg = document.getElementById('msg');
-
+function showMsg(t,c){msg.className=c;msg.innerText=t}
 document.getElementById('btnCriar').onclick = async () => {
-  const email = document.getElementById('email').value;
+  const email = document.getElementById('email').value.trim();
   const pass = document.getElementById('password').value;
+  if(!email||!pass) return showMsg('Preencha email e senha','error');
+  showMsg('Criando...','');
   try {
     await createUserWithEmailAndPassword(auth, email, pass);
-    msg.style.color = '#00ff88';
-    msg.innerText = 'Conta criada com sucesso!';
+    showMsg('✅ Conta criada! Agora clica em Entrar','success');
   } catch (e) {
-    msg.style.color = '#ff5555';
-    msg.innerText = e.code + ': ' + e.message;
+    if(e.code=='auth/email-already-in-use') showMsg('Esse email já existe, clica em Entrar','error');
+    else if(e.code=='auth/weak-password') showMsg('Senha fraca, usa 6 letras ou mais','error');
+    else if(e.code=='auth/invalid-email') showMsg('Email inválido','error');
+    else showMsg(e.message,'error');
   }
 };
-
 document.getElementById('btnEntrar').onclick = async () => {
-  const email = document.getElementById('email').value;
+  const email = document.getElementById('email').value.trim();
   const pass = document.getElementById('password').value;
+  if(!email||!pass) return showMsg('Preencha email e senha','error');
+  showMsg('Entrando...','');
   try {
     await signInWithEmailAndPassword(auth, email, pass);
-    msg.style.color = '#00ff88';
-    msg.innerText = 'Logado! Bem-vindo!';
-    // Aqui depois você pode redirecionar pro chat
-    // window.location.href = "chat.html"
+    showMsg('🚀 Logado! Bem-vindo ao XdsTalk','success');
   } catch (e) {
-    msg.style.color = '#ff5555';
-    msg.innerText = e.code + ': ' + e.message;
+    if(e.code=='auth/invalid-credential') showMsg('Email ou senha errados','error');
+    else showMsg(e.message,'error');
   }
 };
 </script>
