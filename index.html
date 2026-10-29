@@ -19,38 +19,29 @@ body{margin:0;height:100vh;display:flex;justify-content:center;align-items:cente
 .input-group span{position:absolute;left:12px;top:50%;transform:translateY(-50%);opacity:.6}
 .btn{width:100%;padding:14px;border:none;border-radius:12px;font-weight:700;font-size:15px;cursor:pointer;transition:.2s;margin-top:10px}
 .btn-primary{background:linear-gradient(90deg,#00ff88,#00d4ff);color:#000}
-.btn-primary:hover{transform:scale(1.02);filter:brightness(1.1)}
 .btn-secondary{background:#222;color:#fff;border:1px solid #333}
-.btn-secondary:hover{background:#2a2a2a}
-.divider{display:flex;align-items:center;gap:10px;margin:18px 0;color:#555;font-size:12px}
-.divider::before,.divider::after{content:'';flex:1;height:1px;background:#222}
+.link{color:#00ff88;font-size:12px;text-align:center;display:block;margin-top:15px;cursor:pointer;text-decoration:underline;background:none;border:none;width:100%}
 #msg{text-align:center;margin-top:16px;font-size:13px;min-height:18px}
 .success{color:#00ff88}
 .error{color:#ff5a5a}
+.divider{display:flex;align-items:center;gap:10px;margin:18px 0;color:#555;font-size:12px}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:#222}
 </style>
 </head>
 <body>
 <div class="container">
-<div class="logo">
-<h1>XdsTalk</h1>
-<p>Converse com o mundo</p>
-</div>
-<div class="input-group">
-<span>📧</span>
-<input type="email" id="email" placeholder="Seu email">
-</div>
-<div class="input-group">
-<span>🔒</span>
-<input type="password" id="password" placeholder="Sua senha">
-</div>
+<div class="logo"><h1>XdsTalk</h1><p>Converse com o mundo</p></div>
+<div class="input-group"><span>📧</span><input type="email" id="email" placeholder="Seu email" value="Xds08@gmail.com"></div>
+<div class="input-group"><span>🔒</span><input type="password" id="password" placeholder="Sua senha"></div>
 <button class="btn btn-primary" id="btnCriar">Criar minha conta</button>
 <div class="divider">ou</div>
 <button class="btn btn-secondary" id="btnEntrar">Já tenho conta - Entrar</button>
+<button class="link" id="btnReset">Esqueci minha senha</button>
 <div id="msg"></div>
 </div>
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 const firebaseConfig = {
   apiKey: "AIzaSyA8UtD8cNIAeqVeHbeZVDmxVzcEo9ZNUN4",
   authDomain: "xdstalk-c597b.firebaseapp.com",
@@ -64,6 +55,7 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const msg = document.getElementById('msg');
 function showMsg(t,c){msg.className=c;msg.innerText=t}
+
 document.getElementById('btnCriar').onclick = async () => {
   const email = document.getElementById('email').value.trim();
   const pass = document.getElementById('password').value;
@@ -73,9 +65,7 @@ document.getElementById('btnCriar').onclick = async () => {
     await createUserWithEmailAndPassword(auth, email, pass);
     showMsg('✅ Conta criada! Agora clica em Entrar','success');
   } catch (e) {
-    if(e.code=='auth/email-already-in-use') showMsg('Esse email já existe, clica em Entrar','error');
-    else if(e.code=='auth/weak-password') showMsg('Senha fraca, usa 6 letras ou mais','error');
-    else if(e.code=='auth/invalid-email') showMsg('Email inválido','error');
+    if(e.code=='auth/email-already-in-use') showMsg('Esse email já existe, clica em Entrar ou em Esqueci senha','error');
     else showMsg(e.message,'error');
   }
 };
@@ -86,10 +76,20 @@ document.getElementById('btnEntrar').onclick = async () => {
   showMsg('Entrando...','');
   try {
     await signInWithEmailAndPassword(auth, email, pass);
-    showMsg('🚀 Logado! Bem-vindo ao XdsTalk','success');
+    showMsg('🚀 Logado! Bem-vindo!','success');
   } catch (e) {
-    if(e.code=='auth/invalid-credential') showMsg('Email ou senha errados','error');
-    else showMsg(e.message,'error');
+    showMsg('Email ou senha errados. Tenta "Esqueci minha senha"','error');
+  }
+};
+document.getElementById('btnReset').onclick = async () => {
+  const email = document.getElementById('email').value.trim();
+  if(!email) return showMsg('Digite seu email primeiro','error');
+  showMsg('Enviando email de recuperação...','');
+  try {
+    await sendPasswordResetEmail(auth, email);
+    showMsg('📧 Email enviado! Olha sua caixa de entrada do Gmail','success');
+  } catch (e) {
+    showMsg(e.message,'error');
   }
 };
 </script>
