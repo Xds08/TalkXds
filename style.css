@@ -1,0 +1,7 @@
+body{margin:0;min-height:100vh;display:flex;justify-content:center;align-items:center;background:#0a0a14;color:white;font-family:Arial}
+.login-box{background:#141428;padding:30px;border-radius:20px;border:2px solid #ff0033;box-shadow:0 0 20px #ff0033,0 0 40px #0066ff;width:320px;text-align:center}
+h1{font-size:38px;text-shadow:0 0 10px #ff0033,0 0 20px #0066ff;margin:0}
+p{color:#aab}
+input{width:100%;margin:8px 0;padding:14px;border-radius:12px;border:1px solid #0066ff;background:#0a0a14;color:white;box-sizing:border-box}
+button{width:100%;padding:14px;border:none;border-radius:12px;font-weight:bold;cursor:pointer;margin-top:10px}
+.btn-neon{background:linear-gradient(90deg,#ff0033,#0066ff);color:white;box-shadow:0 0 15px #ff0033}
