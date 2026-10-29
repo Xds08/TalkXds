@@ -1,91 +1,44 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>XdsTalk</title>
-<link rel="stylesheet" href="estilo.css">
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
-const firebaseConfig = {
-  apiKey: "AIzaSyD...",
-  authDomain: "xdstalk.firebaseapp.com",
-  projectId: "xdstalk",
-  storageBucket: "xdstalk.firebasestorage.app",
-  messagingSenderId: "...",
-  appId: "..."
-};
+:root {
+  --vermelho: #E53935;
+  --azul: #1565C0;
+  --branco: #FFFFFF;
+  --cinza: #F0F2F5;
+}
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const provider = new GoogleAuthProvider();
+* { margin:0; padding:0; box-sizing:border-box; font-family: Segoe UI, Helvetica, Arial, sans-serif; }
 
-window.loginComGoogle = () => {
-  signInWithPopup(auth, provider).catch(e => alert(e.message));
-};
+body { background: var(--cinza); height: 100vh; display:flex; }
 
-window.sair = () => signOut(auth);
+.app { display:flex; width:100%; height:100vh; background: var(--branco); }
 
-onAuthStateChanged(auth, (user) => {
-  const loginBox = document.getElementById("loginBox");
-  const appBox = document.getElementById("appBox");
-  if (user) {
-    loginBox.classList.add("hidden");
-    appBox.classList.remove("hidden");
-    document.getElementById("foto").src = user.photoURL;
-    document.getElementById("nome").innerText = user.displayName;
-    document.getElementById("email").innerText = user.email;
-  } else {
-    loginBox.classList.remove("hidden");
-    appBox.classList.add("hidden");
-  }
-});
-</script>
+/* SIDEBAR */
+.sidebar { width:35%; background: var(--branco); border-right:1px solid #ddd; display:flex; flex-direction:column; }
+.header { background: var(--branco); padding:15px; display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid #eee; }
+.logo { font-weight:800; font-size:22px; color:var(--azul); }
+.logo span { color:var(--vermelho); }
 
-<style>
-body{margin:0;min-height:100vh;display:flex;justify-content:center;align-items:center;background:#0a0a12;font-family:Inter,system-ui;color:#fff}
-.box{background:#141428;padding:28px;border-radius:22px;border:2px solid #222; width:100%; max-width:360px; text-align:center; box-shadow:0 20px 60px #0008}
-h1{font-size:42px;margin:0;text-shadow:0 0 10px #ff0033,0 0 20px #0066ff}
-.sub{color:#aaa;margin:8px 0 18px}
-button{width:100%;padding:14px;border:0;border-radius:12px;font-weight:700;cursor:pointer;transition:.2s}
-button:active{transform:scale(.97)}
-.entrar{background:linear-gradient(90deg,#ff0033,#0066ff);color:#fff}
-.google{background:#fff;color:#111;display:flex;align-items:center;justify-content:center;gap:10px}
-.google img{width:20px}
-.topo{display:flex;align-items:center;gap:12px;text-align:left}
-.topo img{width:48px;height:48px;border-radius:50%;border:2px solid #ff0033}
-.nome{font-weight:700}
-.email{font-size:12px;color:#aaa}
-.sair{margin-top:18px;background:#222;color:#fff}
-.hidden{display:none}
-#appBox .chat-area{margin-top:20px;background:#0f0f20;border-radius:16px;padding:12px;min-height:200px;border:1px solid #222}
-</style>
-</head>
-<body>
+.tabs { display:flex; background: var(--branco); }
+.tabs div { flex:1; padding:12px; text-align:center; cursor:pointer; font-weight:600; border-bottom:3px solid transparent; }
+.tabs .ativo { border-bottom:3px solid var(--vermelho); color:var(--azul); }
 
-<div id="loginBox" class="box">
-  <h1>XdsTalk</h1>
-  <div class="sub">Converse com seus amigos</div>
-  <button class="google" onclick="loginComGoogle()">
-    <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"> Entrar com Google
-  </button>
-</div>
+.search { padding:10px; background: #f0f2f5; }
+.search input { width:100%; padding:10px 15px; border-radius:20px; border:none; background: white; }
 
-<div id="appBox" class="box hidden">
-  <div class="topo">
-    <img id="foto" src="">
-    <div>
-      <div id="nome" class="nome"></div>
-      <div id="email" class="email"></div>
-    </div>
-  </div>
-  <div class="chat-area">
-    <p style="color:#666;font-size:14px">Chat em breve aqui...</p>
-  </div>
-  <button class="sair" onclick="sair()">Sair</button>
-</div>
+.contato { display:flex; padding:12px 15px; cursor:pointer; border-bottom:1px solid #f5f5f5; }
+.contato:hover { background: #f0f2f5; }
+.avatar { width:50px; height:50px; border-radius:50%; background: var(--azul); color:white; display:flex; align-items:center; justify-content:center; font-weight:bold; margin-right:10px; }
+.avatar.vermelho { background: var(--vermelho); }
 
-</body>
-</html>
+/* CHAT */
+.chat-area { flex:1; display:flex; flex-direction:column; background: #E5DDD5; }
+.chat-header { background: var(--branco); padding:12px 15px; display:flex; align-items:center; border-bottom:1px solid #ddd; }
+.mensagens { flex:1; padding:20px; overflow-y:auto; display:flex; flex-direction:column; gap:8px; }
+
+.balao { max-width:65%; padding:8px 12px; border-radius:8px; font-size:14.5px; line-height:1.3; }
+.balao.enviado { background: var(--vermelho); color:white; align-self:flex-end; border-top-right-radius:0; }
+.balao.recebido { background: var(--branco); color:black; align-self:flex-start; border-top-left-radius:0; box-shadow:0 1px 1px rgba(0,0,0,0.1); }
+
+.input-area { background: var(--branco); padding:10px; display:flex; align-items:center; gap:10px; }
+.input-area input { flex:1; padding:12px 15px; border-radius:25px; border:none; background: var(--cinza); outline:none; }
+.btn-enviar { width:45px; height:45px; border-radius:50%; background: var(--vermelho); color:white; border:none; font-size:20px; cursor:pointer; }
