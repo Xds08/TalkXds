@@ -1,91 +1,66 @@
+
 <!DOCTYPE html>
-<html>
+<html lang="pt-br">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
 <title>XdsTalk</title>
-<link rel="stylesheet" href="estilo.css">
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyD...",
+  apiKey: "AizaSyD",
   authDomain: "xdstalk.firebaseapp.com",
   projectId: "xdstalk",
   storageBucket: "xdstalk.firebasestorage.app",
-  messagingSenderId: "...",
-  appId: "..."
+  messagingSenderId: "COLA AQUI SEU SENDER ID",
+  appId: "COLA AQUI SEU APP ID"
 };
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
 
-window.loginComGoogle = () => {
-  signInWithPopup(auth, provider).catch(e => alert(e.message));
-};
-
+window.loginComGoogle = () => signInWithPopup(auth, provider);
 window.sair = () => signOut(auth);
 
 onAuthStateChanged(auth, (user) => {
-  const loginBox = document.getElementById("loginBox");
-  const appBox = document.getElementById("appBox");
+  const login = document.getElementById("loginBox");
+  const appDiv = document.getElementById("appBox");
   if (user) {
-    loginBox.classList.add("hidden");
-    appBox.classList.remove("hidden");
+    login.style.display="none";
+    appDiv.style.display="block";
     document.getElementById("foto").src = user.photoURL;
     document.getElementById("nome").innerText = user.displayName;
-    document.getElementById("email").innerText = user.email;
   } else {
-    loginBox.classList.remove("hidden");
-    appBox.classList.add("hidden");
+    login.style.display="block";
+    appDiv.style.display="none";
   }
 });
 </script>
-
 <style>
-body{margin:0;min-height:100vh;display:flex;justify-content:center;align-items:center;background:#0a0a12;font-family:Inter,system-ui;color:#fff}
-.box{background:#141428;padding:28px;border-radius:22px;border:2px solid #222; width:100%; max-width:360px; text-align:center; box-shadow:0 20px 60px #0008}
-h1{font-size:42px;margin:0;text-shadow:0 0 10px #ff0033,0 0 20px #0066ff}
-.sub{color:#aaa;margin:8px 0 18px}
-button{width:100%;padding:14px;border:0;border-radius:12px;font-weight:700;cursor:pointer;transition:.2s}
-button:active{transform:scale(.97)}
-.entrar{background:linear-gradient(90deg,#ff0033,#0066ff);color:#fff}
-.google{background:#fff;color:#111;display:flex;align-items:center;justify-content:center;gap:10px}
-.google img{width:20px}
-.topo{display:flex;align-items:center;gap:12px;text-align:left}
-.topo img{width:48px;height:48px;border-radius:50%;border:2px solid #ff0033}
-.nome{font-weight:700}
-.email{font-size:12px;color:#aaa}
-.sair{margin-top:18px;background:#222;color:#fff}
+*{box-sizing:border-box} body{margin:0;min-height:100vh;display:flex;justify-content:center;align-items:center;background:#0a0a14;font-family:system-ui;color:#fff;padding:16px}
+.card{width:100%;max-width:380px;background:#151528;border:2px solid #24244a;border-radius:24px;padding:28px;box-shadow:0 20px 60px #000a}
+.logo{display:flex;align-items:center;gap:10px;margin-bottom:20px} .logo-icon{width:40px;height:40px;background:linear-gradient(135deg,#ff2e63,#8b5cf6);border-radius:12px;display:grid;place-items:center;font-size:22px} .logo h1{margin:0;font-size:26px;letter-spacing:-1px}
+.btn{width:100%;padding:14px;border:0;border-radius:14px;font-weight:700;cursor:pointer} .btn-google{background:#fff;color:#111;display:flex;gap:10px;justify-content:center;align-items:center} .btn-google img{width:20px}
+.top{display:flex;align-items:center;gap:12px} .top img{width:48px;height:48px;border-radius:50%} .top b{font-size:16px} .sair{margin-top:20px;background:#24244a;color:#fff}
+.chat{background:#0f0f23;border-radius:16px;padding:14px;margin-top:18px;border:1px solid #24244a;color:#666;text-align:center;font-size:14px}
 .hidden{display:none}
-#appBox .chat-area{margin-top:20px;background:#0f0f20;border-radius:16px;padding:12px;min-height:200px;border:1px solid #222}
 </style>
 </head>
 <body>
-
-<div id="loginBox" class="box">
-  <h1>XdsTalk</h1>
-  <div class="sub">Converse com seus amigos</div>
-  <button class="google" onclick="loginComGoogle()">
-    <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"> Entrar com Google
-  </button>
-</div>
-
-<div id="appBox" class="box hidden">
-  <div class="topo">
-    <img id="foto" src="">
-    <div>
-      <div id="nome" class="nome"></div>
-      <div id="email" class="email"></div>
-    </div>
+<div class="card">
+  <div id="loginBox">
+    <div class="logo"><div class="logo-icon">💬</div><h1>XdsTalk</h1></div>
+    <p style="color:#8a8aaa;margin:0 0 20px">Entre e converse com seus amigos</p>
+    <button class="btn btn-google" onclick="loginComGoogle()"><img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg">Entrar com Google</button>
   </div>
-  <div class="chat-area">
-    <p style="color:#666;font-size:14px">Chat em breve aqui...</p>
+  <div id="appBox" style="display:none">
+    <div class="top"><img id="foto"><div><b id="nome"></b><br><span style="color:#8a8aaa;font-size:13px">online</span></div></div>
+    <div class="chat">Chat em breve aqui...</div>
+    <button class="btn sair" onclick="sair()">Sair</button>
   </div>
-  <button class="sair" onclick="sair()">Sair</button>
 </div>
-
 </body>
 </html>
