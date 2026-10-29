@@ -3,72 +3,161 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Talk Xds - Neon</title>
+<title>Talk Xds Full</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Arial}
+:root{--neon:#7c4dff;--neon2:#ff00a0}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Segoe UI,Arial}
 body{background:#06060f;display:flex;justify-content:center;height:100vh}
-.app{width:100%;max-width:480px;background:#0a0a14;display:flex;flex-direction:column;position:relative;overflow:hidden;border-left:1px solid #222;border-right:1px solid #222}
-.header{background:linear-gradient(90deg,#7c4dff,#ff00a0);padding:16px 20px;display:flex;justify-content:space-between;align-items:center;color:#fff;box-shadow:0 0 20px rgba(124,77,255,0.5)}
-.header b{font-size:22px;letter-spacing:1px;text-shadow:0 0 10px #fff}
-.tabs{display:flex;background:#11111f;border-bottom:1px solid #222}
-.tab{flex:1;padding:14px;text-align:center;color:#666;font-weight:800;font-size:13px;letter-spacing:1px;cursor:pointer;transition:0.2s}
-.tab.ativo{color:#7c4dff;border-bottom:2px solid #ff00a0;box-shadow:inset 0 -10px 20px rgba(124,77,255,0.15)}
+.app{width:100%;max-width:480px;background:#0a0a14;display:flex;flex-direction:column;position:relative;overflow:hidden}
+.header{background:linear-gradient(90deg,var(--neon),var(--neon2));padding:12px 14px;display:flex;justify-content:space-between;align-items:center;color:#fff}
+.icon-btn{width:36px;height:36px;border-radius:10px;background:rgba(0,0,0,0.3);display:flex;align-items:center;justify-content:center;cursor:pointer;border:none;color:#fff;font-size:16px}
+.tabs{display:flex;background:#11111f}
+.tab{flex:1;padding:12px;text-align:center;color:#666;font-weight:800;font-size:11px;cursor:pointer}
+.tab.ativo{color:var(--neon);border-bottom:2px solid var(--neon2)}
 .lista{flex:1;overflow-y:auto;background:#0a0a14}
-.item{display:flex;gap:14px;padding:14px 16px;cursor:pointer;border-bottom:1px solid #151525;transition:0.2s}
-.item:hover{background:#15152a;box-shadow:inset 4px 0 0 #7c4dff}
-.avatar{width:50px;height:50px;border-radius:14px;background:linear-gradient(135deg,#7c4dff,#ff00a0);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:18px;box-shadow:0 0 15px rgba(124,77,255,0.6);flex-shrink:0}
-.nome{color:#fff;font-weight:700;font-size:15px}
-.msg{color:#888;font-size:13px;margin-top:2px}
-.hora{color:#555;font-size:11px}
-.topo{display:flex;justify-content:space-between;width:100%}
-.badge{font-size:10px;background:#7c4dff;color:#fff;padding:2px 6px;border-radius:10px}
-
+.item{display:flex;gap:12px;padding:12px 14px;cursor:pointer;border-bottom:1px solid #151525}
+.item:hover{background:#15152a}
+.avatar{width:46px;height:46px;border-radius:12px;background:linear-gradient(135deg,var(--neon),var(--neon2));color:#fff;display:flex;align-items:center;justify-content:center;font-weight:900;flex-shrink:0;overflow:hidden}
+.avatar img{width:100%;height:100%;object-fit:cover}
+.nome{color:#fff;font-weight:700;font-size:13px} .msg{color:#888;font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:180px}
+.badge{font-size:9px;background:#ff0033;color:#fff;padding:2px 6px;border-radius:8px;font-weight:900}
 .chat-view{position:absolute;inset:0;background:#080810;display:flex;flex-direction:column;z-index:20}
-.chat-head{background:#11111f;padding:12px 16px;display:flex;gap:12px;align-items:center;color:#fff;border-bottom:1px solid #222;box-shadow:0 4px 20px rgba(0,0,0,0.5)}
-.area-msgs{flex:1;overflow-y:auto;padding:16px 0;display:flex;flex-direction:column;background:radial-gradient(circle at top,#1a1033,#080810)}
-.balao{background:#1a1a2e;border:1px solid #2a2a4a;color:#e0e0ff;padding:10px 14px;border-radius:18px 18px 18px 4px;max-width:75%;font-size:14px;margin:6px 14px;box-shadow:0 0 10px rgba(0,0,0,0.3)}
-.balao.eu{background:linear-gradient(135deg,#7c4dff,#6a3be0);border:none;color:#fff;align-self:flex-end;border-radius:18px 18px 4px 18px;box-shadow:0 0 15px rgba(124,77,255,0.5)}
-.input-bar{background:#11111f;padding:10px 14px;display:flex;gap:10px;align-items:center;border-top:1px solid #222}
-.input-bar input{flex:1;padding:13px 18px;border-radius:25px;border:1px solid #2a2a4a;background:#0f0f1e;color:#fff;outline:none}
-.input-bar input:focus{border-color:#7c4dff;box-shadow:0 0 10px rgba(124,77,255,0.4)}
-.input-bar button{width:46px;height:46px;border-radius:14px;border:none;background:linear-gradient(135deg,#7c4dff,#ff00a0);color:#fff;font-size:20px;cursor:pointer;box-shadow:0 0 15px rgba(124,77,255,0.6)}
+.chat-head{background:#11111f;padding:8px 12px;display:flex;gap:8px;align-items:center;color:#fff;border-bottom:1px solid #222}
+.area-msgs{flex:1;overflow-y:auto;padding:10px 0;display:flex;flex-direction:column}
+.balao{background:#1a1a2e;color:#e0e0ff;padding:8px 12px;border-radius:14px 14px 14px 4px;max-width:78%;font-size:13px;margin:4px 10px;position:relative}
+.balao.eu{background:linear-gradient(135deg,var(--neon),var(--neon2));align-self:flex-end;border-radius:14px 14px 4px 14px}
+.balao .reply{border-left:3px solid var(--neon2);background:rgba(0,0,0,0.2);padding:4px 6px;border-radius:6px;font-size:11px;margin-bottom:4px;opacity:0.8}
+.reacoes{display:flex;gap:3px;margin-top:4px}
+.reacoes span{font-size:11px;background:#00000055;padding:2px 5px;border-radius:10px;cursor:pointer}
+.input-bar{background:#11111f;padding:7px 8px;display:flex;gap:5px;align-items:center;border-top:1px solid #222}
+.input-bar input{flex:1;padding:11px 14px;border-radius:20px;border:1px solid #2a2a4a;background:#0f0f1e;color:#fff;outline:none;font-size:13px}
+.input-bar button{width:38px;height:38px;border-radius:10px;border:none;background:linear-gradient(135deg,var(--neon),var(--neon2));color:#fff;font-size:16px;cursor:pointer}
+.reply-bar{background:#1a1a2e;border-left:3px solid var(--neon2);padding:6px 10px;display:flex;justify-content:space-between;color:#aaa;font-size:12px}
 .hidden{display:none!important}
+.modal{position:absolute;inset:0;background:rgba(0,0,0,0.85);display:flex;align-items:center;justify-content:center;z-index:99;padding:20px}
+.modal-box{background:#11111f;border:1px solid var(--neon);border-radius:16px;padding:18px;width:100%;max-width:340px}
+.modal-box input,.modal-box select{width:100%;padding:10px;border-radius:8px;border:1px solid #333;background:#0a0a14;color:#fff;margin:8px 0}
+.status-bar{display:flex;gap:10px;padding:10px;overflow-x:auto;background:#0a0a14;border-bottom:1px solid #151525}
+.status-item{text-align:center;min-width:60px;cursor:pointer}
+.status-circle{width:52px;height:52px;border-radius:50%;border:2px solid var(--neon2);padding:2px}
+.status-circle img{width:100%;height:100%;border-radius:50%;object-fit:cover}
 </style>
 </head>
 <body>
 <div class="app">
   <div id="tela-lista" style="display:flex;flex-direction:column;height:100vh">
-    <div class="header"><b>Talk Xds ⚡</b><span id="sair" style="cursor:pointer;font-size:13px;background:rgba(0,0,0,0.3);padding:6px 12px;border-radius:20px">Sair</span></div>
-    <div class="tabs"><div class="tab ativo">CONVERSAS</div><div class="tab">STATUS</div><div class="tab">CALLS</div></div>
-    <div class="lista">
-      <div class="item" id="abrirGeral">
-        <div class="avatar">TX</div>
-        <div style="flex:1"><div class="topo"><span class="nome">Chat Geral TX</span><span class="hora">NEON</span></div><div class="msg">⚡ Toque para entrar no modo neon</div></div>
-        <div class="badge">LIVE</div>
-      </div>
-      <div class="item"><div class="avatar" style="background:linear-gradient(135deg,#00f2ff,#7c4dff)">X</div><div style="flex:1"><div class="topo"><span class="nome">Xds Squad</span><span class="hora">14:20</span></div><div class="msg">Bora jogar? 🔥</div></div></div>
-    </div>
+    <div class="header"><b>TALK XDS</b><div style="display:flex;gap:6px"><button class="icon-btn" id="btnTema">🎨</button><button class="icon-btn" id="btnPerfil">👤</button><button class="icon-btn" id="btnNovo">+</button><button class="icon-btn" id="sair">↪</button></div></div>
+    <div class="tabs"><div class="tab ativo" data-tab="conversas">CONVERSAS</div><div class="tab" data-tab="status">STATUS</div><div class="tab" data-tab="calls">CALLS</div></div>
+    <div id="statusBar" class="status-bar hidden"></div>
+    <div id="onlineInfo" style="padding:6px 14px;font-size:11px;color:var(--neon);background:#11111f">● carregando...</div>
+    <div class="lista" id="listaConversas"></div>
   </div>
 
   <div id="tela-chat" class="chat-view hidden">
-    <div class="chat-head"><span id="voltar" style="font-size:26px;cursor:pointer">←</span><div class="avatar" style="width:40px;height:40px;border-radius:10px">TX</div><div><div style="font-weight:800">Chat Geral TX <span style="color:#ff00a0">NEON</span></div><div style="font-size:11px;color:#7c4dff">● 12 online • modo gamer</div></div></div>
+    <div class="chat-head"><span id="voltar" style="font-size:22px;cursor:pointer">←</span><div class="avatar" id="chatAvatar">TX</div><div style="flex:1"><div style="font-weight:800;font-size:13px" id="chatNome">Chat Geral</div><div style="font-size:10px;color:var(--neon)" id="chatStatus">● online</div></div><button class="icon-btn" id="btnCall">📞</button></div>
+    <div id="replyBar" class="reply-bar hidden"><span id="replyText"></span><span id="closeReply" style="cursor:pointer">✕</span></div>
     <div id="msgs" class="area-msgs"></div>
-    <div class="input-bar"><input id="inputMsg" placeholder="Digite no modo neon..."><button id="btnEnviar">⚡</button></div>
+    <div class="input-bar"><button id="btnEmoji">😀</button><input id="inputMsg" placeholder="Digite /rank /online /clear /tema ..."><button id="btnEnviar">⚡</button></div>
   </div>
+
+  <div id="modalPerfil" class="modal hidden"><div class="modal-box"><h3 style="color:#fff">Meu Perfil (5)</h3><input id="editNome" placeholder="Seu nome"><input id="editFoto" placeholder="Link da sua foto (opcional)"><button id="salvarPerfil" style="width:100%;padding:10px;border-radius:8px;background:linear-gradient(90deg,var(--neon),var(--neon2));border:none;color:#fff;font-weight:800;margin-top:8px">Salvar</button><button onclick="document.getElementById('modalPerfil').classList.add('hidden')" style="width:100%;padding:8px;background:transparent;color:#666;border:none;margin-top:6px">Fechar</button></div></div>
+  <div id="modalNovo" class="modal hidden"><div class="modal-box"><h3 style="color:#fff">Novo Chat Privado (11)</h3><input id="nomeNovoChat" placeholder="Nome do amigo"><input id="emailNovoChat" placeholder="Email dele (para chat privado)"><button id="criarNovo" style="width:100%;padding:10px;border-radius:8px;background:linear-gradient(90deg,var(--neon),var(--neon2));border:none;color:#fff;font-weight:800">Criar Privado</button><button onclick="document.getElementById('modalNovo').classList.add('hidden')" style="width:100%;padding:8px;background:transparent;color:#666;border:none">Cancelar</button></div></div>
+  <div id="modalTema" class="modal hidden"><div class="modal-box"><h3 style="color:#fff">Temas Neon (10)</h3><select id="selectTema"><option value="#7c4dff,#ff00a0">Roxo + Rosa (padrão)</option><option value="#00f2ff,#7c4dff">Azul Neon</option><option value="#00ff88,#00f2ff">Verde Neon</option><option value="#ff00a0,#ffaa00">Rosa + Laranja</option></select><button id="aplicarTema" style="width:100%;padding:10px;border-radius:8px;background:linear-gradient(90deg,var(--neon),var(--neon2));border:none;color:#fff;font-weight:800">Aplicar</button><button onclick="document.getElementById('modalTema').classList.add('hidden')" style="width:100%;padding:8px;background:transparent;color:#666;border:none">Fechar</button></div></div>
 </div>
+
+<audio id="notifSound" src="https://assets.mixkit.co/active_storage/sfx/235/235-preview.mp3"></audio>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { getAuth, onAuthStateChanged, signOut, updateProfile } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, serverTimestamp, deleteDoc, doc, setDoc, where, getDocs } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 const firebaseConfig = { apiKey:"AIzaSyDnjiFQtTu8A5vZ3NHEIl_zG9ylMKTv6b8", authDomain:"talkxds.firebaseapp.com", projectId:"talkxds", storageBucket:"talkxds.firebasestorage.app", messagingSenderId:"757013602887", appId:"1:757013602887:web:6627ff87623d698e7d8762" };
 const appF=initializeApp(firebaseConfig); const auth=getAuth(appF); const db=getFirestore(appF);
-onAuthStateChanged(auth,u=>{if(!u)location.href="index.html"});
+let userAtual=null, chatAtual="geral", replyTo=null, lastCount=0;
+
+onAuthStateChanged(auth,u=>{if(!u)location.href="index.html";else{userAtual=u; document.getElementById('editNome').value=u.displayName||''; carregarConversas();}});
+
+function carregarConversas(){
+  const lista=document.getElementById('listaConversas');
+  lista.innerHTML=`<div class="item" data-chat="geral"><div class="avatar">TX</div><div style="flex:1"><div style="display:flex;justify-content:space-between"><span class="nome">Chat Geral TX</span><span style="font-size:10px;color:#555">LIVE</span></div><div class="msg">Grupo oficial ⚡</div></div><div class="badge">LIVE</div></div>`;
+  onSnapshot(collection(db,"chats_privados"),snap=>{
+    snap.forEach(d=>{
+      const c=d.data();
+      if(c.participantes?.includes(userAtual.email)){
+        const div=document.createElement('div');div.className='item';div.dataset.chat=d.id;
+        div.innerHTML=`<div class="avatar">${c.nome[0].toUpperCase()}</div><div style="flex:1"><span class="nome">${c.nome}</span><div class="msg">Privado com ${c.criadoPor}</div></div>`;
+        div.onclick=()=>abrirChat(d.id,c.nome); lista.appendChild(div);
+      }
+    });
+  });
+  document.querySelectorAll('#listaConversas .item').forEach(el=>el.onclick=()=>abrirChat('geral','Chat Geral TX'));
+  lista.addEventListener('click',e=>{const it=e.target.closest('.item');if(it){abrirChat(it.dataset.chat,it.querySelector('.nome')?.textContent||'Chat')}});
+}
+
+function abrirChat(id,nome){
+  chatAtual=id; document.getElementById('chatNome').textContent=nome; document.getElementById('tela-chat').classList.remove('hidden');
+  escutarMensagens();
+}
+document.getElementById('voltar').onclick=()=>document.getElementById('tela-chat').classList.add('hidden');
 document.getElementById('sair').onclick=async()=>{await signOut(auth); location.href="index.html";};
-document.getElementById('abrirGeral').onclick=()=>{document.getElementById('tela-chat').classList.remove('hidden')};
-document.getElementById('voltar').onclick=()=>{document.getElementById('tela-chat').classList.add('hidden')};
-document.getElementById('btnEnviar').onclick=async()=>{const t=document.getElementById('inputMsg').value.trim();if(!t)return;await addDoc(collection(db,"mensagens"),{texto:t,nome:auth.currentUser.displayName||auth.currentUser.email.split('@')[0],uid:auth.currentUser.uid,hora:serverTimestamp()});document.getElementById('inputMsg').value="";};
-const q=query(collection(db,"mensagens"),orderBy("hora","asc"));onSnapshot(q,s=>{const a=document.getElementById('msgs');a.innerHTML="";s.forEach(d=>{const m=d.data();const div=document.createElement('div');div.className=m.uid===auth.currentUser?.uid?"balao eu":"balao";div.innerHTML=`<b style="font-size:11px;color:${m.uid===auth.currentUser?.uid?'#fff':'#7c4dff'}">${m.nome}</b><br>${m.texto}`;a.appendChild(div);});a.scrollTop=a.scrollHeight;});
+document.getElementById('btnTema').onclick=()=>document.getElementById('modalTema').classList.remove('hidden');
+document.getElementById('btnPerfil').onclick=()=>document.getElementById('modalPerfil').classList.remove('hidden');
+document.getElementById('btnNovo').onclick=()=>document.getElementById('modalNovo').classList.remove('hidden');
+document.getElementById('btnCall').onclick=()=>alert('📞 Call em breve! Vai abrir sala de voz neon (função 6)');
+document.getElementById('aplicarTema').onclick=()=>{const v=document.getElementById('selectTema').value.split(',');document.documentElement.style.setProperty('--neon',v[0]);document.documentElement.style.setProperty('--neon2',v[1]);localStorage.setItem('temaXds',v.join(','));document.getElementById('modalTema').classList.add('hidden');};
+const temaSalvo=localStorage.getItem('temaXds'); if(temaSalvo){const v=temaSalvo.split(',');document.documentElement.style.setProperty('--neon',v[0]);document.documentElement.style.setProperty('--neon2',v[1]);}
+document.getElementById('salvarPerfil').onclick=async()=>{const n=document.getElementById('editNome').value; const f=document.getElementById('editFoto').value; await updateProfile(userAtual,{displayName:n,photoURL:f||null}); alert('Perfil salvo! (5)'); document.getElementById('modalPerfil').classList.add('hidden');};
+document.getElementById('criarNovo').onclick=async()=>{const nome=document.getElementById('nomeNovoChat').value; const email=document.getElementById('emailNovoChat').value; if(!nome)return; await addDoc(collection(db,"chats_privados"),{nome,participantes:[userAtual.email,email],criadoPor:userAtual.email,criadoEm:serverTimestamp()}); alert('Chat privado criado! (11)'); document.getElementById('modalNovo').classList.add('hidden');};
+
+document.getElementById('closeReply').onclick=()=>{replyTo=null;document.getElementById('replyBar').classList.add('hidden');};
+document.getElementById('btnEmoji').onclick=()=>{const e=prompt('Emoji rápido: 😂 🔥 ⚡ ❤️ 😎'); if(e) document.getElementById('inputMsg').value+=e;};
+
+async function enviar(){
+  let t=document.getElementById('inputMsg').value.trim(); if(!t)return;
+  // COMANDOS (9)
+  if(t.startsWith('/')){ if(t==='/rank'){const snap=await getDocs(collection(db,"mensagens")); const counts={}; snap.forEach(d=>{const n=d.data().nome; counts[n]=(counts[n]||0)+1}); let txt='🏆 RANKING (8):\n'; Object.entries(counts).sort((a,b)=>b[1]-a[1]).slice(0,5).forEach(([n,c],i)=>{txt+=`${i+1}. ${n}: ${c} msgs\n`}); alert(txt); document.getElementById('inputMsg').value=''; return;} if(t==='/online'){alert('👥 Online agora: Todos que estão com o app aberto (3)'); document.getElementById('inputMsg').value=''; return;} if(t==='/clear'){if(confirm('Limpar seu chat local?')){document.getElementById('msgs').innerHTML='';} document.getElementById('inputMsg').value=''; return;} if(t.startsWith('/tema')){document.getElementById('modalTema').classList.remove('hidden'); document.getElementById('inputMsg').value=''; return;}}
+  const dados={texto:t,nome:userAtual.displayName||userAtual.email.split('@')[0],uid:userAtual.uid,foto:userAtual.photoURL||'',hora:serverTimestamp(),chatId:chatAtual,reply:replyTo?replyTo.texto:null,reacoes:[]};
+  await addDoc(collection(db,"mensagens"),dados);
+  // STATUS DIGITANDO (3)
+  await setDoc(doc(db,"typing",userAtual.uid),{nome:dados.nome,digit:false,ultimo:serverTimestamp()});
+  document.getElementById('inputMsg').value=''; replyTo=null; document.getElementById('replyBar').classList.add('hidden');
+}
+document.getElementById('btnEnviar').onclick=enviar;
+document.getElementById('inputMsg').onkeydown=e=>{if(e.key==='Enter')enviar();};
+document.getElementById('inputMsg').oninput=async()=>{await setDoc(doc(db,"typing",userAtual.uid),{nome:userAtual.displayName,digit:true,ultimo:serverTimestamp()}); setTimeout(async()=>{await setDoc(doc(db,"typing",userAtual.uid),{nome:userAtual.displayName,digit:false,ultimo:serverTimestamp()});},2000);};
+
+function escutarMensagens(){
+  const q=query(collection(db,"mensagens"),orderBy("hora","asc"));
+  onSnapshot(q,s=>{
+    if(s.size>lastCount && lastCount!==0){ document.getElementById('notifSound').play().catch(()=>{}); } lastCount=s.size;
+    const a=document.getElementById('msgs'); a.innerHTML='';
+    let total=0;
+    s.forEach(d=>{
+      const m=d.data(); if(m.chatId!==chatAtual && chatAtual!=='geral' && m.chatId!=='geral') return; if(m.chatId!==chatAtual && chatAtual==='geral' && m.chatId!=='geral') return;
+      total++;
+      const div=document.createElement('div'); div.className=m.uid===userAtual?.uid?"balao eu":"balao";
+      let html=''; if(m.reply) html+=`<div class="reply">↪ ${m.reply.substring(0,40)}</div>`; html+=`<b style="font-size:10px;color:${m.uid===userAtual?.uid?'#fff':'var(--neon)'}">${m.nome}</b><br>${m.texto}`;
+      if(m.reacoes && m.reacoes.length) html+=`<div class="reacoes">${m.reacoes.map(r=>`<span>${r}</span>`).join('')}</div>`;
+      div.innerHTML=html;
+      div.onclick=()=>{const op=prompt('1=Responder (1)\n2=Reagir ❤️🔥 (2)\n3=Apagar se for sua'); if(op==='1'){replyTo=m; document.getElementById('replyText').textContent=m.texto.substring(0,30); document.getElementById('replyBar').classList.remove('hidden');} if(op==='2'){const em=prompt('Qual emoji? ❤️ 🔥 😂 ⚡'); if(em){const ref=doc(db,"mensagens",d.id); const novas=[...(m.reacoes||[]),em]; setDoc(ref,{...m,reacoes:novas},{merge:true});}} if(op==='3' && m.uid===userAtual.uid){if(confirm('Apagar?')) deleteDoc(doc(db,"mensagens",d.id));}};
+      a.appendChild(div);
+    });
+    document.getElementById('onlineInfo').textContent=`● ${total} mensagens • ${new Date().toLocaleTimeString()}`;
+    a.scrollTop=a.scrollHeight;
+  });
+}
+// STATUS (7) - mostra quem digitando
+onSnapshot(collection(db,"typing"),snap=>{
+  let txt=''; snap.forEach(d=>{const t=d.data(); if(t.digit) txt+=`${t.nome} digitando... `;}); if(txt) document.getElementById('chatStatus').textContent=txt; else document.getElementById('chatStatus').textContent='● online (3)';
+});
+// STATUS STORIES (7)
+onSnapshot(collection(db,"status"),snap=>{
+  const bar=document.getElementById('statusBar'); bar.innerHTML=''; bar.classList.remove('hidden');
+  snap.forEach(d=>{const s=d.data(); const div=document.createElement('div'); div.className='status-item'; div.innerHTML=`<div class="status-circle"><img src="${s.foto||'https://i.pravatar.cc/100'}"></div><div style="font-size:10px;color:#fff;margin-top:4px">${s.nome}</div>`; bar.appendChild(div);});
+});
+// Tabs
+document.querySelectorAll('.tab').forEach(t=>t.onclick=()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.remove('ativo')); t.classList.add('ativo'); if(t.dataset.tab==='status'){document.getElementById('statusBar').classList.remove('hidden'); const txt=prompt('Novo Status (7) - digite texto ou link de imagem:'); if(txt){addDoc(collection(db,"status"),{nome:userAtual.displayName,texto:txt,foto:userAtual.photoURL,hora:serverTimestamp()});}} else{document.getElementById('statusBar').classList.add('hidden'); if(t.dataset.tab==='calls'){alert('📞 Calls em breve - função 6');}}});
+escutarMensagens();
 </script>
 </body>
 </html>
