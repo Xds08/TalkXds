@@ -1,13 +1,32 @@
 
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>XdsTalk</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>XdsTalk - Login</title>
+<style>
+body{font-family:Arial;background:#111;color:#fff;display:flex;justify-content:center;align-items:center;height:100vh;margin:0}
+.box{background:#222;padding:30px;border-radius:12px;width:300px;text-align:center}
+input{width:100%;padding:10px;margin:8px 0;border-radius:6px;border:none;box-sizing:border-box}
+button{width:100%;padding:10px;background:#00ff88;color:#000;border:none;border-radius:6px;font-weight:bold;cursor:pointer;margin-top:10px}
+button:hover{background:#00cc6a}
+#msg{margin-top:15px;font-size:14px;color:#ff5555}
+</style>
+</head>
+<body>
+<div class="box">
+<h2>XdsTalk</h2>
+<input type="email" id="email" placeholder="Email">
+<input type="password" id="password" placeholder="Senha">
+<button id="btnCriar">Criar Conta</button>
+<button id="btnEntrar">Entrar</button>
+<div id="msg"></div>
+</div>
+
 <script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getAuth, GoogleAuthProvider, signInWithPopup, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail, signInAnonymously, RecaptchaVerifier, signInWithPhoneNumber, onAuthStateChanged, signOut, updateProfile } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAWiwVjMgA_v9fmEnloglEMRYAscJkGX08",
@@ -18,153 +37,37 @@ const firebaseConfig = {
   appId: "1:817447842819:web:42b63501b7b03c9dbaca36",
   measurementId: "G-ZX72CMXB1R"
 };
-};
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
-let confirmTel = null;
+const msg = document.getElementById('msg');
 
-window.mostrar = (id) => {
-  document.querySelectorAll(".tela").forEach(t=>t.style.display="none");
-  document.getElementById(id).style.display="block";
-}
-
-// CRIAR CONTA
-window.criarConta = async () => {
-  const nome = document.getElementById("nomeCriar").value.trim();
-  const email = document.getElementById("emailCriar").value.trim();
-  const senha = document.getElementById("senhaCriar").value;
-  if(!nome || !email || !senha) return alert("Preenche tudo!");
-  if(senha.length < 6) return alert("Senha tem que ter 6 letras ou mais");
+document.getElementById('btnCriar').onclick = async () => {
+  const email = document.getElementById('email').value;
+  const pass = document.getElementById('password').value;
   try {
-    const cred = await createUserWithEmailAndPassword(auth, email, senha);
-    await updateProfile(cred.user, {displayName: nome});
-    alert("Conta criada com sucesso!");
-  } catch(e){ alert(e.message); }
-};
-
-// LOGIN
-window.entrar = async () => {
-  const email = document.getElementById("emailLogin").value.trim();
-  const senha = document.getElementById("senhaLogin").value;
-  try {
-    await signInWithEmailAndPassword(auth, email, senha);
-  } catch(e){ alert("Email ou senha errados"); }
-};
-
-// ESQUECEU SENHA
-window.recuperar = async () => {
-  const email = document.getElementById("emailRec").value.trim();
-  if(!email) return alert("Digite seu email");
-  try {
-    await sendPasswordResetEmail(auth, email);
-    alert("Te enviei um email pra trocar a senha. Olha caixa de entrada e spam.");
-    mostrar("telaLogin");
-  } catch(e){ alert(e.message); }
-};
-
-// TELEFONE
-window.enviarSMS = async () => {
-  const tel = document.getElementById("tel").value.trim();
-  if(!tel) return alert("Digite +55 85 9xxxx-xxxx");
-  try {
-    if(!window.recaptcha) window.recaptcha = new RecaptchaVerifier(auth, 'recaptcha', {size:'invisible'});
-    confirmTel = await signInWithPhoneNumber(auth, tel, window.recaptcha);
-    alert("Código enviado por SMS!");
-    document.getElementById("areaCodigo").style.display="block";
-  } catch(e){ alert(e.message); }
-};
-window.confirmarSMS = async () => {
-  const cod = document.getElementById("codigoSMS").value;
-  try { await confirmTel.confirm(cod); } catch(e){ alert("Código errado"); }
-};
-
-// CONVIDADO E GOOGLE
-window.entrarConvidado = () => signInAnonymously(auth);
-window.loginGoogle = () => signInWithPopup(auth, new GoogleAuthProvider());
-window.sair = () => signOut(auth);
-
-onAuthStateChanged(auth, (u)=>{
-  document.getElementById("authBox").style.display = u ? "none" : "block";
-  document.getElementById("appBox").style.display = u ? "block" : "none";
-  if(u){
-    document.getElementById("foto").src = u.photoURL || "https://i.pravatar.cc/100?u="+u.uid;
-    document.getElementById("nomeLogado").innerText = u.displayName || u.email || u.phoneNumber || "Convidado";
-    document.getElementById("idLogado").innerText = u.email || u.phoneNumber || "Conta de convidado";
+    await createUserWithEmailAndPassword(auth, email, pass);
+    msg.style.color = '#00ff88';
+    msg.innerText = 'Conta criada! Agora pode entrar.';
+  } catch (e) {
+    msg.style.color = '#ff5555';
+    msg.innerText = e.message;
   }
-});
+};
+
+document.getElementById('btnEntrar').onclick = async () => {
+  const email = document.getElementById('email').value;
+  const pass = document.getElementById('password').value;
+  try {
+    await signInWithEmailAndPassword(auth, email, pass);
+    msg.style.color = '#00ff88';
+    msg.innerText = 'Logado com sucesso! Bem-vindo!';
+  } catch (e) {
+    msg.style.color = '#ff5555';
+    msg.innerText = e.message;
+  }
+};
 </script>
-<style>
-*{box-sizing:border-box} body{margin:0;min-height:100vh;background:#0f0f1a;display:flex;justify-content:center;align-items:center;font-family:system-ui;color:#fff;padding:16px}
-.card{width:100%;max-width:380px;background:#1c1c2e;border:1px solid #2a2a45;border-radius:20px;padding:24px;box-shadow:0 10px 40px #0008}
-h1{text-align:center;margin:0 0 2px;font-size:32px;letter-spacing:-1px} .sub{text-align:center;color:#9aa0b5;font-size:13px;margin-bottom:18px}
-.menu{display:flex;gap:6px;margin-bottom:16px} .menu button{flex:1;padding:8px;border-radius:10px;border:0;background:#2a2a45;color:#9aa0b5;font-weight:600;cursor:pointer;font-size:13px} .menu button.ativo{background:#fff;color:#000}
-.tela{display:none} .tela.ativa{display:block}
-input{width:100%;padding:12px;border-radius:10px;border:1px solid #2a2a45;background:#131324;color:#fff;margin-bottom:10px;outline:none} input:focus{border-color:#6c5cff}
-.btn{width:100%;padding:12px;border-radius:10px;border:0;font-weight:700;cursor:pointer;margin-bottom:8px} .btn-prim{background:#fff;color:#000} .btn-grad{background:linear-gradient(90deg,#ff2e63,#6c5cff);color:#fff} .btn-sec{background:#2a2a45;color:#fff}
-.btn-google{background:#fff;color:#000;display:flex;align-items:center;justify-content:center;gap:8px} .btn-google img{width:18px}
-.divisor{display:flex;align-items:center;gap:10px;margin:14px 0;color:#5a5a7a;font-size:11px} .divisor::before,.divisor::after{content:"";flex:1;height:1px;background:#2a2a45}
-.link{color:#8b8aff;font-size:13px;cursor:pointer;text-align:center;display:block;margin-top:8px}
-.top{display:flex;align-items:center;gap:12px} .top img{width:46px;height:46px;border-radius:50%}
-</style>
-</head>
-<body>
-<div class="card">
-  <div id="authBox">
-    <h1>XdsTalk</h1><div class="sub">Converse com seus amigos</div>
-
-    <div class="menu">
-      <button class="ativo" id="b1" onclick="mostrar('telaLogin');document.querySelectorAll('.menu button').forEach(x=>x.classList.remove('ativo'));this.classList.add('ativo')">Login</button>
-      <button id="b2" onclick="mostrar('telaCriar');document.querySelectorAll('.menu button').forEach(x=>x.classList.remove('ativo'));this.classList.add('ativo')">Criar</button>
-      <button id="b3" onclick="mostrar('telaTel');document.querySelectorAll('.menu button').forEach(x=>x.classList.remove('ativo'));this.classList.add('ativo')">Telefone</button>
-    </div>
-
-    <!-- LOGIN -->
-    <div id="telaLogin" class="tela ativa" style="display:block">
-      <input id="emailLogin" placeholder="E-mail">
-      <input id="senhaLogin" type="password" placeholder="Senha">
-      <button class="btn btn-grad" onclick="entrar()">Entrar</button>
-      <span class="link" onclick="mostrar('telaRec')">Esqueci minha senha</span>
-    </div>
-
-    <!-- CRIAR CONTA -->
-    <div id="telaCriar" class="tela">
-      <input id="nomeCriar" placeholder="Nome de usuário">
-      <input id="emailCriar" placeholder="E-mail">
-      <input id="senhaCriar" type="password" placeholder="Senha (min 6)">
-      <button class="btn btn-grad" onclick="criarConta()">Criar conta</button>
-    </div>
-
-    <!-- ESQUECEU SENHA -->
-    <div id="telaRec" class="tela">
-      <p style="font-size:13px;color:#9aa0b5">Digite seu email pra recuperar</p>
-      <input id="emailRec" placeholder="Seu e-mail">
-      <button class="btn btn-grad" onclick="recuperar()">Enviar link de recuperação</button>
-      <span class="link" onclick="mostrar('telaLogin')">Voltar ao login</span>
-    </div>
-
-    <!-- TELEFONE -->
-    <div id="telaTel" class="tela">
-      <input id="tel" placeholder="+55 85 99999-9999">
-      <div id="recaptcha"></div>
-      <button class="btn btn-sec" onclick="enviarSMS()">Enviar código SMS</button>
-      <div id="areaCodigo" style="display:none">
-        <input id="codigoSMS" placeholder="Código de 6 dígitos">
-        <button class="btn btn-grad" onclick="confirmarSMS()">Confirmar e entrar</button>
-      </div>
-    </div>
-
-    <div class="divisor">OU</div>
-    <button class="btn btn-google" onclick="loginGoogle()"><img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg">Entrar com Google</button>
-    <button class="btn btn-sec" onclick="entrarConvidado()">👤 Entrar como Convidado</button>
-  </div>
-
-  <div id="appBox" style="display:none">
-    <div class="top"><img id="foto"><div><b id="nomeLogado"></b><div id="idLogado" style="font-size:12px;color:#9aa0b5"></div></div></div>
-    <div style="margin-top:16px;padding:16px;background:#131324;border-radius:12px;text-align:center;color:#6b7088;border:1px solid #2a2a45">Logado! Seu chat vai aqui.</div>
-    <button class="btn btn-sec" style="margin-top:12px" onclick="sair()">Sair</button>
-  </div>
-</div>
 </body>
 </html>
