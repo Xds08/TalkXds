@@ -3,63 +3,165 @@
 <html lang="pt-br">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>XdsTalk</title>
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { getAuth, GoogleAuthProvider, signInWithPopup, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail, signInAnonymously, RecaptchaVerifier, signInWithPhoneNumber, onAuthStateChanged, signOut, updateProfile } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
 const firebaseConfig = {
-  apiKey: "AizaSyD",
+  apiKey: "AIzaSyCGBdP7KcA6kWR2u6vOKBIW7Rr6J5K6k0c",
   authDomain: "xdstalk.firebaseapp.com",
   projectId: "xdstalk",
   storageBucket: "xdstalk.firebasestorage.app",
-  messagingSenderId: "COLA AQUI SEU SENDER ID",
-  appId: "COLA AQUI SEU APP ID"
+  messagingSenderId: "123456789012",
+  appId: "1:123456789012:web:abc123def456"
 };
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
-const provider = new GoogleAuthProvider();
 
-window.loginComGoogle = () => signInWithPopup(auth, provider);
+let confirmTel = null;
+
+window.mostrar = (id) => {
+  document.querySelectorAll(".tela").forEach(t=>t.style.display="none");
+  document.getElementById(id).style.display="block";
+}
+
+// CRIAR CONTA
+window.criarConta = async () => {
+  const nome = document.getElementById("nomeCriar").value.trim();
+  const email = document.getElementById("emailCriar").value.trim();
+  const senha = document.getElementById("senhaCriar").value;
+  if(!nome || !email || !senha) return alert("Preenche tudo!");
+  if(senha.length < 6) return alert("Senha tem que ter 6 letras ou mais");
+  try {
+    const cred = await createUserWithEmailAndPassword(auth, email, senha);
+    await updateProfile(cred.user, {displayName: nome});
+    alert("Conta criada com sucesso!");
+  } catch(e){ alert(e.message); }
+};
+
+// LOGIN
+window.entrar = async () => {
+  const email = document.getElementById("emailLogin").value.trim();
+  const senha = document.getElementById("senhaLogin").value;
+  try {
+    await signInWithEmailAndPassword(auth, email, senha);
+  } catch(e){ alert("Email ou senha errados"); }
+};
+
+// ESQUECEU SENHA
+window.recuperar = async () => {
+  const email = document.getElementById("emailRec").value.trim();
+  if(!email) return alert("Digite seu email");
+  try {
+    await sendPasswordResetEmail(auth, email);
+    alert("Te enviei um email pra trocar a senha. Olha caixa de entrada e spam.");
+    mostrar("telaLogin");
+  } catch(e){ alert(e.message); }
+};
+
+// TELEFONE
+window.enviarSMS = async () => {
+  const tel = document.getElementById("tel").value.trim();
+  if(!tel) return alert("Digite +55 85 9xxxx-xxxx");
+  try {
+    if(!window.recaptcha) window.recaptcha = new RecaptchaVerifier(auth, 'recaptcha', {size:'invisible'});
+    confirmTel = await signInWithPhoneNumber(auth, tel, window.recaptcha);
+    alert("Código enviado por SMS!");
+    document.getElementById("areaCodigo").style.display="block";
+  } catch(e){ alert(e.message); }
+};
+window.confirmarSMS = async () => {
+  const cod = document.getElementById("codigoSMS").value;
+  try { await confirmTel.confirm(cod); } catch(e){ alert("Código errado"); }
+};
+
+// CONVIDADO E GOOGLE
+window.entrarConvidado = () => signInAnonymously(auth);
+window.loginGoogle = () => signInWithPopup(auth, new GoogleAuthProvider());
 window.sair = () => signOut(auth);
 
-onAuthStateChanged(auth, (user) => {
-  const login = document.getElementById("loginBox");
-  const appDiv = document.getElementById("appBox");
-  if (user) {
-    login.style.display="none";
-    appDiv.style.display="block";
-    document.getElementById("foto").src = user.photoURL;
-    document.getElementById("nome").innerText = user.displayName;
-  } else {
-    login.style.display="block";
-    appDiv.style.display="none";
+onAuthStateChanged(auth, (u)=>{
+  document.getElementById("authBox").style.display = u ? "none" : "block";
+  document.getElementById("appBox").style.display = u ? "block" : "none";
+  if(u){
+    document.getElementById("foto").src = u.photoURL || "https://i.pravatar.cc/100?u="+u.uid;
+    document.getElementById("nomeLogado").innerText = u.displayName || u.email || u.phoneNumber || "Convidado";
+    document.getElementById("idLogado").innerText = u.email || u.phoneNumber || "Conta de convidado";
   }
 });
 </script>
 <style>
-*{box-sizing:border-box} body{margin:0;min-height:100vh;display:flex;justify-content:center;align-items:center;background:#0a0a14;font-family:system-ui;color:#fff;padding:16px}
-.card{width:100%;max-width:380px;background:#151528;border:2px solid #24244a;border-radius:24px;padding:28px;box-shadow:0 20px 60px #000a}
-.logo{display:flex;align-items:center;gap:10px;margin-bottom:20px} .logo-icon{width:40px;height:40px;background:linear-gradient(135deg,#ff2e63,#8b5cf6);border-radius:12px;display:grid;place-items:center;font-size:22px} .logo h1{margin:0;font-size:26px;letter-spacing:-1px}
-.btn{width:100%;padding:14px;border:0;border-radius:14px;font-weight:700;cursor:pointer} .btn-google{background:#fff;color:#111;display:flex;gap:10px;justify-content:center;align-items:center} .btn-google img{width:20px}
-.top{display:flex;align-items:center;gap:12px} .top img{width:48px;height:48px;border-radius:50%} .top b{font-size:16px} .sair{margin-top:20px;background:#24244a;color:#fff}
-.chat{background:#0f0f23;border-radius:16px;padding:14px;margin-top:18px;border:1px solid #24244a;color:#666;text-align:center;font-size:14px}
-.hidden{display:none}
+*{box-sizing:border-box} body{margin:0;min-height:100vh;background:#0f0f1a;display:flex;justify-content:center;align-items:center;font-family:system-ui;color:#fff;padding:16px}
+.card{width:100%;max-width:380px;background:#1c1c2e;border:1px solid #2a2a45;border-radius:20px;padding:24px;box-shadow:0 10px 40px #0008}
+h1{text-align:center;margin:0 0 2px;font-size:32px;letter-spacing:-1px} .sub{text-align:center;color:#9aa0b5;font-size:13px;margin-bottom:18px}
+.menu{display:flex;gap:6px;margin-bottom:16px} .menu button{flex:1;padding:8px;border-radius:10px;border:0;background:#2a2a45;color:#9aa0b5;font-weight:600;cursor:pointer;font-size:13px} .menu button.ativo{background:#fff;color:#000}
+.tela{display:none} .tela.ativa{display:block}
+input{width:100%;padding:12px;border-radius:10px;border:1px solid #2a2a45;background:#131324;color:#fff;margin-bottom:10px;outline:none} input:focus{border-color:#6c5cff}
+.btn{width:100%;padding:12px;border-radius:10px;border:0;font-weight:700;cursor:pointer;margin-bottom:8px} .btn-prim{background:#fff;color:#000} .btn-grad{background:linear-gradient(90deg,#ff2e63,#6c5cff);color:#fff} .btn-sec{background:#2a2a45;color:#fff}
+.btn-google{background:#fff;color:#000;display:flex;align-items:center;justify-content:center;gap:8px} .btn-google img{width:18px}
+.divisor{display:flex;align-items:center;gap:10px;margin:14px 0;color:#5a5a7a;font-size:11px} .divisor::before,.divisor::after{content:"";flex:1;height:1px;background:#2a2a45}
+.link{color:#8b8aff;font-size:13px;cursor:pointer;text-align:center;display:block;margin-top:8px}
+.top{display:flex;align-items:center;gap:12px} .top img{width:46px;height:46px;border-radius:50%}
 </style>
 </head>
 <body>
 <div class="card">
-  <div id="loginBox">
-    <div class="logo"><div class="logo-icon">💬</div><h1>XdsTalk</h1></div>
-    <p style="color:#8a8aaa;margin:0 0 20px">Entre e converse com seus amigos</p>
-    <button class="btn btn-google" onclick="loginComGoogle()"><img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg">Entrar com Google</button>
+  <div id="authBox">
+    <h1>XdsTalk</h1><div class="sub">Converse com seus amigos</div>
+
+    <div class="menu">
+      <button class="ativo" id="b1" onclick="mostrar('telaLogin');document.querySelectorAll('.menu button').forEach(x=>x.classList.remove('ativo'));this.classList.add('ativo')">Login</button>
+      <button id="b2" onclick="mostrar('telaCriar');document.querySelectorAll('.menu button').forEach(x=>x.classList.remove('ativo'));this.classList.add('ativo')">Criar</button>
+      <button id="b3" onclick="mostrar('telaTel');document.querySelectorAll('.menu button').forEach(x=>x.classList.remove('ativo'));this.classList.add('ativo')">Telefone</button>
+    </div>
+
+    <!-- LOGIN -->
+    <div id="telaLogin" class="tela ativa" style="display:block">
+      <input id="emailLogin" placeholder="E-mail">
+      <input id="senhaLogin" type="password" placeholder="Senha">
+      <button class="btn btn-grad" onclick="entrar()">Entrar</button>
+      <span class="link" onclick="mostrar('telaRec')">Esqueci minha senha</span>
+    </div>
+
+    <!-- CRIAR CONTA -->
+    <div id="telaCriar" class="tela">
+      <input id="nomeCriar" placeholder="Nome de usuário">
+      <input id="emailCriar" placeholder="E-mail">
+      <input id="senhaCriar" type="password" placeholder="Senha (min 6)">
+      <button class="btn btn-grad" onclick="criarConta()">Criar conta</button>
+    </div>
+
+    <!-- ESQUECEU SENHA -->
+    <div id="telaRec" class="tela">
+      <p style="font-size:13px;color:#9aa0b5">Digite seu email pra recuperar</p>
+      <input id="emailRec" placeholder="Seu e-mail">
+      <button class="btn btn-grad" onclick="recuperar()">Enviar link de recuperação</button>
+      <span class="link" onclick="mostrar('telaLogin')">Voltar ao login</span>
+    </div>
+
+    <!-- TELEFONE -->
+    <div id="telaTel" class="tela">
+      <input id="tel" placeholder="+55 85 99999-9999">
+      <div id="recaptcha"></div>
+      <button class="btn btn-sec" onclick="enviarSMS()">Enviar código SMS</button>
+      <div id="areaCodigo" style="display:none">
+        <input id="codigoSMS" placeholder="Código de 6 dígitos">
+        <button class="btn btn-grad" onclick="confirmarSMS()">Confirmar e entrar</button>
+      </div>
+    </div>
+
+    <div class="divisor">OU</div>
+    <button class="btn btn-google" onclick="loginGoogle()"><img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg">Entrar com Google</button>
+    <button class="btn btn-sec" onclick="entrarConvidado()">👤 Entrar como Convidado</button>
   </div>
+
   <div id="appBox" style="display:none">
-    <div class="top"><img id="foto"><div><b id="nome"></b><br><span style="color:#8a8aaa;font-size:13px">online</span></div></div>
-    <div class="chat">Chat em breve aqui...</div>
-    <button class="btn sair" onclick="sair()">Sair</button>
+    <div class="top"><img id="foto"><div><b id="nomeLogado"></b><div id="idLogado" style="font-size:12px;color:#9aa0b5"></div></div></div>
+    <div style="margin-top:16px;padding:16px;background:#131324;border-radius:12px;text-align:center;color:#6b7088;border:1px solid #2a2a45">Logado! Seu chat vai aqui.</div>
+    <button class="btn btn-sec" style="margin-top:12px" onclick="sair()">Sair</button>
   </div>
 </div>
 </body>
