@@ -1,46 +1,34 @@
 <!DOCTYPE html>
 <html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<style>body{margin:0;background:#0a0a14;color:#fff;font-family:Arial;display:flex;flex-direction:column;height:100vh}
-.top{padding:14px;background:#141428;border-bottom:2px solid #ff0033;display:flex;align-items:center;gap:10px}
-.msgs{flex:1;padding:12px;overflow:auto}
-.msg{background:#1e2a5a;padding:10px 14px;border-radius:14px;margin:6px 0;max-width:75%}
-.me{background:linear-gradient(90deg,#ff0033,#0066ff);margin-left:auto}
-.bottom{display:flex;padding:10px;gap:8px;background:#141428;border-top:2px solid #0066ff}
-input{flex:1;padding:12px;border-radius:20px;border:1px solid #0066ff;background:#0a0a14;color:#fff}
-button{padding:12px 18px;border:0;border-radius:20px;background:linear-gradient(90deg,#ff0033,#0066ff);color:#fff;font-weight:bold}
-a{color:#fff;text-decoration:none}
-</style></head><body>
-<div class="top"><a href="chats.html">←</a><b id="nome"></b></div>
-<div class="msgs" id="msgs"></div>
-<div class="bottom"><input id="texto" placeholder="Digite mensagem..."><button onclick="enviar()">Enviar</button></div>
+<style>
+body{margin:0;background:#0a0a18;color:#fff;font-family:Arial}
+.header{padding:16px;background:#141428;border-bottom:2px solid #ff0033;display:flex;justify-content:space-between;align-items:center}
+.header b{font-size:20px;letter-spacing:1px}
+.add{width:36px;height:36px;border-radius:50%;border:0;background:linear-gradient(90deg,#ff0033,#00ccff);color:#fff;font-size:22px;font-weight:bold;cursor:pointer}
+.lista{padding:10px}
+.contato{padding:14px 12px;margin:8px 0;background:#141428;border:1px solid #0066ff;border-radius:14px;display:flex;align-items:center;gap:12px;cursor:pointer}
+.contato:active{transform:scale(0.98)}
+.avatar{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#ff0033,#0066ff);display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:18px}
+.nome{font-weight:bold}
+.msg{font-size:13px;color:#8a8ab0;margin-top:2px}
+</style>
+</head><body>
+<div class="header"><b>XdsTalk</b><button class="add" onclick="addAmigo()">+</button></div>
+<div class="lista" id="lista"></div>
+
 <script>
-const params=new URLSearchParams(location.search);
-const user=params.get('user')||'Joao';
-document.getElementById('nome').innerText=user;
+const amigosFixos=[
+ {n:"João",m:"E aí, bora no XdsTalk?"},
+ {n:"Maria",m:"conectando você ao mundo!"},
+ {n:"Grupo Fortaleza",m:"Fala galera 👊"},
+ {n:"Pedro",m:"Bora jogar hoje?"},
+ {n:"Ana",m:"Oi, sumido!"},
+ {n:"Lucas Fortaleza",m:"To na praia"},
+ {n:"Kevinho",m:"Manda o pix kkk"},
+ {n:"Mãe",m:"Já jantou?"}
+];
 
-const msgsIniciais={
- Joao:"E aí, bora no XdsTalk? 🔥",
- Maria:"conectando você ao mundo! 🌍",
- Fortaleza:"Fala galera de Fortaleza! 👊"
-};
-
-function carregar(){
- const div=document.getElementById('msgs'); div.innerHTML='';
- const historico=JSON.parse(localStorage.getItem('chat_'+user)||'[]');
- if(historico.length===0){
-   const d=document.createElement('div'); d.className='msg'; d.innerText=msgsIniciais[user]||'Oi!'; div.appendChild(d);
- } else {
-   historico.forEach(m=>{const d=document.createElement('div'); d.className='msg '+(m.eu?'me':''); d.innerText=m.texto; div.appendChild(d);});
- }
- div.scrollTop=99999;
+function getAmigos(){
+  const extras=JSON.parse(localStorage.getItem('amigos_extra')||'[]');
+  return [...amigosFixos,...extras];
 }
-
-function enviar(){
- const t=document.getElementById('texto'); if(!t.value)return;
- const historico=JSON.parse(localStorage.getItem('chat_'+user)||'[]');
- historico.push({texto:t.value,eu:true});
- localStorage.setItem('chat_'+user,JSON.stringify(historico));
- t.value=''; carregar();
-}
-carregar();
-</script></body></html>
