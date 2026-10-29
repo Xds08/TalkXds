@@ -1,11 +1,46 @@
 <!DOCTYPE html>
-<html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="stylesheet" href="style.css"><title>XdsTalk Chats</title></head>
-<body>
-<div class="chats-container">
-<h2 class="neon">XdsTalk</h2>
-<div class="chat-item" onclick="location.href='chat.html'">👤 João - E aí, bora no XdsTalk?</div>
-<div class="chat-item">👤 Maria - conectando você ao mundo!</div>
-<div class="chat-item">👤 Grupo Fortaleza - Fala galera</div>
-</div>
-<style>.chats-container{width:340px}.chat-item{background:#1a1a33; padding:15px; margin:8px 0; border-radius:12px; border-left:3px solid #ff0033;}</style>
-</body></html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<style>body{margin:0;background:#0a0a14;color:#fff;font-family:Arial;display:flex;flex-direction:column;height:100vh}
+.top{padding:14px;background:#141428;border-bottom:2px solid #ff0033;display:flex;align-items:center;gap:10px}
+.msgs{flex:1;padding:12px;overflow:auto}
+.msg{background:#1e2a5a;padding:10px 14px;border-radius:14px;margin:6px 0;max-width:75%}
+.me{background:linear-gradient(90deg,#ff0033,#0066ff);margin-left:auto}
+.bottom{display:flex;padding:10px;gap:8px;background:#141428;border-top:2px solid #0066ff}
+input{flex:1;padding:12px;border-radius:20px;border:1px solid #0066ff;background:#0a0a14;color:#fff}
+button{padding:12px 18px;border:0;border-radius:20px;background:linear-gradient(90deg,#ff0033,#0066ff);color:#fff;font-weight:bold}
+a{color:#fff;text-decoration:none}
+</style></head><body>
+<div class="top"><a href="chats.html">←</a><b id="nome"></b></div>
+<div class="msgs" id="msgs"></div>
+<div class="bottom"><input id="texto" placeholder="Digite mensagem..."><button onclick="enviar()">Enviar</button></div>
+<script>
+const params=new URLSearchParams(location.search);
+const user=params.get('user')||'Joao';
+document.getElementById('nome').innerText=user;
+
+const msgsIniciais={
+ Joao:"E aí, bora no XdsTalk? 🔥",
+ Maria:"conectando você ao mundo! 🌍",
+ Fortaleza:"Fala galera de Fortaleza! 👊"
+};
+
+function carregar(){
+ const div=document.getElementById('msgs'); div.innerHTML='';
+ const historico=JSON.parse(localStorage.getItem('chat_'+user)||'[]');
+ if(historico.length===0){
+   const d=document.createElement('div'); d.className='msg'; d.innerText=msgsIniciais[user]||'Oi!'; div.appendChild(d);
+ } else {
+   historico.forEach(m=>{const d=document.createElement('div'); d.className='msg '+(m.eu?'me':''); d.innerText=m.texto; div.appendChild(d);});
+ }
+ div.scrollTop=99999;
+}
+
+function enviar(){
+ const t=document.getElementById('texto'); if(!t.value)return;
+ const historico=JSON.parse(localStorage.getItem('chat_'+user)||'[]');
+ historico.push({texto:t.value,eu:true});
+ localStorage.setItem('chat_'+user,JSON.stringify(historico));
+ t.value=''; carregar();
+}
+carregar();
+</script></body></html>
