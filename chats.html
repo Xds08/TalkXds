@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -12,30 +13,38 @@
   <div class="sidebar">
     <div class="header">
       <div class="logo">Talk <span>Xds</span></div>
-      <div>🔍 📹 ⋮</div>
+      <div style="display:flex; gap:15px; color:#1565C0; font-size:20px;">🔍 ⋮</div>
     </div>
     <div class="tabs">
-      <div class="ativo">Chats</div>
-      <div>Contatos</div>
-      <div>Calls</div>
+      <div class="ativo">Conversas</div>
+      <div>Status</div>
+      <div>Ligações</div>
     </div>
-    <div class="search"><input id="busca" placeholder="Buscar chats..."></div>
-    <div id="listaContatos">
-      <div class="contato" onclick="abrirChat('geral')">
-        <div class="avatar">TX</div>
-        <div><b>Chat Geral Talk Xds</b><br><small>Entra ai galera!</small></div>
+    <div class="search"><input placeholder="Pesquisar..."></div>
+    <div id="lista">
+      <div class="contato ativo">
+        <div class="avatar vermelho">TX</div>
+        <div style="flex:1">
+          <b>Chat Geral Talk Xds</b><span style="float:right; font-size:11px; color:green;">agora</span><br>
+          <small style="color:#666">Toque para conversar...</small>
+        </div>
       </div>
     </div>
   </div>
 
   <div class="chat-area">
     <div class="chat-header">
-      <div class="avatar">TX</div>
-      <div><b>Chat Geral</b><br><small style="color:green;">Online</small></div>
+      <div class="avatar vermelho">TX</div>
+      <div><b id="nomeTopo">Chat Geral</b><br><small style="color:green;">● online</small></div>
+      <div style="margin-left:auto; display:flex; gap:15px; font-size:20px; color:#1565C0">📹 📞 ⋮</div>
     </div>
+
     <div class="mensagens" id="mensagens"></div>
+
     <div class="input-area">
-      <input id="msgInput" placeholder="Digite uma mensagem...">
+      <span style="font-size:24px; color:#1565C0">😊</span>
+      <span style="font-size:24px; color:#1565C0">📎</span>
+      <input id="msgInput" placeholder="Mensagem" onkeypress="if(event.key==='Enter')enviar()">
       <button class="btn-enviar" onclick="enviar()">➤</button>
     </div>
   </div>
@@ -47,37 +56,49 @@ import { getFirestore, collection, addDoc, query, orderBy, onSnapshot, serverTim
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
 const firebaseConfig = {
-  apiKey: "SUA_API_KEY_DO_xdstalk-c597b",
-  authDomain: "xdstalk-c597b.firebaseapp.com",
-  projectId: "xdstalk-c597b"
+  apiKey: "AIzaSyDnjiFQtTu8A5vZ3NHEIl_zG9ylMKTv6b8",
+  authDomain: "talkxds.firebaseapp.com",
+  projectId: "talkxds",
+  storageBucket: "talkxds.firebasestorage.app",
+  messagingSenderId: "757013602887",
+  appId: "1:757013602887:web:6627ff87623d698e7d8762"
 };
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
 
-const mensagensDiv = document.getElementById('mensagens');
+let usuarioAtual = null;
 
+onAuthStateChanged(auth, (user)=>{
+  if(!user){ location.href='index.html'; return; }
+  usuarioAtual = user;
+  document.getElementById('nomeTopo').innerText = 'Chat Geral - Olá, ' + (user.displayName || user.email);
+});
+
+const mensagensDiv = document.getElementById('mensagens');
 const q = query(collection(db, "mensagens"), orderBy("hora"));
+
 onSnapshot(q, (snap)=>{
   mensagensDiv.innerHTML = "";
   snap.forEach(doc=>{
     const m = doc.data();
+    const eu = m.uid === usuarioAtual?.uid;
     const div = document.createElement('div');
-    div.className = 'balao ' + (m.uid === auth.currentUser?.uid ? 'enviado' : 'recebido');
-    div.innerHTML = `<b>${m.nome||''}</b><br>${m.texto}`;
+    div.className = 'balao ' + (eu ? 'enviado' : 'recebido');
+    div.innerHTML = (!eu ? `<b style="color:#1565C0; font-size:12px;">${m.nome}</b><br>` : '') + m.texto + `<br><span style="font-size:10px; opacity:0.7; float:right;">${m.hora ? new Date().toLocaleTimeString().slice(0,5) : ''} ✓✓</span>`;
     mensagensDiv.appendChild(div);
   });
   mensagensDiv.scrollTop = mensagensDiv.scrollHeight;
 });
 
-window.enviar = async ()=>{
+window.enviar = async()=>{
   const input = document.getElementById('msgInput');
-  if(!input.value) return;
+  if(!input.value.trim() || !usuarioAtual) return;
   await addDoc(collection(db, "mensagens"), {
     texto: input.value,
-    nome: auth.currentUser?.email || 'Anon',
-    uid: auth.currentUser?.uid || 'anon',
+    nome: usuarioAtual.displayName || usuarioAtual.email.split('@')[0],
+    uid: usuarioAtual.uid,
     hora: serverTimestamp()
   });
   input.value = "";
