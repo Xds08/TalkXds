@@ -3,52 +3,57 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Talk Xds</title>
+<title>Talk Xds - Neon</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:Arial}
-body{background:#111b21;display:flex;justify-content:center;height:100vh}
-.app{width:100%;max-width:480px;background:#111b21;display:flex;flex-direction:column;position:relative}
-.header{background:#202c33;padding:15px 20px;display:flex;justify-content:space-between;align-items:center;color:#fff}
-.header b{font-size:22px} .header span{color:#00a884}
-.tabs{display:flex;background:#202c33}
-.tab{flex:1;padding:14px;text-align:center;color:#8696a0;font-weight:700;font-size:14px;border-bottom:3px solid transparent}
-.tab.ativo{color:#00a884;border-color:#00a884}
-.lista{flex:1;overflow-y:auto;background:#111b21}
-.item{display:flex;gap:12px;padding:12px 15px;cursor:pointer;border-bottom:1px solid #222}
-.item:hover{background:#202c33}
-.avatar{width:49px;height:49px;border-radius:50%;background:#00a884;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:900;flex-shrink:0}
-.nome{color:#e9edef;font-weight:700}
-.msg{color:#8696a0;font-size:13px}
-.hora{color:#8696a0;font-size:11px}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Arial}
+body{background:#06060f;display:flex;justify-content:center;height:100vh}
+.app{width:100%;max-width:480px;background:#0a0a14;display:flex;flex-direction:column;position:relative;overflow:hidden;border-left:1px solid #222;border-right:1px solid #222}
+.header{background:linear-gradient(90deg,#7c4dff,#ff00a0);padding:16px 20px;display:flex;justify-content:space-between;align-items:center;color:#fff;box-shadow:0 0 20px rgba(124,77,255,0.5)}
+.header b{font-size:22px;letter-spacing:1px;text-shadow:0 0 10px #fff}
+.tabs{display:flex;background:#11111f;border-bottom:1px solid #222}
+.tab{flex:1;padding:14px;text-align:center;color:#666;font-weight:800;font-size:13px;letter-spacing:1px;cursor:pointer;transition:0.2s}
+.tab.ativo{color:#7c4dff;border-bottom:2px solid #ff00a0;box-shadow:inset 0 -10px 20px rgba(124,77,255,0.15)}
+.lista{flex:1;overflow-y:auto;background:#0a0a14}
+.item{display:flex;gap:14px;padding:14px 16px;cursor:pointer;border-bottom:1px solid #151525;transition:0.2s}
+.item:hover{background:#15152a;box-shadow:inset 4px 0 0 #7c4dff}
+.avatar{width:50px;height:50px;border-radius:14px;background:linear-gradient(135deg,#7c4dff,#ff00a0);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:18px;box-shadow:0 0 15px rgba(124,77,255,0.6);flex-shrink:0}
+.nome{color:#fff;font-weight:700;font-size:15px}
+.msg{color:#888;font-size:13px;margin-top:2px}
+.hora{color:#555;font-size:11px}
 .topo{display:flex;justify-content:space-between;width:100%}
-.chat-view{position:absolute;top:0;left:0;right:0;bottom:0;background:#0b141a;display:flex;flex-direction:column;z-index:10}
-.chat-head{background:#202c33;padding:10px 15px;display:flex;gap:10px;align-items:center;color:#fff}
-.balao{background:#202c33;color:#e9edef;padding:8px 12px;border-radius:8px;max-width:75%;font-size:14px;margin:6px 12px}
-.balao.eu{background:#005c4b;align-self:flex-end}
-.area-msgs{flex:1;overflow-y:auto;padding:10px 0;display:flex;flex-direction:column}
-.input-bar{background:#202c33;padding:8px 12px;display:flex;gap:8px}
-.input-bar input{flex:1;padding:12px 18px;border-radius:25px;border:none;background:#2a3942;color:#fff;outline:none}
-.input-bar button{width:45px;height:45px;border-radius:50%;border:none;background:#00a884;color:#fff;font-size:20px}
+.badge{font-size:10px;background:#7c4dff;color:#fff;padding:2px 6px;border-radius:10px}
+
+.chat-view{position:absolute;inset:0;background:#080810;display:flex;flex-direction:column;z-index:20}
+.chat-head{background:#11111f;padding:12px 16px;display:flex;gap:12px;align-items:center;color:#fff;border-bottom:1px solid #222;box-shadow:0 4px 20px rgba(0,0,0,0.5)}
+.area-msgs{flex:1;overflow-y:auto;padding:16px 0;display:flex;flex-direction:column;background:radial-gradient(circle at top,#1a1033,#080810)}
+.balao{background:#1a1a2e;border:1px solid #2a2a4a;color:#e0e0ff;padding:10px 14px;border-radius:18px 18px 18px 4px;max-width:75%;font-size:14px;margin:6px 14px;box-shadow:0 0 10px rgba(0,0,0,0.3)}
+.balao.eu{background:linear-gradient(135deg,#7c4dff,#6a3be0);border:none;color:#fff;align-self:flex-end;border-radius:18px 18px 4px 18px;box-shadow:0 0 15px rgba(124,77,255,0.5)}
+.input-bar{background:#11111f;padding:10px 14px;display:flex;gap:10px;align-items:center;border-top:1px solid #222}
+.input-bar input{flex:1;padding:13px 18px;border-radius:25px;border:1px solid #2a2a4a;background:#0f0f1e;color:#fff;outline:none}
+.input-bar input:focus{border-color:#7c4dff;box-shadow:0 0 10px rgba(124,77,255,0.4)}
+.input-bar button{width:46px;height:46px;border-radius:14px;border:none;background:linear-gradient(135deg,#7c4dff,#ff00a0);color:#fff;font-size:20px;cursor:pointer;box-shadow:0 0 15px rgba(124,77,255,0.6)}
 .hidden{display:none!important}
 </style>
 </head>
 <body>
 <div class="app">
   <div id="tela-lista" style="display:flex;flex-direction:column;height:100vh">
-    <div class="header"><b>Talk <span>Xds</span></b><span id="sair" style="cursor:pointer;font-size:13px">Sair</span></div>
-    <div class="tabs"><div class="tab ativo">Conversas</div><div class="tab">Status</div><div class="tab">Chamadas</div></div>
+    <div class="header"><b>Talk Xds ⚡</b><span id="sair" style="cursor:pointer;font-size:13px;background:rgba(0,0,0,0.3);padding:6px 12px;border-radius:20px">Sair</span></div>
+    <div class="tabs"><div class="tab ativo">CONVERSAS</div><div class="tab">STATUS</div><div class="tab">CALLS</div></div>
     <div class="lista">
       <div class="item" id="abrirGeral">
         <div class="avatar">TX</div>
-        <div style="flex:1"><div class="topo"><span class="nome">Chat Geral TX</span><span class="hora">agora</span></div><div class="msg">Toque para entrar 🔥</div></div>
+        <div style="flex:1"><div class="topo"><span class="nome">Chat Geral TX</span><span class="hora">NEON</span></div><div class="msg">⚡ Toque para entrar no modo neon</div></div>
+        <div class="badge">LIVE</div>
       </div>
+      <div class="item"><div class="avatar" style="background:linear-gradient(135deg,#00f2ff,#7c4dff)">X</div><div style="flex:1"><div class="topo"><span class="nome">Xds Squad</span><span class="hora">14:20</span></div><div class="msg">Bora jogar? 🔥</div></div></div>
     </div>
   </div>
 
   <div id="tela-chat" class="chat-view hidden">
-    <div class="chat-head"><span id="voltar" style="font-size:24px;cursor:pointer;margin-right:10px">←</span><div class="avatar" style="width:38px;height:38px">TX</div><div><div style="font-weight:700">Chat Geral TX</div><div style="font-size:12px;color:#00a884">● online</div></div></div>
+    <div class="chat-head"><span id="voltar" style="font-size:26px;cursor:pointer">←</span><div class="avatar" style="width:40px;height:40px;border-radius:10px">TX</div><div><div style="font-weight:800">Chat Geral TX <span style="color:#ff00a0">NEON</span></div><div style="font-size:11px;color:#7c4dff">● 12 online • modo gamer</div></div></div>
     <div id="msgs" class="area-msgs"></div>
-    <div class="input-bar"><input id="inputMsg" placeholder="Digite uma mensagem"><button id="btnEnviar">➤</button></div>
+    <div class="input-bar"><input id="inputMsg" placeholder="Digite no modo neon..."><button id="btnEnviar">⚡</button></div>
   </div>
 </div>
 
@@ -63,7 +68,7 @@ document.getElementById('sair').onclick=async()=>{await signOut(auth); location.
 document.getElementById('abrirGeral').onclick=()=>{document.getElementById('tela-chat').classList.remove('hidden')};
 document.getElementById('voltar').onclick=()=>{document.getElementById('tela-chat').classList.add('hidden')};
 document.getElementById('btnEnviar').onclick=async()=>{const t=document.getElementById('inputMsg').value.trim();if(!t)return;await addDoc(collection(db,"mensagens"),{texto:t,nome:auth.currentUser.displayName||auth.currentUser.email.split('@')[0],uid:auth.currentUser.uid,hora:serverTimestamp()});document.getElementById('inputMsg').value="";};
-const q=query(collection(db,"mensagens"),orderBy("hora","asc"));onSnapshot(q,s=>{const a=document.getElementById('msgs');a.innerHTML="";s.forEach(d=>{const m=d.data();const div=document.createElement('div');div.className=m.uid===auth.currentUser?.uid?"balao eu":"balao";div.innerHTML=`<b style="font-size:11px;color:#00a884">${m.nome}</b><br>${m.texto}`;a.appendChild(div);});a.scrollTop=a.scrollHeight;});
+const q=query(collection(db,"mensagens"),orderBy("hora","asc"));onSnapshot(q,s=>{const a=document.getElementById('msgs');a.innerHTML="";s.forEach(d=>{const m=d.data();const div=document.createElement('div');div.className=m.uid===auth.currentUser?.uid?"balao eu":"balao";div.innerHTML=`<b style="font-size:11px;color:${m.uid===auth.currentUser?.uid?'#fff':'#7c4dff'}">${m.nome}</b><br>${m.texto}`;a.appendChild(div);});a.scrollTop=a.scrollHeight;});
 </script>
 </body>
 </html>
