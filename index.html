@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -11,14 +10,14 @@ body{font-family:Arial;background:#111;color:#fff;display:flex;justify-content:c
 input{width:100%;padding:10px;margin:8px 0;border-radius:6px;border:none;box-sizing:border-box}
 button{width:100%;padding:10px;background:#00ff88;color:#000;border:none;border-radius:6px;font-weight:bold;cursor:pointer;margin-top:10px}
 button:hover{background:#00cc6a}
-#msg{margin-top:15px;font-size:14px;color:#ff5555}
+#msg{margin-top:15px;font-size:14px}
 </style>
 </head>
 <body>
 <div class="box">
 <h2>XdsTalk</h2>
 <input type="email" id="email" placeholder="Email">
-<input type="password" id="password" placeholder="Senha">
+<input type="password" id="password" placeholder="Senha (min 6 letras)">
 <button id="btnCriar">Criar Conta</button>
 <button id="btnEntrar">Entrar</button>
 <div id="msg"></div>
@@ -29,18 +28,17 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/fireba
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyAWiwVjMgA_v9fmEnloglEMRYAscJkGX08",
-  authDomain: "xdstalk.firebaseapp.com",
-  projectId: "xdstalk",
-  storageBucket: "xdstalk.firebasestorage.app",
-  messagingSenderId: "817447842819",
-  appId: "1:817447842819:web:42b63501b7b03c9dbaca36",
-  measurementId: "G-ZX72CMXB1R"
+  apiKey: "AIzaSyA8UtD8cNIAeqVeHbeZVDmxVzcEo9ZNUN4",
+  authDomain: "xdstalk-c597b.firebaseapp.com",
+  projectId: "xdstalk-c597b",
+  storageBucket: "xdstalk-c597b.firebasestorage.app",
+  messagingSenderId: "852750985311",
+  appId: "1:852750985311:web:e659289d031e5f1a3153ea",
+  measurementId: "G-WYM9LV0TXC"
 };
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
-
 const msg = document.getElementById('msg');
 
 document.getElementById('btnCriar').onclick = async () => {
@@ -49,10 +47,10 @@ document.getElementById('btnCriar').onclick = async () => {
   try {
     await createUserWithEmailAndPassword(auth, email, pass);
     msg.style.color = '#00ff88';
-    msg.innerText = 'Conta criada! Agora pode entrar.';
+    msg.innerText = 'Conta criada com sucesso!';
   } catch (e) {
     msg.style.color = '#ff5555';
-    msg.innerText = e.message;
+    msg.innerText = e.code + ': ' + e.message;
   }
 };
 
@@ -62,10 +60,12 @@ document.getElementById('btnEntrar').onclick = async () => {
   try {
     await signInWithEmailAndPassword(auth, email, pass);
     msg.style.color = '#00ff88';
-    msg.innerText = 'Logado com sucesso! Bem-vindo!';
+    msg.innerText = 'Logado! Bem-vindo!';
+    // Aqui depois você pode redirecionar pro chat
+    // window.location.href = "chat.html"
   } catch (e) {
     msg.style.color = '#ff5555';
-    msg.innerText = e.message;
+    msg.innerText = e.code + ': ' + e.message;
   }
 };
 </script>
