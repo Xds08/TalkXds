@@ -1,0 +1,8 @@
+body { background:#0a0a14; color:white; font-family:Arial; display:flex; justify-content:center; align-items:center; min-height:100vh; margin:0; }
+.login-box { background:#141428; padding:30px; border-radius:20px; border:2px solid #ff0033; box-shadow:0 0 20px #ff0033, 0 0 40px #0066ff; width:320px; text-align:center; }
+.neon { color:white; text-shadow:0 0 10px #ff0033, 0 0 20px #0066ff; font-size:32px; }
+input { width:100%; margin:8px 0; padding:12px; border-radius:10px; border:1px solid #0066ff; background:#0a0a14; color:white; box-sizing:border-box; }
+.btn-neon { width:100%; padding:12px; background:linear-gradient(90deg,#ff0033,#0066ff); border:none; border-radius:10px; color:white; font-weight:bold; box-shadow:0 0 15px #ff0033; cursor:pointer; margin-top:10px; }
+.btn-google { width:100%; padding:12px; background:white; color:#333; border-radius:10px; margin-top:10px; border:none; font-weight:bold; cursor:pointer; }
+a { color:#66aaff; display:block; text-align:center; margin:10px 0; text-decoration:none; }
+.divisor { margin:15px 0; color:#888; }
