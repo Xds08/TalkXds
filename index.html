@@ -1,25 +1,68 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>XdsTalk - conectando você ao mundo</title>
-<link rel="stylesheet" href="style.css">
-<link rel="manifest" href="manifest.json">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>XdsTalk</title>
+<link rel="stylesheet" href="estilo.css">
+<style>
+body{margin:0;min-height:100vh;display:flex;justify-content:center;align-items:center;background:#0a0a14;color:#fff;font-family:Arial}
+.box{background:#141428;padding:28px;border-radius:22px;border:2px solid #ff0033;box-shadow:0 0 20px #ff0033,0 0 40px #0066ff;width:340px;text-align:center}
+h1{font-size:42px;margin:0;text-shadow:0 0 10px #ff0033,0 0 20px #0066ff}
+.sub{color:#aaa;margin:8px 0 18px}
+input{width:100%;padding:14px;margin:7px 0;border-radius:12px;border:1px solid #0066ff;background:#0a0a14;color:#fff;box-sizing:border-box}
+button{width:100%;padding:14px;border:0;border-radius:12px;font-weight:bold;margin-top:10px;cursor:pointer}
+.entrar{background:linear-gradient(90deg,#ff0033,#0066ff);color:#fff;box-shadow:0 0 15px #ff0033}
+.link{color:#6ab0ff;cursor:pointer;font-size:14px;margin-top:12px;display:block}
+.hidden{display:none}
+</style>
 </head>
 <body>
-<div class="login-box">
-  <h1 class="neon">XdsTalk</h1>
-  <p>conectando você ao mundo 🌎</p>
-  <input type="text" placeholder="Nome de usuário">
-  <input type="email" placeholder="E-mail">
-  <input type="tel" placeholder="+55 Telefone">
-  <input type="password" placeholder="Senha">
-  <button class="btn-neon" onclick="window.location.href='chats.html'">Entrar</button>
-  <a href="#">Esqueceu a senha?</a>
-  <div class="divisor">ou</div>
-  <button class="btn-google">G Continuar com Google</button>
-</div>
-</body>
-</html>
+<div class="box">
+  <h1>XdsTalk</h1>
+  <div class="sub">conectando você ao mundo 🌍</div>
 
+  <!-- LOGIN -->
+  <div id="login">
+    <input id="loginUser" placeholder="Usuário ou e-mail">
+    <input id="loginPass" placeholder="Senha" type="password">
+    <button class="entrar" onclick="fazerLogin()">Entrar</button>
+    <span class="link" onclick="mostrarCadastro()">Não tem conta? Criar conta</span>
+  </div>
+
+  <!-- CADASTRO -->
+  <div id="cadastro" class="hidden">
+    <input id="cadNome" placeholder="Nome de usuário">
+    <input id="cadEmail" placeholder="E-mail">
+    <input id="cadFone" placeholder="+55 Telefone">
+    <input id="cadPass" placeholder="Criar senha" type="password">
+    <button class="entrar" onclick="fazerCadastro()">Criar conta</button>
+    <span class="link" onclick="mostrarLogin()">Já tem conta? Fazer login</span>
+  </div>
+</div>
+
+<script>
+function mostrarCadastro(){ document.getElementById('login').classList.add('hidden'); document.getElementById('cadastro').classList.remove('hidden'); }
+function mostrarLogin(){ document.getElementById('cadastro').classList.add('hidden'); document.getElementById('login').classList.remove('hidden'); }
+
+function fazerCadastro(){
+  const nome = document.getElementById('cadNome').value;
+  const email = document.getElementById('cadEmail').value;
+  const senha = document.getElementById('cadPass').value;
+  if(!nome || !senha){ alert('Preencha nome e senha'); return; }
+  localStorage.setItem('xds_user', nome);
+  localStorage.setItem('xds_email', email);
+  localStorage.setItem('xds_pass', senha);
+  alert('Conta criada! Bem-vindo '+nome);
+  location.href='chats.html';
+}
+function fazerLogin(){
+  const user = document.getElementById('loginUser').value;
+  const salvo = localStorage.getItem('xds_user');
+  if(user && salvo && user !== salvo){ alert('Usuário não encontrado, crie uma conta'); mostrarCadastro(); return; }
+  if(user) localStorage.setItem('xds_user', user);
+  location.href='chats.html';
+}
+</script>
+</body>
+      </html>
