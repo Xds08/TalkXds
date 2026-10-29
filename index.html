@@ -1,57 +1,51 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Talk Xds</title>
-<link rel="stylesheet" href="style.css">
-<link rel="manifest" href="manifest.json">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial}
+body{background:linear-gradient(135deg,#1565C0,#E53935);display:flex;justify-content:center;align-items:center;height:100vh}
+.box{background:#fff;padding:30px;border-radius:20px;width:92%;max-width:360px;display:flex;flex-direction:column;gap:12px;text-align:center}
+.logo{font-size:38px;font-weight:900;color:#1565C0} .logo span{color:#E53935}
+input{padding:13px 16px;border-radius:25px;border:none;background:#f0f2f5;outline:none}
+button{padding:13px;border-radius:25px;border:none;font-weight:bold;cursor:pointer}
+.btn1{background:#E53935;color:#fff} .btn2{background:#fff;color:#1565C0;border:2px solid #1565C0}
+.link{color:#1565C0;font-size:13px;cursor:pointer;text-align:right}
+.divisor{display:flex;align-items:center;gap:8px;margin:5px 0;color:#888;font-size:12px}
+.divisor div{flex:1;height:1px;background:#ddd}
+</style>
 </head>
-<body class="login-body">
-  <div class="login-box">
-    <div class="logo-big">Talk <span>Xds</span></div>
-    <p>Bem-vindo! Crie sua conta</p>
-    <input id="nome" placeholder="Seu nome">
-    <input id="email" type="email" placeholder="Seu e-mail">
-    <input id="senha" type="password" placeholder="Sua senha">
-    <button id="btnCriar">CRIAR CONTA</button>
-    <button id="btnEntrar" class="outline">JÁ TENHO CONTA</button>
-    <div id="msg" style="color:red; font-size:13px; margin-top:5px;"></div>
-  </div>
+<body>
+<div class="box">
+<div class="logo">Talk <span>Xds</span></div>
+<p style="color:#555">Entre na sua conta</p>
+<input id="nome" placeholder="Seu nome (pra criar)">
+<input id="email" placeholder="E-mail ou telefone">
+<input id="senha" type="password" placeholder="Senha">
+<div class="link" id="esqueceu">Esqueceu a senha?</div>
+<button class="btn1" id="btnEntrar">ENTRAR</button>
+<button class="btn2" id="btnCriar">CRIAR CONTA</button>
+<div class="divisor"><div></div>OU<div></div></div>
+<button class="btn2" id="btnGoogle" style="background:#fff;border:1px solid #ddd">🌐 Continuar com Google</button>
+<div id="msg" style="font-size:12px;color:red"></div>
+</div>
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-const firebaseConfig = {
-  apiKey: "AIzaSyDnjiFQtTu8A5vZ3NHEIl_zG9ylMKTv6b8",
-  authDomain: "talkxds.firebaseapp.com",
-  projectId: "talkxds",
-  storageBucket: "talkxds.firebasestorage.app",
-  messagingSenderId: "757013602887",
-  appId: "1:757013602887:web:6627ff87623d698e7d8762"
-};
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const msg = document.getElementById('msg');
-
-document.getElementById('btnCriar').onclick = async()=>{
-  try{
-    const nome=document.getElementById('nome').value;
-    const email=document.getElementById('email').value;
-    const senha=document.getElementById('senha').value;
-    if(!nome||!email||!senha){ msg.innerText="Preencha tudo!"; return; }
-    const cred = await createUserWithEmailAndPassword(auth,email,senha);
-    await updateProfile(cred.user,{displayName:nome});
-    location.href="chats.html";
-  }catch(e){ msg.innerText=e.message; }
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile, sendPasswordResetEmail, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+const firebaseConfig = { apiKey:"AIzaSyDnjiFQtTu8A5vZ3NHEIl_zG9ylMKTv6b8", authDomain:"talkxds.firebaseapp.com", projectId:"talkxds", storageBucket:"talkxds.firebasestorage.app", messagingSenderId:"757013602887", appId:"1:757013602887:web:6627ff87623d698e7d8762" };
+const app=initializeApp(firebaseConfig); const auth=getAuth(app);
+const msg=document.getElementById('msg');
+document.getElementById('btnCriar').onclick=async()=>{
+  try{ const n=document.getElementById('nome').value; const e=document.getElementById('email').value; const s=document.getElementById('senha').value;
+  if(!n||!e||!s){msg.innerText="Preencha tudo";return;} const c=await createUserWithEmailAndPassword(auth,e,s); await updateProfile(c.user,{displayName:n}); location.href="chats.html"; }catch(err){msg.innerText=err.message;}
 }
-document.getElementById('btnEntrar').onclick = async()=>{
-  try{
-    const email=document.getElementById('email').value;
-    const senha=document.getElementById('senha').value;
-    await signInWithEmailAndPassword(auth,email,senha);
-    location.href="chats.html";
-  }catch(e){ msg.innerText=e.message; }
+document.getElementById('btnEntrar').onclick=async()=>{
+  try{ const e=document.getElementById('email').value; const s=document.getElementById('senha').value; await signInWithEmailAndPassword(auth,e,s); location.href="chats.html"; }catch(err){msg.innerText="E-mail ou senha errados";}
 }
+document.getElementById('esqueceu').onclick=async()=>{ const e=document.getElementById('email').value; if(!e){msg.innerText="Digite e-mail primeiro";return;} await sendPasswordResetEmail(auth,e); msg.style.color="green"; msg.innerText="Link enviado!"; }
+document.getElementById('btnGoogle').onclick=async()=>{ const p=new GoogleAuthProvider(); await signInWithPopup(auth,p); location.href="chats.html"; }
 </script>
 </body>
 </html>
