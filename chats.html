@@ -1,77 +1,101 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Talk Xds - Chats</title>
-<link rel="stylesheet" href="style.css">
-<link rel="manifest" href="manifest.json">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial}
+body{background:#f0f2f5;display:flex;justify-content:center;height:100vh}
+.app{width:100%;max-width:420px;background:#fff;display:flex;flex-direction:column}
+.header{background:linear-gradient(135deg,#1565C0,#E53935);color:#fff;padding:15px 20px;display:flex;justify-content:space-between;align-items:center}
+.header b{font-size:20px}
+.tabs{display:flex;background:#fff;border-bottom:1px solid #ddd}
+.tab{flex:1;padding:12px;text-align:center;font-weight:bold;font-size:14px;color:#888;cursor:pointer;border-bottom:3px solid transparent}
+.tab.ativo{color:#1565C0;border-bottom-color:#1565C0}
+.lista{flex:1;overflow-y:auto}
+.chat-item{display:flex;gap:12px;padding:12px 15px;border-bottom:1px solid #f0f0f0;cursor:pointer}
+.chat-item:hover{background:#f5f5f5}
+.avatar{width:48px;height:48px;border-radius:50%;background:#1565C0;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:900}
+.chat-info{flex:1}
+.chat-top{display:flex;justify-content:space-between}
+.chat-nome{font-weight:bold}
+.chat-hora{font-size:11px;color:#888}
+.chat-msg{font-size:13px;color:#555}
+.chat-header{background:#f0f2f5;padding:10px 15px;display:flex;gap:10px;align-items:center;border-bottom:1px solid #ddd}
+.area-msg{flex:1;background:#e5ddd5;padding:15px;display:flex;flex-direction:column;gap:8px;overflow-y:auto}
+.mensagem{background:#fff;padding:8px 12px;border-radius:10px;max-width:75%;font-size:14px}
+.mensagem.minha{background:#dcf8c6;align-self:flex-end}
+.input-area{display:flex;gap:8px;padding:10px;background:#f0f2f5}
+.input-area input{flex:1;padding:12px 16px;border-radius:25px;border:none;background:#fff;outline:none}
+.input-area button{width:44px;height:44px;border-radius:50%;border:none;background:#1565C0;color:#fff;font-size:18px;cursor:pointer}
+.hidden{display:none}
+</style>
 </head>
 <body>
 <div class="app">
-  <div class="sidebar">
-    <div class="header"><div class="logo">Talk <span>Xds</span></div><div>⋮</div></div>
-    <div class="tabs"><div class="ativo">Conversas</div><div>Status</div><div>Chamadas</div></div>
-    <div style="padding:12px; border-bottom:1px solid #f0f2f5;">
-      <div style="display:flex; gap:12px; align-items:center;">
-        <div class="avatar">TX</div>
-        <div><b>Chat Geral</b><br><small id="meuNome" style="color:green;">carregando...</small></div>
-      </div>
+  <div class="header"><b>Talk <span style="color:#ffcccc">Xds</span></b><span id="sair" style="font-size:12px;cursor:pointer">Sair</span></div>
+  <div class="tabs">
+    <div class="tab ativo" id="tabConversas">Conversas</div>
+    <div class="tab" id="tabStatus">Status</div>
+    <div class="tab" id="tabChamadas">Chamadas</div>
+  </div>
+  
+  <div id="tela-lista" class="lista">
+    <div class="chat-item" id="abrirGeral">
+      <div class="avatar">TX</div>
+      <div class="chat-info"><div class="chat-top"><span class="chat-nome">Chat Geral</span><span class="chat-hora">agora</span></div><div class="chat-msg">Xds: Bem-vindo ao Talk Xds!</div></div>
     </div>
   </div>
-  <div class="chat-area">
+
+  <div id="tela-chat" class="hidden" style="flex:1;display:flex;flex-direction:column">
     <div class="chat-header">
-      <div class="avatar">TX</div>
-      <div><b>Chat Geral</b><br><small style="color:green;">● online</small></div>
+      <span id="voltar" style="cursor:pointer;font-size:20px">←</span>
+      <div class="avatar" style="width:38px;height:38px;font-size:14px">TX</div>
+      <div><b>Chat Geral</b><div style="font-size:12px;color:green">● online</div></div>
     </div>
-    <div class="mensagens" id="mensagens"></div>
+    <div id="mensagens" class="area-msg"></div>
     <div class="input-area">
-      <input id="msgInput" placeholder="Mensagem" onkeydown="if(event.key==='Enter')enviar()">
-      <button class="btn-enviar" onclick="enviar()">➤</button>
+      <input id="inputMsg" placeholder="Mensagem">
+      <button id="btnEnviar">➤</button>
     </div>
   </div>
 </div>
+
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getFirestore, collection, addDoc, query, orderBy, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-const firebaseConfig = {
-  apiKey: "AIzaSyDnjiFQtTu8A5vZ3NHEIl_zG9ylMKTv6b8",
-  authDomain: "talkxds.firebaseapp.com",
-  projectId: "talkxds",
-  storageBucket: "talkxds.firebasestorage.app",
-  messagingSenderId: "757013602887",
-  appId: "1:757013602887:web:6627ff87623d698e7d8762"
-};
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-const auth = getAuth(app);
-let userAtual=null;
-onAuthStateChanged(auth, u=>{
-  if(!u){ location.href="index.html"; return; }
-  userAtual=u;
-  document.getElementById('meuNome').innerText=u.displayName||u.email;
-});
-const box=document.getElementById('mensagens');
-const q=query(collection(db,"mensagens"),orderBy("hora"));
-onSnapshot(q, snap=>{
-  box.innerHTML="";
-  snap.forEach(d=>{
-    const m=d.data();
-    const div=document.createElement('div');
-    const eu=m.uid===userAtual?.uid;
-    div.className='balao '+(eu?'enviado':'recebido');
-    div.innerHTML=(eu?'':`<span style="color:#1565C0; font-weight:700; font-size:12px;">${m.nome}</span><br>`) + m.texto;
-    box.appendChild(div);
-  });
-  box.scrollTop=box.scrollHeight;
-});
-window.enviar=async()=>{
-  const inp=document.getElementById('msgInput');
-  if(!inp.value.trim()||!userAtual)return;
-  await addDoc(collection(db,"mensagens"),{texto:inp.value,nome:userAtual.displayName||userAtual.email.split('@')[0],uid:userAtual.uid,hora:serverTimestamp()});
-  inp.value="";
+import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const firebaseConfig = { apiKey:"AIzaSyDnjiFQtTu8A5vZ3NHEIl_zG9ylMKTv6b8", authDomain:"talkxds.firebaseapp.com", projectId:"talkxds", storageBucket:"talkxds.firebasestorage.app", messagingSenderId:"757013602887", appId:"1:757013602887:web:6627ff87623d698e7d8762" };
+const app=initializeApp(firebaseConfig); const auth=getAuth(app); const db=getFirestore(app);
+
+onAuthStateChanged(auth,user=>{ if(!user) location.href="index.html"; });
+
+document.getElementById('sair').onclick=async()=>{ await signOut(auth); location.href="index.html"; }
+document.getElementById('abrirGeral').onclick=()=>{ document.getElementById('tela-lista').classList.add('hidden'); document.getElementById('tela-chat').classList.remove('hidden'); document.getElementById('tela-chat').style.display="flex"; }
+document.getElementById('voltar').onclick=()=>{ document.getElementById('tela-chat').classList.add('hidden'); document.getElementById('tela-lista').classList.remove('hidden'); }
+
+// Enviar mensagem
+document.getElementById('btnEnviar').onclick=async()=>{
+  const texto=document.getElementById('inputMsg').value; if(!texto) return;
+  await addDoc(collection(db,"mensagens"),{ texto, nome: auth.currentUser.displayName || auth.currentUser.email, uid: auth.currentUser.uid, hora: serverTimestamp() });
+  document.getElementById('inputMsg').value="";
 }
+
+// Receber mensagens em tempo real
+const q=query(collection(db,"mensagens"), orderBy("hora","asc"));
+onSnapshot(q,snap=>{
+  const area=document.getElementById('mensagens'); area.innerHTML="";
+  snap.forEach(doc=>{
+    const m=doc.data();
+    const div=document.createElement('div');
+    div.className = m.uid===auth.currentUser?.uid ? "mensagem minha" : "mensagem";
+    div.innerHTML=`<b style="font-size:11px;color:#1565C0">${m.nome}</b><br>${m.texto}`;
+    area.appendChild(div);
+  });
+  area.scrollTop=area.scrollHeight;
+});
 </script>
 </body>
 </html>
