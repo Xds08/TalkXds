@@ -1,6 +1,77 @@
-.login-body{ background: linear-gradient(135deg, #1565C0 0%, #E53935 100%); display:flex; justify-content:center; align-items:center; height:100vh; }
-.login-box{ background:white; padding:30px; border-radius:15px; width:90%; max-width:350px; display:flex; flex-direction:column; gap:12px; text-align:center; box-shadow:0 10px 30px rgba(0,0,0,0.3); }
-.login-box h1{ color:#1565C0; font-size:32px; } .login-box h1 span{ color:#E53935; }
-.login-box input{ padding:14px; border-radius:25px; border:1px solid #ddd; background:#f0f2f5; outline:none; }
-.login-box button{ padding:14px; border-radius:25px; border:none; background:#E53935; color:white; font-weight:bold; cursor:pointer; }
-.login-box button.outline{ background:white; color:#1565C0; border:1px solid #1565C0; }
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Talk Xds</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial}
+body{background:#111b21;height:100vh;display:flex;justify-content:center}
+.app{width:100%;max-width:1000px;display:flex;background:#fff;height:100vh}
+.sidebar{width:40%;border-right:1px solid #ddd;display:flex;flex-direction:column}
+.header{background:#f0f2f5;padding:15px;display:flex;justify-content:space-between;font-weight:900;color:#1565C0;font-size:22px}
+.header span{color:#E53935}
+.mensagens{flex:1;padding:20px;background:#efeae2;overflow-y:auto;display:flex;flex-direction:column;gap:8px}
+.balao{max-width:70%;padding:8px 12px;border-radius:8px;font-size:15px}
+.recebido{background:#fff;align-self:flex-start;border-radius:0 8px 8px 8px}
+.enviado{background:#ffcdd2;align-self:flex-end;border-radius:8px 0 8px 8px;margin-left:auto;color:#000;border:1px solid #ef9a9a}
+.input-area{background:#f0f2f5;padding:10px;display:flex;gap:10px}
+.input-area input{flex:1;padding:12px;border-radius:20px;border:none;outline:none}
+.input-area button{background:#E53935;color:#fff;border:none;width:45px;height:45px;border-radius:50%;font-size:20px;cursor:pointer}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="sidebar">
+    <div class="header">Talk <span>Xds</span></div>
+    <div id="lista" style="padding:15px"><b>Chat Geral</b><br><small style="color:green">● online</small></div>
+  </div>
+  <div style="flex:1;display:flex;flex-direction:column">
+    <div id="mensagens" class="mensagens"></div>
+    <div class="input-area">
+      <input id="msgInput" placeholder="Digite uma mensagem" onkeypress="if(event.key==='Enter')enviar()">
+      <button onclick="enviar()">➤</button>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getFirestore, collection, addDoc, query, orderBy, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+const firebaseConfig = {
+  apiKey: "AIzaSyDnjiFQtTu8A5vZ3NHEIl_zG9ylMKTv6b8",
+  authDomain: "talkxds.firebaseapp.com",
+  projectId: "talkxds",
+  storageBucket: "talkxds.firebasestorage.app",
+  messagingSenderId: "757013602887",
+  appId: "1:757013602887:web:6627ff87623d698e7d8762"
+};
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const auth = getAuth(app);
+let user=null;
+onAuthStateChanged(auth, u=>{ if(!u) location.href='index.html'; else user=u; });
+const divMsgs=document.getElementById('mensagens');
+const q=query(collection(db,"mensagens"),orderBy("hora"));
+onSnapshot(q,snap=>{
+  divMsgs.innerHTML="";
+  snap.forEach(d=>{
+    const m=d.data();
+    const el=document.createElement('div');
+    el.className='balao '+(m.uid===user?.uid?'enviado':'recebido');
+    el.innerText=m.texto;
+    divMsgs.appendChild(el);
+  });
+  divMsgs.scrollTop=divMsgs.scrollHeight;
+});
+window.enviar=async()=>{
+  const i=document.getElementById('msgInput');
+  if(!i.value.trim())return;
+  await addDoc(collection(db,"mensagens"),{texto:i.value,uid:user.uid,hora:serverTimestamp()});
+  i.value="";
+}
+</script>
+</body>
+</html>
