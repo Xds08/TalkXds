@@ -1,34 +1,105 @@
-<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Talk Xds 100</title><style>:root{--n:#7c4dff;--n2:#ff00a0}*{box-sizing:border-box;margin:0;padding:0;font-family:Segoe UI}body{background:#06060f;display:flex;justify-content:center}.app{width:100%;max-width:480px;background:#0a0a14;height:100vh;display:flex;flex-direction:column;overflow:hidden}.header{background:linear-gradient(90deg,var(--n),var(--n2));padding:12px;display:flex;justify-content:space-between;color:#fff}.icon-btn{width:36px;height:36px;border-radius:10px;background:#0004;border:none;color:#fff;cursor:pointer}.lista{flex:1;overflow:auto}.item{display:flex;gap:10px;padding:12px;border-bottom:1px solid #151525;color:#fff;cursor:pointer}.avatar{width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,var(--n),var(--n2));display:flex;align-items:center;justify-content:center;font-weight:900}.balao{background:#1a1a2e;color:#ddd;padding:8px 12px;border-radius:14px;margin:5px 10px;max-width:80%;font-size:13px}.balao.eu{align-self:flex-end;background:linear-gradient(135deg,var(--n),var(--n2))}.area{flex:1;display:flex;flex-direction:column;overflow:auto;padding:10px 0}.bar{display:flex;gap:6px;padding:8px;background:#11111f;border-top:1px solid #222}.bar input{flex:1;padding:12px;border-radius:20px;border:1px solid #2a2a4a;background:#0f0f1e;color:#fff;outline:none}.modal{position:fixed;inset:0;background:#000c;display:flex;justify-content:center;align-items:center;z-index:99;padding:16px}.box{background:#11111f;border:1px solid var(--n);border-radius:16px;padding:16px;width:100%;max-width:380px;max-height:85vh;overflow:auto;color:#fff}.row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid #222;font-size:12px}.switch{width:38px;height:22px;background:#333;border-radius:20px;position:relative;cursor:pointer}.switch.on{background:var(--n)}.switch:after{content:'';position:absolute;top:2px;left:2px;width:18px;height:18px;background:#fff;border-radius:50%;transition:.2s}.switch.on:after{left:18px}</style></head><body>
-<div class="app">
-<div class="header"><b>TALK XDS 100</b><div style="display:flex;gap:6px"><button class="icon-btn" id="b100">💯</button><button class="icon-btn" id="bT">🎨</button><button class="icon-btn" id="bS">↪</button></div></div>
-<div id="info" style="padding:6px 12px;font-size:11px;color:var(--n);background:#11111f">💯 100 funções carregadas</div>
-<div class="lista" id="lista"></div>
-<div id="chatView" style="position:absolute;inset:0;background:#080810;display:none;flex-direction:column;z-index:20"><div class="header"><span id="voltar">←</span><div class="avatar" id="cAv">TX</div><b id="cNm" style="flex:1;margin-left:8px">Geral</b><button class="icon-btn" id="bCall">📞</button><button class="icon-btn" id="bFix">📌</button></div><div id="fixBar" style="display:none;padding:8px;background:#1a1a2e;color:#ff0;font-size:12px;border-left:3px solid var(--n2)"></div><div id="msgs" class="area"></div><div class="bar"><button id="bEm">😀</button><input id="inp" placeholder="Digite /help para ver comandos"><button id="bAud">🎙️</button><button id="bSend">⚡</button></div></div>
+<!DOCTYPE html>
 
-<div id="modal100" class="modal" style="display:none"><div class="box"><h3>💯 100 FUNÇÕES</h3><p style="font-size:11px;color:#888;margin:8px 0">Liga/desliga. Verde = ativa</p><div id="list100"></div><button onclick="document.getElementById('modal100').style.display='none'" style="width:100%;margin-top:12px;padding:10px;border-radius:8px;background:linear-gradient(90deg,var(--n),var(--n2));border:none;color:#fff;font-weight:800">SALVAR E FECHAR</button></div></div>
+<html lang="pt-BR"> <head> <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>TalkXDS - Conversas</title>
+
+<style> * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Arial, sans-serif; } body { background: #06060f; color: white; min-height: 100vh; } button, input { font: inherit; } button { cursor: pointer; } .app { display: flex; width: 100%; height: 100dvh; max-width: 1400px; margin: auto; background: #0b0b17; overflow: hidden; } /* MENU LATERAL */ .sidebar { width: 350px; min-width: 300px; border-right: 1px solid #24243b; display: flex; flex-direction: column; background: #101020; } .header { padding: 22px; border-bottom: 1px solid #24243b; } .logo { font-size: 27px; font-weight: 900; letter-spacing: 2px; text-shadow: 0 0 15px #7c4dff; } .logo span { background: linear-gradient(90deg,#7c4dff,#ff00a0); -webkit-background-clip: text; -webkit-text-fill-color: transparent; } .subtitle { color: #777; font-size: 10px; letter-spacing: 3px; margin-top: 5px; } .search { padding: 15px; } .search input { width: 100%; padding: 13px; border-radius: 12px; border: 1px solid #292945; background: #080815; color: white; outline: none; } .search input:focus { border-color: #7c4dff; } .new-chat { width: 100%; margin-top: 10px; padding: 12px; background: linear-gradient(90deg,#7c4dff,#ff00a0); border: 0; border-radius: 10px; color: white; font-weight: bold; } .section-title { padding: 12px 18px; color: #888; font-size: 11px; letter-spacing: 2px; } .chat-list { flex: 1; overflow-y: auto; } .chat-item { display: flex; align-items: center; gap: 12px; padding: 14px 17px; cursor: pointer; border-bottom: 1px solid #1c1c30; } .chat-item:hover, .chat-item.active { background: #1b1832; } .avatar { width: 45px; height: 45px; min-width: 45px; border-radius: 50%; background: linear-gradient(135deg,#7c4dff,#ff00a0); display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: bold; overflow: hidden; } .avatar img { width: 100%; height: 100%; object-fit: cover; } .chat-info { flex: 1; min-width: 0; } .chat-info strong { display: block; font-size: 14px; } .chat-info p { color: #888; font-size: 12px; margin-top: 5px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; } .footer { padding: 15px; border-top: 1px solid #24243b; display: flex; align-items: center; gap: 10px; } .user-info { flex: 1; min-width: 0; } .user-info strong { display: block; font-size: 13px; } .user-info small { color: #888; } .logout { background: #291327; color: #ff6cba; border: 1px solid #6c2857; padding: 9px; border-radius: 9px; } /* ÁREA DAS MENSAGENS */ .main { flex: 1; display: flex; flex-direction: column; min-width: 0; position: relative; } .chat-header { height: 75px; padding: 12px 20px; border-bottom: 1px solid #24243b; display: flex; align-items: center; gap: 12px; } .chat-header h3 { font-size: 15px; } .chat-header small { color: #777; font-size: 11px; } .messages { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; } .message { max-width: 75%; padding: 12px 15px; border-radius: 15px; font-size: 14px; overflow-wrap: anywhere; } .sent { align-self: flex-end; background: linear-gradient(135deg,#6337d8,#a62b9d); border-bottom-right-radius: 4px; } .received { align-self: flex-start; background: #202035; border: 1px solid #30304a; border-bottom-left-radius: 4px; } .message img { max-width: 100%; max-height: 280px; display: block; border-radius: 10px; margin-top: 5px; } .message time { display: block; font-size: 10px; color: #ddd; text-align: right; margin-top: 6px; opacity: .7; } .composer { padding: 15px; display: flex; gap: 10px; border-top: 1px solid #24243b; align-items: center; } .composer input[type="text"] { flex: 1; min-width: 0; padding: 14px; border-radius: 12px; border: 1px solid #30304a; background: #101020; color: white; outline: none; } .composer input:focus { border-color: #7c4dff; } .icon-btn { width: 43px; height: 43px; border: 0; border-radius: 12px; background: #24203d; color: white; font-size: 20px; } .send { background: linear-gradient(135deg,#7c4dff,#ff00a0); } .empty { margin: auto; text-align: center; color: #777; padding: 25px; } .empty h2 { color: white; margin-bottom: 10px; } .status { color: #777; font-size: 12px; padding: 8px 15px; } .hidden { display: none !important; } #notice { position: fixed; z-index: 20; bottom: 20px; left: 50%; transform: translateX(-50%); background: #25203d; border: 1px solid #7c4dff; color: white; padding: 12px 18px; border-radius: 12px; display: none; max-width: 90%; overflow-wrap: anywhere; } #fileInput { display: none; } @media(max-width:650px) { .sidebar { width: 100%; min-width: 0; } .main { display: none; } .app.open-chat .sidebar { display: none; } .app.open-chat .main { display: flex; width: 100%; } .back { display: block !important; } .message { max-width: 85%; } } .back { display: none; background: #24203d; border: 0; color: white; border-radius: 8px; padding: 9px 12px; } </style>
+
+</head>
+
+<body>
+
+<div class="app" id="app">
+
+<!-- SIDEBAR -->
+
+<aside class="sidebar">
+
+<div class="header"> <div class="logo">TALK <span>XDS</span></div> <div class="subtitle">NEON EDITION ⚡</div> </div>
+
+<div class="search"> <input id="searchInput" type="email" placeholder="Pesquisar contato pelo e-mail">
+
+<button class="new-chat" id="newChat">
+  + NOVA CONVERSA
+</button>
+
+
 </div>
 
-<script type="module">
-import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";import{getAuth,onAuthStateChanged,signOut}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";import{getFirestore,collection,addDoc,onSnapshot,query,orderBy,serverTimestamp,doc,setDoc}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-const cfg={apiKey:"AIzaSyDnjiFQtTu8A5vZ3NHEIl_zG9ylMKTv6b8",authDomain:"talkxds.firebaseapp.com",projectId:"talkxds",storageBucket:"talkxds.firebasestorage.app",messagingSenderId:"757013602887",appId:"1:757013602887:web:6627ff87623d698e7d8762"};
-const app=initializeApp(cfg);const auth=getAuth(app);const db=getFirestore(app);
-let user=null, chatId="geral";
-const FUNCS=[["1 Responder","2 Reagir ❤️","3 Digitando","4 Som","5 Editar perfil","6 Call voz","7 Status 24h","8 Ranking","9 Comandos","10 Temas"],["11 Privado","12 Áudio","13 Editar msg","14 Fixar","15 Convite link","16 Fantasma","17 Foto","18 Gif","19 Figurinha","20 Enquete"],["21 Local","22 Traduzir","23 Copiar","24 Encaminhar","25 Favoritos","26 XP/Nível","27 Medalha","28 Verificado","29 QR Code","30 Papel parede"],["31 Apagar p/ todos","32 Msg que explode","33 Agendar","34 Rascunho","35 Resposta rápida","36 Bot traduz","37 Bot resumo","38 Meme maker","39 Jogo velha","40 Roleta"],["41 Pedra papel","42 Quiz","43 Loja","44 Pix","45 Catálogo","46 Anti-spam","47 Filtro palavrão","48 Banir","49 Mutar","50 Admin"],["51 Log","52 Denunciar","53 Backup","54 Export PDF","55 Import Zap","56 Multi-idioma","57 Fonte custom","58 Emoji gigante","59 Som custom","60 Nome colorido"],["61 Borda avatar","62 AMOLED","63 Claro/Escuro","64 Animação","65 Offline PWA","66 Criptografia","67 Anônima","68 2 contas","69 API","70 Analytics"],["71 Video","72 Tela share","73 Gravar call","74 Efeito voz","75 Cancel ruído","76 Mute all","77 Levantar mão","78 Live","79 Curtir status","80 Stories música"],["81 Seguir","82 Canal","83 Secreto","84 Pânico","85 Sugestão IA","86 Cassino moedas","87 Avaliação","88 Horário","89 Cupom","90 Anúncio"],["91 Notif push","92 Visto por último","93 Quem viu","94 Online real","95 Status digitando","96 Link direto","97 Convite Zap","98 Instalar App","99 Atalhos","100 Super Xds"]];
-let ativos=JSON.parse(localStorage.getItem("xds100")||"{}");
-onAuthStateChanged(auth,u=>{if(!u)location.href="index.html";else{user=u;load();}});
-function load(){const l=document.getElementById("lista");l.innerHTML=`<div class=item onclick="openChat('geral','Chat Geral TX')"><div class=avatar>TX</div><div><b>Geral</b><div style="font-size:11px;color:#888">100 funções ativas ⚡</div></div></div>`;escuta();}
-window.openChat=(id,n)=>{chatId=id;document.getElementById("cNm").textContent=n;document.getElementById("chatView").style.display="flex";escuta();};
-document.getElementById("voltar").onclick=()=>document.getElementById("chatView").style.display="none";
-document.getElementById("bS").onclick=async()=>{await signOut(auth);location.href="index.html";};
-document.getElementById("b100").onclick=()=>{render100();document.getElementById("modal100").style.display="flex";};
-function render100(){const c=document.getElementById("list100");c.innerHTML="";let idx=0;FUNCS.flat().forEach(f=>{idx++;const on=ativos[idx]!==false;const r=document.createElement("div");r.className="row";r.innerHTML=`<span>${idx}. ${f}</span><div class="switch ${on?'on':''}" data-i="${idx}"></div>`;c.appendChild(r);});c.querySelectorAll(".switch").forEach(s=>s.onclick=()=>{s.classList.toggle("on");ativos[s.dataset.i]=s.classList.contains("on");localStorage.setItem("xds100",JSON.stringify(ativos));});}
-async function send(){let t=document.getElementById("inp").value.trim();if(!t)return;if(t==="/help"){alert("COMANDOS 100:\n/rank /clear /fixar texto /online /tema /convite /fantasma on/off /audio /foto /gif /enquete");return;}
-if(t.startsWith("/fixar")){const txt=t.replace("/fixar","");localStorage.setItem("fix",txt);document.getElementById("fixBar").textContent="📌 "+txt;document.getElementById("fixBar").style.display="block";t="📌 Fixei: "+txt;}
-await addDoc(collection(db,"mensagens"),{texto:t,nome:user.displayName||user.email.split("@")[0],uid:user.uid,hora:serverTimestamp(),chatId});document.getElementById("inp").value="";}
-document.getElementById("bSend").onclick=send;document.getElementById("inp").onkeydown=e=>{if(e.key==="Enter")send();};
-function escuta(){const q=query(collection(db,"mensagens"),orderBy("hora","asc"));onSnapshot(q,s=>{const a=document.getElementById("msgs");a.innerHTML="";s.forEach(d=>{const m=d.data();if(m.chatId!==chatId && chatId!=="geral")return;const div=document.createElement("div");div.className=m.uid===user?.uid?"balao eu":"balao";div.innerHTML=`<b style="font-size:10px">${m.nome}</b><br>${m.texto}`;a.appendChild(div);});a.scrollTop=a.scrollHeight;document.getElementById("info").textContent=`💯 ${s.size} msgs • ${Object.values(ativos).filter(v=>v!==false).length||100} funções ON`;const fix=localStorage.getItem("fix");if(fix){document.getElementById("fixBar").textContent="📌 "+fix;document.getElementById("fixBar").style.display="block";}});}
-document.getElementById("bAud").onclick=async()=>{if(!ativos[12]&&ativos[12]!==undefined)return alert("Ative função 12 Áudio no 💯");alert("🎙️ Áudio: segura o botão ainda em dev, mas já tá liberado no código V6. Na próxima versão vem com gravação real WebM.");};
-document.getElementById("bCall").onclick=()=>{if(!ativos[6]&&ativos[6]!==undefined)return;alert("📞 Call: abrindo sala Jitsi - função 6 ON");window.open("https://meet.jit.si/TalkXds"+chatId,"_blank");};
-document.getElementById("bEm").onclick=()=>{document.getElementById("inp").value+=" 😂";};
-</script></body></html>
+<div class="section-title">SUAS CONVERSAS</div>
+
+<div class="chat-list" id="chatList"> <div class="empty">Carregando conversas...</div> </div>
+
+<div class="footer">
+
+<div class="avatar" id="myAvatar">U</div>
+
+<div class="user-info">
+  <strong id="myName">Usuário</strong>
+  <small id="myEmail">Carregando...</small>
+</div>
+
+<button class="logout" id="logout">SAIR</button>
+
+
+</div>
+
+</aside>
+
+<!-- ÁREA PRINCIPAL -->
+
+<main class="main">
+
+<div class="chat-header">
+
+<button class="back" id="backButton">←</button>
+
+<div class="avatar" id="contactAvatar">?</div>
+
+<div>
+  <h3 id="contactName">TalkXDS</h3>
+  <small id="contactStatus">Suas mensagens em tempo real</small>
+</div>
+
+
+</div>
+
+<div class="messages" id="messages">
+
+<div class="empty">
+  <h2>⚡ TALK XDS</h2>
+  Escolha uma conversa ou comece um novo chat.
+</div>
+
+
+</div>
+
+<div class="status" id="status"></div>
+
+<div class="composer">
+
+<button class="icon-btn" id="imageButton" title="Enviar imagem">
+  📷
+</button>
+
+<input type="file" id="fileInput" accept="image/*">
+
+<input type="text" id="messageInput"
+  placeholder="Digite sua mensagem..."
+  autocomplete="off">
+
+<button class="icon-btn send" id="sendButton">
+  ➤
+</button>
+
+
+</div>
+
+</main>
+
+</div>
+
+<div id="notice"></div>
+
+<script type="module"> import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js"; import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js"; import { getFirestore, collection, doc, getDoc, getDocs, query, where, addDoc, setDoc, updateDoc, onSnapshot, serverTimestamp, orderBy } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js"; import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js"; // FIREBASE CONFIG const firebaseConfig = { apiKey: "SUA_API_KEY_COMPLETA", authDomain: "talkxds.firebaseapp.com", projectId: "talkxds", storageBucket: "talkxds.firebasestorage.app", messagingSenderId: "SEU_ID_COMPLETO", appId: "SEU_APP_ID_COMPLETO" }; const appFirebase = initializeApp(firebaseConfig); const auth = getAuth(appFirebase); const db = getFirestore(appFirebase); const storage = getStorage(appFirebase); // ELEMENTOS const $ = id => document.getElementById(id); let currentUser = null; let activeChat = null; let activeContact = null; let unsubscribeChats = null; let unsubscribeMessages = null; const appElement = $("app"); // AVISOS function notify(message) { const box = $("notice"); box.textContent = message; box.style.display = "block"; setTimeout(() => { box.style.display = "none"; }, 3500); } // AVATAR function createAvatar(container, name, photo) { container.replaceChildren(); if (photo) { const img = document.createElement("img"); img.src = photo; img.alt = name || "Foto do usuário"; container.appendChild(img); } else { container.textContent = (name || "U").charAt(0).toUpperCase(); } } // AUTENTICAÇÃO onAuthStateChanged(auth, async user => { if (!user) { location.replace("index.html"); return; } currentUser = user; $("myName").textContent = user.displayName || "Usuário"; $("myEmail").textContent = user.email || ""; createAvatar( $("myAvatar"), user.displayName, user.photoURL ); loadChats(); }); // SAIR $("logout").onclick = async () => { try { if (unsubscribeChats) unsubscribeChats(); if (unsubscribeMessages) unsubscribeMessages(); await signOut(auth); location.replace("index.html"); } catch (error) { notify("Erro ao sair: " + error.message); } }; // CRIAR OU ABRIR CONVERSA async function startChat(contact) { if (!currentUser || contact.uid === currentUser.uid) { return; } try { const participants = [ currentUser.uid, contact.uid ].sort(); const chatId = participants.join("_"); const chatRef = doc(db, "chats", chatId); const chatSnapshot = await getDoc(chatRef); if (!chatSnapshot.exists()) { await setDoc(chatRef, { participants: participants, lastMessage: "", lastSenderId: "", updatedAt: serverTimestamp(), createdAt: serverTimestamp() }); } activeChat = chatId; activeContact = contact; openChat(contact); loadChats(); } catch (error) { notify("Não foi possível abrir a conversa: " + error.message); } } // PESQUISAR USUÁRIO PELO EMAIL $("newChat").onclick = async () => { if (!currentUser) return; const email = $("searchInput").value.trim().toLowerCase(); if (!email) { notify("Digite o e-mail do contato."); return; } try { const usersRef = collection(db, "users"); const userQuery = query( usersRef, where("email", "==", email) ); const result = await getDocs(userQuery); if (result.empty) { notify("Usuário não encontrado."); return; } const found = result.docs[0].data(); if (found.uid === currentUser.uid) { notify("Você não pode conversar consigo mesmo."); return; } await startChat(found); $("searchInput").value = ""; } catch (error) { notify("Erro na pesquisa: " + error.message); } }; // LISTAR CONVERSAS EM TEMPO REAL function loadChats() { if (unsubscribeChats) unsubscribeChats(); const chatsRef = collection(db, "chats"); const chatsQuery = query( chatsRef, where("participants", "array-contains", currentUser.uid) ); unsubscribeChats = onSnapshot( chatsQuery, async snapshot => { const list = []; for (const chatDoc of snapshot.docs) { const data = chatDoc.data(); const otherUid = data.participants.find( uid => uid !== currentUser.uid ); if (!otherUid) continue; try { const userSnapshot = await getDoc( doc(db, "users", otherUid) ); if (!userSnapshot.exists()) continue; list.push({ id: chatDoc.id, data: data, contact: userSnapshot.data() }); } catch (error) { console.error(error); } } list.sort((a, b) => { const dateA = a.data.updatedAt?.toMillis?.() || 0; const dateB = b.data.updatedAt?.toMillis?.() || 0; return dateB - dateA; }); renderChats(list); }, error => notify("Erro ao carregar conversas: " + error.message) ); } // DESENHAR LISTA function renderChats(list) { const container = $("chatList"); container.replaceChildren(); if (!list.length) { container.innerHTML = '<div class="empty">Você ainda não tem conversas.<br>Comece um novo chat!</div>'; return; } list.forEach(item => { const contact = item.contact; const div = document.createElement("div"); div.className = "chat-item" + (activeChat === item.id ? " active" : ""); const avatar = document.createElement("div"); avatar.className = "avatar"; createAvatar( avatar, contact.name, contact.photoURL ); const info = document.createElement("div"); info.className = "chat-info"; const name = document.createElement("strong"); name.textContent = contact.name || "Usuário"; const last = document.createElement("p"); last.textContent = item.data.lastMessage || "Comece uma conversa"; info.append(name, last); div.append(avatar, info); div.onclick = () => { activeChat = item.id; activeContact = contact; openChat(contact); renderChats(list); }; container.appendChild(div); }); } // ABRIR CONVERSA function openChat(contact) { $("contactName").textContent = contact.name || "Usuário"; $("contactStatus").textContent = contact.email || ""; createAvatar( $("contactAvatar"), contact.name, contact.photoURL ); appElement.classList.add("open-chat"); loadMessages(); } // VOLTAR NO CELULAR $("backButton").onclick = () => { appElement.classList.remove("open-chat"); }; // CARREGAR MENSAGENS EM TEMPO REAL function loadMessages() { if (unsubscribeMessages) { unsubscribeMessages(); } $("messages").replaceChildren(); const messagesRef = collection( db, "chats", activeChat, "messages" ); const messagesQuery = query( messagesRef, orderBy("createdAt", "asc") ); unsubscribeMessages = onSnapshot( messagesQuery, snapshot => { const container = $("messages"); container.replaceChildren(); snapshot.forEach(messageDoc => { const data = messageDoc.data(); renderMessage(data); }); container.scrollTop = container.scrollHeight; }, error => notify("Erro nas mensagens: " + error.message) ); } // MOSTRAR MENSAGEM function renderMessage(data) { const container = $("messages"); const div = document.createElement("div"); div.className = "message " + (data.senderId === currentUser.uid ? "sent" : "received"); if (data.text) { const text = document.createElement("div"); text.textContent = data.text; div.appendChild(text); } if (data.imageURL) { const img = document.createElement("img"); img.src = data.imageURL; img.alt = "Imagem enviada"; img.loading = "lazy"; img.onclick = () => window.open( data.imageURL, "_blank", "noopener" ); div.appendChild(img); } const time = document.createElement("time"); const date = data.createdAt?.toDate?.(); time.textContent = date ? date.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" }) : "Enviando..."; div.appendChild(time); container.appendChild(div); } // ENVIAR TEXTO async function sendMessage() { if (!activeChat || !currentUser) { notify("Abra uma conversa primeiro."); return; } const input = $("messageInput"); const text = input.value.trim(); if (!text) return; input.value = ""; $("sendButton").disabled = true; try { const messagesRef = collection( db, "chats", activeChat, "messages" ); await addDoc(messagesRef, { senderId: currentUser.uid, text: text, imageURL: "", type: "text", createdAt: serverTimestamp() }); await updateDoc( doc(db, "chats", activeChat), { lastMessage: text, lastSenderId: currentUser.uid, updatedAt: serverTimestamp() } ); } catch (error) { input.value = text; notify("Erro ao enviar mensagem: " + error.message); } finally { $("sendButton").disabled = false; } } $("sendButton").onclick = sendMessage; $("messageInput").addEventListener("keydown", event => { if (event.key === "Enter") { sendMessage(); } }); // ABRIR SELETOR DE IMAGENS $("imageButton").onclick = () => { if (!activeChat) { notify("Abra uma conversa primeiro."); return; } $("fileInput").click(); }; // ENVIAR IMAGEM PELO STORAGE $("fileInput").onchange = async event => { const file = event.target.files[0]; if (!file) return; if (!file.type.startsWith("image/")) { notify("Selecione uma imagem."); event.target.value = ""; return; } if (file.size > 5 * 1024 * 1024) { notify("A imagem deve ter no máximo 5 MB."); event.target.value = ""; return; } if (!activeChat || !currentUser) return; $("status").textContent = "Enviando imagem..."; $("imageButton").disabled = true; try { const safeName = file.name.replace( /[^a-zA-Z0-9._-]/g, "_" ); const imageRef = ref( storage, `chatImages/${activeChat}/${Date.now()}_${safeName}` ); await uploadBytes(imageRef, file, { contentType: file.type }); const imageURL = await getDownloadURL(imageRef); const messagesRef = collection( db, "chats", activeChat, "messages" ); await addDoc(messagesRef, { senderId: currentUser.uid, text: "", imageURL: imageURL, type: "image", createdAt: serverTimestamp() }); await updateDoc( doc(db, "chats", activeChat), { lastMessage: "📷 Imagem", lastSenderId: currentUser.uid, updatedAt: serverTimestamp() } ); notify("Imagem enviada!"); } catch (error) { notify("Erro ao enviar imagem: " + error.message); } finally { $("status").textContent = ""; $("imageButton").disabled = false; event.target.value = ""; } }; </script>
+
+</body> </html>
