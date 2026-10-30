@@ -1,5 +1,637 @@
+Entrar
+Você disse:
+
+O ChatGPT disse:
+Entendi! ❤️ Você está clicando em qual botão ou opção?
+Se puder, me mande um print da tela ou me diga onde está clicando. Vou te ajudar a resolver passo a passo.
+
+Você disse:
+
+O ChatGPT disse:
+Entendi! 😕 Se você clica em qualquer botão e nada acontece, pode ser uma falha no aplicativo.
+Vamos tentar:
+Feche o ChatGPT completamente.
+Abra novamente.
+Verifique se há atualização disponível na Play Store.
+Se continuar, reinicie o celular.
+Só me confirma uma coisa: isso acontece em todos os botões do ChatGPT ou também em outros aplicativos do celular? ❤️
+
+Você disse:
+
+O ChatGPT disse:
+Ahh, entendi! Você está falando do aplicativo TalkXDS. 😊
+Se você clica em todos os botões e nada acontece, pode ser um problema no aplicativo.
+Me conta: o TalkXDS abre normalmente, mas nenhum botão funciona, ou ele também trava ao abrir?
+
+Você disse:
+
+O ChatGPT disse:
+Entendi! Se nenhum botão do TalkXDS funciona, pode ser um erro do aplicativo ou uma falha de conexão.
+Vamos tentar resolver! ❤️
+Feche o TalkXDS completamente.
+Desligue e ligue o Wi-Fi ou os dados móveis.
+Reinicie o celular.
+Abra o TalkXDS novamente.
+Vá em Configurações → Aplicativos → TalkXDS → Armazenamento → Limpar cache.
+⚠️ Não clique em limpar dados por enquanto, para não perder informações.
+Me responde só uma coisa: você usa Android ou iPhone? Assim te ensino exatamente onde clicar.
+
+Você disse:
+
+O ChatGPT disse:
+Consegui abrir o site! ❤️
+O endereço é o Talk XDS – Neon Edition. Ele apresenta:
+Login com e-mail e senha.
+Entrada pelo Google.
+Opção para criar uma conta.
+Se nenhum botão responde, pode haver um erro no código do próprio site ou no navegador.
+Vamos fazer um teste:
+Abra o site pelo Google Chrome.
+Atualize a página.
+Tente clicar em "Criar conta neon".
+Me diga: nem o botão de criar conta funciona?
+Assim posso te ajudar a descobrir o que está acontecendo.
+
+Você disse:
+
+O ChatGPT disse:
+Abri a página de conversas do TalkXDS. Ela mostra os botões de Nova conversa, Sair e Enviar mensagem, mas as conversas ficam em "Carregando conversas...".
+Isso pode indicar que o JavaScript ou a conexão com o banco de dados não está funcionando.
+Quero descobrir a causa.
+Me responde:
+A página abre normalmente?
+O nome do usuário fica em "Carregando..."?
+Quando você clica em qualquer botão, não acontece absolutamente nada?
+Se puder, também me diga se está usando Chrome no celular.
+
+Você disse:
+
+O ChatGPT disse:
+Entendi! Então encontramos o problema: o TalkXDS abre, mas fica carregando as conversas e nenhum botão funciona.
+Isso indica que provavelmente existe uma falha no carregamento do JavaScript ou na comunicação com o servidor do site.
+Não parece ser um problema de clique no seu celular.
+Encontrei um problema importante no código do site:
+A configuração do Firebase contém campos de exemplo, como SUA_API_KEY_COMPLETA.
+O identificador do projeto também precisa ser configurado corretamente.
+Sem essa configuração, login, conversas e mensagens não funcionam. 
+
+GitHub
++1
+A solução precisa ser feita no código do TalkXDS, não apenas no seu celular.
+Posso te ajudar a corrigir isso.
+Só preciso saber: **você é o dono do TalkXDS e tem acesso à conta GitHub que publicou o site?**
+
+Fontes
+Você disse:
+
+O ChatGPT disse:
+Perfeito! 😃 Então vamos consertar o TalkXDS juntos.
+🔧 Primeiro passo: acessar o código
+Entre no GitHub.
+Faça login na sua conta.
+Abra o repositório TalkXds.
+Procure o arquivo chats.html.
+Abra o arquivo e me envie um print do código.
+O que vamos corrigir?
+✅ Botões que não funcionam.
+✅ Conversas que ficam carregando.
+✅ Login e cadastro.
+✅ Envio e recebimento de mensagens.
+Importante: não envie senhas, tokens ou chaves privadas.
+Vamos fazer uma correção de verdade, sem precisar criar outro aplicativo! ❤️
+
+Você disse:
+
+O ChatGPT disse:
+ACHEI O PROBLEMA! 🔥
+Analisei seu código e encontrei um erro que impede o funcionamento do TalkXDS.
+🚨 O principal problema
+Sua configuração do Firebase está assim:
+
+javascript
+const firebaseConfig = {
+  apiKey: "SUA_API_KEY_COMPLETA",
+  authDomain: "talkxds.firebaseapp.com",
+  projectId: "talkxds",
+  storageBucket: "talkxds.firebasestorage.app",
+  messagingSenderId: "SEU_ID_COMPLETO",
+  appId: "SEU_APP_ID_COMPLETO"
+};
+Esses três campos são apenas textos de exemplo:
+apiKey
+messagingSenderId
+appId
+Eles precisam receber os valores reais do seu projeto Firebase.
+🛠️ Vamos corrigir
+Acesse o Firebase Console.
+Abra seu projeto TalkXDS.
+Entre em Configurações do projeto.
+Procure Seus aplicativos.
+Abra a configuração do aplicativo Web.
+Copie os dados de configuração.
+Não publique suas chaves privadas ou senhas.
+Quero confirmar mais uma coisa:
+Você já criou o projeto TalkXDS no Firebase e configurou:
+Authentication?
+Cloud Firestore?
+Storage?
+Responda SIM ou NÃO.
+Vou te ajudar a deixar o TalkXDS funcionando, com login, conversas e mensagens em tempo real. ❤️
+
+Você disse:
+
+O ChatGPT disse:
+
+Você disse:
+
+O ChatGPT disse:
+Agora descobrimos o motivo! ❤️ O TalkXDS ainda não funciona porque o Firebase não foi configurado.
+Vamos criar tudo do zero, passo a passo.
+🚀 ETAPA 1 — Criar o Firebase
+Entre em: Firebase Console
+Clique em Criar um projeto.
+Coloque o nome: TalkXDS.
+Continue até concluir a criação.
+🔥 ETAPA 2 — Configurar os serviços
+Depois vamos ativar:
+Authentication: para login e cadastro.
+Cloud Firestore: para salvar usuários e conversas.
+Storage: para enviar fotos nas conversas.
+❤️ Vamos por partes!
+Primeiro, faça apenas a criação do projeto.
+Quando terminar, me diga: CRIEI.
+Aí te ensino a próxima etapa sem complicação.
+
+Você disse:
+
+O ChatGPT disse:
+Boa!! 🎉❤️ Agora vamos configurar o login do TalkXDS.
+ETAPA 2 — Ativar Authentication
+Abra seu projeto no Firebase.
+No menu lateral, procure Authentication.
+Clique em Começar.
+Entre em Método de login.
+Selecione E-mail/senha.
+Ative a primeira opção E-mail/senha.
+Clique em Salvar.
+✅ Pronto! O login por e-mail estará ativado.
+Quando terminar, escreva PRONTO.
+Depois vamos configurar o Firestore para fazer as conversas funcionarem! 🚀
+
+Você disse:
+
+O ChatGPT disse:
+Isso! ❤️ Vamos configurar o Cloud Firestore.
+ETAPA 3 — Criar o banco de dados
+Entre no seu projeto TalkXDS no Firebase.
+No menu lateral, clique em Firestore Database.
+Clique em Criar banco de dados.
+Escolha Iniciar no modo de produção.
+Selecione a região disponível mais próxima dos seus usuários.
+Clique em Ativar.
+Depois de criar:
+Não precisa criar nenhuma coleção manualmente ainda.
+⚠️ Importante: depois vamos configurar as regras de segurança para proteger as conversas dos usuários.
+Quando terminar, me diga: FIRESTORE CRIADO. 🚀
+
+Você disse:
+
+O ChatGPT disse:
+Ótimo! ❤️ Você está no lugar certo.
+Agora vamos continuar:
+Clique em Criar banco de dados.
+Escolha Modo de produção.
+Clique em Avançar.
+Escolha a localização do servidor.
+Clique em Criar.
+Espere o Firebase terminar de preparar o banco.
+📸 Se aparecer alguma tela diferente, mande um print para eu te orientar exatamente onde clicar.
+Não avance nas regras de segurança sem minha orientação.
+
+Você disse:
+
+O ChatGPT disse:
+Isso mesmo! 😊 Siga esses passos no Firebase.
+Uma dica importante: na localização do servidor, escolha uma região próxima do Brasil, se estiver disponível. Essa escolha não costuma poder ser alterada depois.
+Quando terminar, me avise com:
+FIRESTORE CRIADO 🚀
+Aí vamos configurar as regras de segurança e conectar o banco ao TalkXDS. ❤️
+
+Você disse:
+
+O ChatGPT disse:
+Perfeito! ❤️ Você está no painel do Firebase.
+Agora vamos conectar o Firebase ao TalkXDS.
+🔥 PASSO 1 — Registrar o aplicativo
+No painel do Firebase, clique na engrenagem ⚙️ ao lado de Visão geral do projeto.
+Clique em Configurações do projeto.
+Desça até Seus aplicativos.
+Clique no ícone </> (Web).
+Em apelido do aplicativo, escreva TalkXDS.
+Clique em Registrar aplicativo.
+PASSO 2 — Configuração
+O Firebase vai mostrar um código chamado firebaseConfig.
+Ele contém:
+apiKey
+authDomain
+projectId
+storageBucket
+messagingSenderId
+appId
+Não feche essa tela ainda!
+📸 Mande um print da tela que aparecer. Vou te orientar no próximo passo para conectar o banco ao TalkXDS. 🚀
+
+Você disse:
+
+O ChatGPT disse:
+Ótimo!! 🎉❤️ É exatamente esse código que precisamos!
+Esse é o código de configuração do Firebase.
+Faça assim:
+Procure a parte que começa com const firebaseConfig = {.
+Copie todo o conteúdo desse bloco.
+Cole aqui na conversa.
+⚠️ Não envie senhas, tokens privados ou chaves de contas de serviço. A configuração Web do Firebase pode conter uma API key pública, mas não compartilhe credenciais privadas.
+Vou usar essa configuração para preparar o código corrigido do TalkXDS, fazendo os botões funcionarem e carregando as conversas. 🚀
+
+Você disse:
+
+O ChatGPT disse:
+Perfeito!! 🔥 Agora temos a configuração real do Firebase do TalkXDS.
+Encontrei a configuração que faltava. Seu projeto está identificado como talkxds.
+Atenção: essa configuração Web não é uma senha, mas mantenha regras de segurança corretas no Firebase para proteger os dados dos usuários.
+Próxima etapa: ativar os serviços
+Precisamos ativar três serviços:
+Authentication — login e cadastro.
+Cloud Firestore — conversas e mensagens.
+Storage — envio de imagens.
+1. Substitua a configuração antiga
+No arquivo chats.html, substitua o bloco firebaseConfig por este:
+
+javascript
+const firebaseConfig = {
+  apiKey: "AIzaSyDnjiFQtTu8A5vZ3NHEIl_zG9ylMKTv6b8",
+  authDomain: "talkxds.firebaseapp.com",
+  projectId: "talkxds",
+  storageBucket: "talkxds.firebasestorage.app",
+  messagingSenderId: "757013602887",
+  appId: "1:757013602887:web:6627ff87623d698e7d8762",
+  measurementId: "G-KCWKTX5B8Z"
+};
+2. Ative o Authentication
+No Firebase:
+Authentication
+Começar
+Método de login
+E-mail/senha
+Ativar e salvar.
+3. Configure o Firestore
+Entre em Firestore Database.
+Crie o banco, caso ainda não tenha criado.
+Não altere as regras ainda.
+4. Configure o Storage
+Entre em Storage.
+Clique em Começar.
+Siga as instruções para criar o armazenamento.
+Me diga agora:
+Você já ativou o Authentication (E-mail/senha)?
+Responda SIM ou NÃO.
+Vamos fazer o TalkXDS funcionar de verdade! 🚀
+
+Você disse:
+
+O ChatGPT disse:
+Você vai colocar esse código dentro do arquivo chats.html, no GitHub. ❤️
+Vou te mostrar onde:
+1. Abra seu GitHub
+Entre aqui:
+
+Você disse:
+
+O ChatGPT disse:
+Você deve APAGAR SOMENTE A CONFIGURAÇÃO ANTIGA e colocar a nova no lugar. ❤️
+Não coloque em outra linha!
+Procure este trecho no chats.html:
+
+javascript
+const firebaseConfig = {
+  apiKey: "SUA_API_KEY_COMPLETA",
+  authDomain: "talkxds.firebaseapp.com",
+  projectId: "talkxds",
+  storageBucket: "talkxds.firebasestorage.app",
+  messagingSenderId: "SEU_ID_COMPLETO",
+  appId: "SEU_APP_ID_COMPLETO"
+};
+Apague esse bloco inteiro e coloque a configuração nova.
+IMPORTANTE: mantenha todo o restante do código intacto.
+Depois clique em Commit changes.
+Quando terminar, me diga PRONTO! 🚀
+
+Você disse:
+
+O ChatGPT disse:
+Perfeito! ❤️ Esse é o código antigo do chats.html.
+Agora vamos corrigir o TalkXDS.
+Já identifiquei alguns pontos:
+A configuração antiga do Firebase está incompleta.
+O carregamento das conversas depende do Firestore.
+Os botões dependem da autenticação para executar as ações.
+O código precisa tratar erros de conexão para não ficar carregando infinitamente.
+Minha proposta
+Vou preparar uma versão corrigida do chats.html, mantendo:
+🎨 O visual Neon Edition.
+💬 Conversas em tempo real.
+📷 Envio de imagens.
+🔎 Pesquisa por e-mail.
+🔐 Login e logout.
+Antes de montar o código completo, preciso confirmar:
+Você já ativou no Firebase:
+Authentication (E-mail/senha)?
+Cloud Firestore?
+Storage?
+Pode responder SIM ou NÃO para cada um.
+
+Você disse:
+
+O ChatGPT disse:
+Agora sim! Esse é o arquivo completo antigo do TalkXDS.
+Você precisa fazer uma alteração nele:
+🔧 Onde corrigir
+Dentro do código, procure:
+// FIREBASE CONFIG
+Logo abaixo está a configuração antiga.
+Apague somente o bloco const firebaseConfig = { ... }; antigo e coloque a configuração real que você me enviou.
+Não apague o restante do código.
+Próximo passo
+Quero também corrigir o carregamento infinito e fazer os botões funcionarem.
+Você quer que eu prepare o chats.html COMPLETO, já corrigido, para você substituir o antigo no GitHub? ❤️
+
+Você disse:
+
+O ChatGPT disse:
+Você deve substituir pelos valores reais que me enviou! ❤️ Não deixe escrito SEU_ID_COMPLETO.
+Coloque assim:
+
+javascript
+const firebaseConfig = {
+  apiKey: "SUA_API_KEY_REAL",
+  authDomain: "talkxds.firebaseapp.com",
+  projectId: "talkxds",
+  storageBucket: "talkxds.firebasestorage.app",
+  messagingSenderId: "757013602887",
+  appId: "1:757013602887:web:6627ff87623d698e7d8762",
+  measurementId: "G-KCWKTX5B8Z"
+};
+⚠️ No campo apiKey, coloque também a chave real que você me enviou anteriormente, no lugar de SUA_API_KEY_REAL.
+Não deixe nenhum campo com SEU_ID_COMPLETO ou SEU_APP_ID_COMPLETO.
+Depois salve no GitHub em Commit changes. 🚀
+
+Você disse:
+
+O ChatGPT disse:
+Boa!! 🔥❤️ Você já avançou bastante!
+Mas tem um detalhe importante: você colocou a configuração em firebase.js, enquanto o código antigo do chats.html ainda possui a configuração própria.
+Precisamos conectar os dois arquivos.
+Faça o seguinte:
+Abra o GitHub.
+Entre no arquivo firebase.js.
+Confira se ele contém a configuração real do Firebase.
+Não apague nada ainda.
+Preciso saber uma coisa:
+Você criou o arquivo firebase.js do zero ou ele já existia no GitHub?
+Se puder, cole aqui o conteúdo dele. Vou te mostrar como conectar ao chats.html sem perder seu trabalho. 🚀
+
+Você disse:
+
+O ChatGPT disse:
+Ótimo! ❤️ Encontrei um pequeno erro no seu firebase.js.
+Você colocou aspas extras em duas linhas:
+
+javascript
+messagingSenderId: "757013602887", ",
+appId: "1:757013602887:web:6627ff87623d698e7d8762", "
+Isso causa um erro de sintaxe e impede o JavaScript de funcionar.
+✅ Substitua TODO o conteúdo do firebase.js por este:
+
+javascript
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDnjiFQtTu8A5vZ3NHEIl_zG9ylMKTv6b8",
+  authDomain: "talkxds.firebaseapp.com",
+  projectId: "talkxds",
+  storageBucket: "talkxds.firebasestorage.app",
+  messagingSenderId: "757013602887",
+  appId: "1:757013602887:web:6627ff87623d698e7d8762",
+  measurementId: "G-KCWKTX5B8Z"
+};
+
+const app = initializeApp(firebaseConfig);
+
+export { app };
+⚠️ IMPORTANTE
+Depois precisamos alterar o chats.html para importar esse Firebase, em vez de inicializar outro.
+Quando terminar de salvar o firebase.js, escreva PRONTO.
+Vamos fazer os botões do TalkXDS funcionarem! 🚀
+
+Você disse:
+
+O ChatGPT disse:
+Agora vamos conectar o chats.html ao seu novo firebase.js. ❤️
+Vou te mostrar exatamente o que apagar e o que colocar.
+1. Abra o chats.html no GitHub
+Entre no repositório TalkXDS.
+Abra chats.html.
+Clique no lápis ✏️ para editar.
+2. Encontre esta parte
+No começo do JavaScript, você encontrará:
+
+javascript
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+E mais abaixo encontrará:
+
+javascript
+const firebaseConfig = {
+  ...
+};
+
+const appFirebase = initializeApp(firebaseConfig);
+3. Substitua por isto
+Apague os imports antigos do Firebase e a configuração antiga, substituindo por:
+
+javascript
+import { app } from "./firebase.js";
+
+import {
+  getAuth,
+  onAuthStateChanged,
+  signOut
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+import {
+  getFirestore,
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  query,
+  where,
+  addDoc,
+  setDoc,
+  updateDoc,
+  onSnapshot,
+  serverTimestamp,
+  orderBy
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+import {
+  getStorage,
+  ref,
+  uploadBytes,
+  getDownloadURL
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js";
+
+const auth = getAuth(app);
+const db = getFirestore(app);
+const storage = getStorage(app);
+Importante: mantenha todo o restante do JavaScript, começando em // ELEMENTOS.
+4. Salve
+Clique em Commit changes.
+🚀 Próximo passo
+Depois de salvar, precisamos testar a conexão e verificar se o Firebase Authentication, Firestore e Storage estão configurados corretamente.
+Não esqueça: o firebase.js e o chats.html precisam estar na mesma pasta do repositório.
+Quando terminar, diga ALTEREI O CHAT HTML. ❤️
+
+Você disse:
+
+O ChatGPT disse:
+Ahh, entendi! ❤️ Você abriu o chats.html, mas não está vendo o código?
+Vamos fazer assim:
+Entre no GitHub:
+
+Você disse:
+
+O ChatGPT disse:
+Ótimo! ❤️ Agora estamos no lugar certo.
+Faça o seguinte:
+Olhe no canto superior direito.
+Procure o lápis ✏️ (Editar arquivo).
+Clique nele.
+Role a tela até encontrar <script type="module">.
+Se não encontrar, me mande um print da tela onde você está.
+Não apague nada ainda! Vamos fazer juntos, passo a passo. 🚀
+
+Você disse:
+
+O ChatGPT disse:
+Perfeito! Você está no arquivo chats.html do TalkXDS. 👍
+Agora vamos conectar esse arquivo ao Firebase.
+PASSO 1 — Encontrar o trecho correto
+Dentro do código que você enviou, procure esta parte:
+
+javascript
+// FIREBASE CONFIG
+const firebaseConfig = {
+  apiKey: "SUA_API_KEY_COMPLETA",
+  authDomain: "talkxds.firebaseapp.com",
+  projectId: "talkxds",
+  storageBucket: "talkxds.firebasestorage.app",
+  messagingSenderId: "SEU_ID_COMPLETO",
+  appId: "SEU_APP_ID_COMPLETO"
+};
+PASSO 2 — Substituir
+Apague somente esse trecho e coloque este:
+
+javascript
+// FIREBASE CONFIG
+const firebaseConfig = {
+  apiKey: "AIzaSyDnjiFQtTu8A5vZ3NHEIl_zG9ylMKTv6b8",
+  authDomain: "talkxds.firebaseapp.com",
+  projectId: "talkxds",
+  storageBucket: "talkxds.firebasestorage.app",
+  messagingSenderId: "757013602887",
+  appId: "1:757013602887:web:6627ff87623d698e7d8762",
+  measurementId: "G-KCWKTX5B8Z"
+};
+Não apague o restante do código!
+PASSO 3 — Salvar
+Desça até o final da página do GitHub.
+Clique em Commit changes.
+Confirme em Commit changes novamente.
+PASSO 4
+Depois me diga:
+Você já salvou o chats.html no GitHub?
+Vamos fazer o TalkXDS funcionar passo a passo! 🚀
+Importante: sua configuração Firebase contém uma chave de API. Ela não é uma senha, mas evite compartilhar outras credenciais privadas.
+
+Você disse:
+
+O ChatGPT disse:
+Coloque no firebase.js. ✅
+Como você já criou esse arquivo, vamos organizar assim:
+firebase.js: coloque a configuração do Firebase.
+chats.html: vamos importar essa configuração e conectar o chat.
+Mas atenção: se colocar no firebase.js, precisamos ajustar o código do chats.html para importar dele.
+Minha recomendação: vamos usar o firebase.js para evitar duplicar configurações.
+Depois me avise quando salvar o firebase.js.
+
+Você disse:
+
+O ChatGPT disse:
+Ótimo! 🚀 Agora vamos conectar o chats.html ao seu firebase.js.
+Próximo passo
+No arquivo chats.html, procure esta linha:
+
+javascript
+const firebaseConfig = {
+Apague o bloco inteiro da configuração, incluindo a chave const firebaseConfig, até o };.
+No lugar, coloque:
+
+javascript
+import { appFirebase } from "./firebase.js";
+Mas atenção: antes de fazer isso, preciso confirmar uma coisa.
+No seu firebase.js, você colocou apenas a configuração firebaseConfig ou também colocou initializeApp e export?
+Cole aqui o conteúdo do firebase.js para eu ajustar corretamente.
+
+Você disse:
+
+O ChatGPT disse:
+Claro! 🚀 Vou deixar o chats.html preparado para utilizar o seu firebase.js, sem precisar repetir a configuração do Firebase.
+Importante: este código considera que seu firebase.js exporta appFirebase, auth, db e storage. Se ele não exportar esses quatro elementos, precisaremos ajustá-lo.
+Substitua todo o conteúdo do seu chats.html pelo código abaixo:
+TalkXDS — chats.html
+
+
 <!DOCTYPE html>
-
 <html lang="pt-BR"> <head> <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>TalkXDS - Conversas</title>
-
-<style> * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Arial, sans-serif; } body { background: #06060f; color: white; min-height: 100vh; } button, input { font: inherit; } button { cursor: pointer; } .app { display: flex; width: 100%; height: 100dvh; max-width: 1400px; margin: auto; background: #0b0b17; overflow: hidden; } .sidebar { width: 350px; min-width: 300px; border-right: 1px solid #24243b; display: flex; flex-direction: column; background: #101020; } .header { padding: 22px; border-bottom: 1px solid #24243b; } .logo { font-size: 27px; font-weight: 900; letter-spacing: 2px; } .logo span { background: linear-gradient(90deg,#7c4dff,#ff00a0); -webkit-background-clip: text; -webkit-text-fill-color: transparent; } .subtitle { color: #777; font-size: 10px; letter-spacing: 3px; margin-top: 5px; } .search { padding: 15px; } .search input { width: 100%; padding: 13px; border-radius: 12px; border: 1px solid #292945; background: #080815; color: white; } .new-chat { width: 100%; margin-top: 10px; padding: 12px; background: linear-gradient(90deg,#7c4dff,#ff00a0); border: 0; border-radius: 10px; color: white; font-weight: bold; } .section-title { padding: 12px 18px; color: #888; font-size: 11px; letter-spacing: 2px; } .chat-list { flex: 1; overflow-y: auto; } .chat-item { display: flex; align-items: center; gap: 12px; padding: 14px 17px; cursor: pointer; border-bottom: 1px solid #1c1c30; } .chat-item:hover, .chat-item.active { background: #1b1832; } .avatar { width: 45px; height: 45px; min-width: 45px; border-radius: 50%; background: linear-gradient(135deg,#7c4dff,#ff00a0); display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: bold; overflow: hidden; } .avatar img { width: 100%; height: 100%; object-fit: cover; } .chat-info { flex: 1; min-width: 0; } .chat-info strong { display: block; font-size: 14px; } .chat-info p { color: #888; font-size: 12px; margin-top: 5px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; } .footer { padding: 15px; border-top: 1px solid #24243b; display: flex; align-items: center; gap: 10px; } .user-info { flex: 1; min-width: 0; } .user-info strong { display: block; font-size: 13px; } .user-info small { color: #888; } .logout { background: #291327; color: #ff6cba; border: 1px solid #6c2857; padding: 9px; border-radius: 9px; } .main { flex: 1; display: flex; flex-direction: column; min-width: 0; position: relative; } .chat-header { height: 75px; padding: 12px 20px; border-bottom: 1px solid #24243b; display: flex; align-items: center; gap: 12px; } .chat-header h3 { font-size: 15px; } .chat-header small { color: #777; font-size: 11px; } .messages { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; } .message { max-width: 75%; padding: 12px 15px; border-radius: 15px; font-size: 14px; overflow-wrap: anywhere; } .sent { align-self: flex-end; background: linear-gradient(135deg,#6337d8,#a62b9d); } .received { align-self: flex-start; background: #202035; border: 1px solid #30304a; } .message img { max-width: 100%; max-height: 280px; display: block; border-radius: 10px; margin-top: 5px; } .message time { display: block; font-size: 10px; color: #ddd; text-align: right; margin-top: 6px; } .composer { padding: 15px; display: flex; gap: 10px; border-top: 1px solid #24243b; align-items: center; } .composer input[type="text"] { flex: 1; min-width: 0; padding: 14px; border-radius: 12px; border: 1px solid #30304a; background: #101020; color: white; } .icon-btn { width: 43px; height: 43px; border: 0; border-radius: 12px; background: #24203d; color: white; font-size: 20px; } .send { background: linear-gradient(135deg,#7c4dff,#ff00a0); } .empty { margin: auto; text-align: center; color: #777; padding: 25px; } .empty h2 { color: white; margin-bottom: 10px; } .status { color: #777; font-size: 12px; padding: 8px 15px; } #notice { position: fixed; z-index: 20; bottom: 20px; left: 50%; transform: translateX(-50%); background: #25203d; border: 1px solid #7c4dff; color: white; padding: 12px 18px; border-radius: 12px; display: none; max-width: 90%; } #fileInput { display: none; } .back { display: none; background: #24203d; border: 0; color: white; border-radius: 8px; padding: 9px 12px; } @media(max-width:650px) { .sidebar { width: 100%; min-width: 0; } .main { display: none; } .app.open-chat .sidebar { display: none; } .app.open-chat .main { display: flex; width: 100%; } .back { display: block; } .message { max-width: 85%; } }
+<style> * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Arial, sans-serif; } body { background: #06060f; color: white; min-height: 100vh; } button, input { font: inherit; } button { cursor: pointer; } .app { display: flex; width: 100%; height: 100dvh; max-width: 1400px; margin: auto; background: #0b0b17; overflow: hidden; } .sidebar { width: 350px; min-width: 300px; border-right: 1px solid #24243b; display: flex; flex-direction: column; background: #101020; } .header { padding: 22px; border-bottom: 1px solid #24243b; } .logo { font-size: 27px; font-weight: 900; letter-spacing: 2px; } .logo span { background: linear-gradient(90deg,#7c4dff,#ff00a0); -webkit-background-clip: text; -webkit-text-fill-color: transparent; } .subtitle { color: #777; font-size: 10px; letter-spacing: 3px; margin-top: 5px; } .search { padding: 15px; } .search input { width: 100%; padding: 13px; border-radius: 12px; border: 1px solid #292945; background: #080815; color: white; } .new-chat { width: 100%; margin-top: 10px; padding: 12px; background: linear-gradient(90deg,#7c4dff,#ff00a0); border: 0; border-radius: 10px; color: white; font-weight: bold; } .section-title { padding: 12px 18px; color: #888; font-size: 11px; letter-spacing: 2px; } .chat-list { flex: 1; overflow-y: auto; } .chat-item { display: flex; align-items: center; gap: 12px; padding: 14px 17px; cursor: pointer; border-bottom: 1px solid #1c1c30; } .chat-item:hover, .chat-item.active { background: #1b1832; } .avatar { width: 45px; height: 45px; min-width: 45px; border-radius: 50%; background: linear-gradient(135deg,#7c4dff,#ff00a0); display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: bold; overflow: hidden; } .avatar img { width: 100%; height: 100%; object-fit: cover; } .chat-info { flex: 1; min-width: 0; } .chat-info strong { display: block; font-size: 14px; } .chat-info p { color: #888; font-size: 12px; margin-top: 5px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; } .footer { padding: 15px; border-top: 1px solid #24243b; display: flex; align-items: center; gap: 10px; } .user-info { flex: 1; min-width: 0; } .user-info strong { display: block; font-size: 13px; } .user-info small { color: #888; } .logout { background: #291327; color: #ff6cba; border: 1px solid #6c2857; padding: 9px; border-radius: 9px; } .main { flex: 1; display: flex; flex-direction: column; min-width: 0; position: relative; } .chat-header { height: 75px; padding: 12px 20px; border-bottom: 1px solid #24243b; display: flex; align-items: center; gap: 12px; } .chat-header h3 { font-size: 15px; } .chat-header small { color: #777; font-size: 11px; } .messages { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; } .message { max-width: 75%; padding: 12px 15px; border-radius: 15px; font-size: 14px; overflow-wrap: anywhere; } .sent { align-self: flex-end; background: linear-gradient(135deg,#6337d8,#a62b9d); } .received { align-self: flex-start; background: #202035; border: 1px solid #30304a; } .message img { max-width: 100%; max-height: 280px; display: block; border-radius: 10px; margin-top: 5px; } .message time { display: block; font-size: 10px; color: #ddd; text-align: right; margin-top: 6px; } .composer { padding: 15px; display: flex; gap: 10px; border-top: 1px solid #24243b; align-items: center; } .composer input[type="text"] { flex: 1; min-width: 0; padding: 14px; border-radius: 12px; border: 1px solid #30304a; background: #101020; color: white; } .icon-btn { width: 43px; height: 43px; border: 0; border-radius: 12px; background: #24203d; color: white; font-size: 20px; } .send { background: linear-gradient(135deg,#7c4dff,#ff00a0); } .empty { margin: auto; text-align: center; color: #777; padding: 25px; } .empty h2 { color: white; margin-bottom: 10px; } .status { color: #777; font-size: 12px; padding: 8px 15px; } #notice { position: fixed; z-index: 20; bottom: 20px; left: 50%; transform: translateX(-50%); background: #25203d; border: 1px solid #7c4dff; color: white; padding: 12px 18px; border-radius: 12px; display: none; max-width: 90%; } #fileInput { display: none; } .back { display: none; background: #24203d; border: 0; color: white; border-radius: 8px; padding: 9px 12px; } @media(max-width:650px) { .sidebar { width: 100%; min-width: 0; } .main { display: none; } .app.open-chat .sidebar { display: none; } .app.open-chat .main { display: flex; width: 100%; } .back { display: block; } .message { max-width: 85%; } } </style>
+</head>
+<body>
+<div class="app" id="app">
+<aside class="sidebar">
+<div class="header"> <div class="logo">TALK <span>XDS</span></div> <div class="subtitle">NEON EDITION ⚡</div> </div>
+<div class="search"> <input id="searchInput" type="email" placeholder="Pesquisar contato pelo e-mail">
+<button class="new-chat" id="newChat"> + NOVA CONVERSA </button> </div>
+<div class="section-title">SUAS CONVERSAS</div>
+<div class="chat-list" id="chatList"> <div class="empty">Carregando conversas...</div> </div>
+<div class="footer">
+<div class="avatar" id="myAvatar">U</div>
+<div class="user-info"> <strong id="myName">Usuário</strong> <small id="myEmail">Carregando...</small> </div>
+<button class="logout" id="logout">SAIR</button>
+</div> </aside>
+<main class="main">
+<div class="chat-header">
+<button class="back" id="backButton">←</button>
+<div class="avatar" id="contactAvatar">?</div>
+<div> <h3 id="contactName">TalkXDS</h3> <small id="contactStatus">Suas mensagens em tempo real</small> </div>
+</div>
+<div class="messages" id="messages"> <div class="empty"> <h2>⚡ TALK XDS</h2> Escolha uma conversa ou comece um novo chat. </div> </div>
+<div class="status" id="status"></div>
+<div class="composer">
+<button class="icon-btn" id="imageButton">📷</button>
+<input type="file" id="fileInput" accept="image/*">
+<input type="text" id="messageInput" placeholder="Digite sua mensagem..." autocomplete="off">
+<button class="icon-btn send" id="sendButton">➤</button>
+</div> </main> </div>
+<div id="notice"></div>
+<script type="module"> import { auth, db, storage } from "./firebase.js"; import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js"; import { collection, doc, getDoc, getDocs, query, where, addDoc, setDoc, updateDoc, onSnapshot, serverTimestamp, orderBy } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js"; import { ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js"; const $ = id => document.getElementById(id); let currentUser = null; let activeChat = null; let unsubscribeChats = null; let unsubscribeMessages = null; const appElement = $("app"); function notify(message) { const box = $("notice"); box.textContent = message; box.style.display = "block"; setTimeout(() => { box.style.display = "none"; }, 3500); } function createAvatar(container, name, photo) { container.replaceChildren(); if (photo) { const img = document.createElement("img"); img.src = photo; img.alt = name || "Foto do usuário"; container.appendChild(img); } else { container.textContent = (name || "U").charAt(0).toUpperCase(); } } onAuthStateChanged(auth, async user => { if (!user) { location.replace("index.html"); return; } currentUser = user; $("myName").textContent = user.displayName || "Usuário"; $("myEmail").textContent = user.email || ""; createAvatar($("myAvatar"), user.displayName, user.photoURL); loadChats(); }); $("logout").onclick = async () => { try { if (unsubscribeChats) unsubscribeChats(); if (unsubscribeMessages) unsubscribeMessages(); await signOut(auth); location.replace("index.html"); } catch (error) { notify("Erro ao sair: " + error.message); } }; async function startChat(contact) { if (!currentUser || contact.uid === currentUser.uid) return; try { const participants = [ currentUser.uid, contact.uid ].sort(); const chatId = participants.join("_"); const chatRef = doc(db, "chats", chatId); const chatSnapshot = await getDoc(chatRef); if (!chatSnapshot.exists()) { await setDoc(chatRef, { participants, lastMessage: "", lastSenderId: "", updatedAt: serverTimestamp(), createdAt: serverTimestamp() }); } activeChat = chatId; openChat(contact); loadChats(); } catch (error) { notify("Não foi possível abrir a conversa: " + error.message); } } $("newChat").onclick = async () => { if (!currentUser) return; const email = $("searchInput").value.trim().toLowerCase(); if (!email) { notify("Digite o e-mail do contato."); return; } try { const usersRef = collection(db, "users"); const userQuery = query( usersRef, where("email", "==", email) ); const result = await getDocs(userQuery); if (result.empty) { notify("Usuário não encontrado."); return; } const found = result.docs[0].data(); if (found.uid === currentUser.uid) { notify("Você não pode conversar consigo mesmo."); return; } await startChat(found); $("searchInput").value = ""; } catch (error) { notify("Erro na pesquisa: " + error.message); } }; function loadChats() { if (unsubscribeChats) unsubscribeChats(); const chatsRef = collection(db, "chats"); const chatsQuery = query( chatsRef, where("participants", "array-contains", currentUser.uid) ); unsubscribeChats = onSnapshot( chatsQuery, async snapshot => { const list = []; for (const chatDoc of snapshot.docs) { const data = chatDoc.data(); const otherUid = data.participants.find( uid => uid !== currentUser.uid ); if (!otherUid) continue; try { const userSnapshot = await getDoc( doc(db, "users", otherUid) ); if (!userSnapshot.exists()) continue; list.push({ id: chatDoc.id, data, contact: userSnapshot.data() }); } catch (error) { console.error(error); } } list.sort((a, b) => { const dateA = a.data.updatedAt?.toMillis?.() || 0; const dateB = b.data.updatedAt?.toMillis?.() || 0; return dateB - dateA; }); renderChats(list); }, error => notify("Erro ao carregar conversas: " + error.message) ); } function renderChats(list) { const container = $("chatList"); container.replaceChildren(); if (!list.length) { container.innerHTML = '<div class="empty">Você ainda não tem conversas.<br>Comece um novo chat!</div>'; return; } list.forEach(item => { const contact = item.contact; const div = document.createElement("div"); div.className = "chat-item" + (activeChat === item.id ? " active" : ""); const avatar = document.createElement("div"); avatar.className = "avatar"; createAvatar(avatar, contact.name, contact.photoURL); const info = document.createElement("div"); info.className = "chat-info"; const name = document.createElement("strong"); name.textContent = contact.name || "Usuário"; const last = document.createElement("p"); last.textContent = item.data.lastMessage || "Comece uma conversa"; info.append(name, last); div.append(avatar, info); div.onclick = () => { activeChat = item.id; openChat(contact); renderChats(list); }; container.appendChild(div); }); } function openChat(contact) { $("contactName").textContent = contact.name || "Usuário"; $("contactStatus").textContent = contact.email || ""; createAvatar( $("contactAvatar"), contact.name, contact.photoURL ); appElement.classList.add("open-chat"); loadMessages(); } $("backButton").onclick = () => { appElement.classList.remove("open-chat"); }; function loadMessages() { if (unsubscribeMessages) unsubscribeMessages(); $("messages").replaceChildren(); const messagesRef = collection( db, "chats", activeChat, "messages" ); const messagesQuery = query( messagesRef, orderBy("createdAt", "asc") ); unsubscribeMessages = onSnapshot( messagesQuery, snapshot => { const container = $("messages"); container.replaceChildren(); snapshot.forEach(messageDoc => { renderMessage(messageDoc.data()); }); container.scrollTop = container.scrollHeight; }, error => notify("Erro nas mensagens: " + error.message) ); } function renderMessage(data) { const container = $("messages"); const div = document.createElement("div"); div.className = "message " + (data.senderId === currentUser.uid ? "sent" : "received"); if (data.text) { const text = document.createElement("div"); text.textContent = data.text; div.appendChild(text); } if (data.imageURL) { const img = document.createElement("img"); img.src = data.imageURL; img.alt = "Imagem enviada"; img.loading = "lazy"; img.onclick = () => { window.open(data.imageURL, "_blank", "noopener"); }; div.appendChild(img); } const time = document.createElement("time"); const date = data.createdAt?.toDate?.(); time.textContent = date ? date.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" }) : "Enviando..."; div.appendChild(time); container.appendChild(div); } async function sendMessage() { if (!activeChat || !currentUser) { notify("Abra uma conversa primeiro."); return; } const input = $("messageInput"); const text = input.value.trim(); if (!text) return; input.value = ""; $("sendButton").disabled = true; try { const messagesRef = collection( db, "chats", activeChat, "messages" ); await addDoc(messagesRef, { senderId: currentUser.uid, text, imageURL: "", type: "text", createdAt: serverTimestamp() }); await updateDoc( doc(db, "chats", activeChat), { lastMessage: text, lastSenderId: currentUser.uid, updatedAt: serverTimestamp() } ); } catch (error) { input.value = text; notify("Erro ao enviar mensagem: " + error.message); } finally { $("sendButton").disabled = false; } } $("sendButton").onclick = sendMessage; $("messageInput").addEventListener("keydown", event => { if (event.key === "Enter") sendMessage(); }); $("imageButton").onclick = () => { if (!activeChat) { notify("Abra uma conversa primeiro."); return; } $("fileInput").click(); }; $("fileInput").onchange = async event => { const file = event.target.files[0]; if (!file) return; if (!file.type.startsWith("image/")) { notify("Selecione uma imagem."); event.target.value = ""; return; } if (file.size > 5 * 1024 * 1024) { notify("A imagem deve ter no máximo 5 MB."); event.target.value = ""; return; } if (!activeChat || !currentUser) return; $("status").textContent = "Enviando imagem..."; $("imageButton").disabled = true; try { const safeName = file.name.replace( /[^a-zA-Z0-9._-]/g, "_" ); const imageRef = ref( storage, `chatImages/${activeChat}/${Date.now()}_${safeName}` ); await uploadBytes(imageRef, file, { contentType: file.type }); const imageURL = await getDownloadURL(imageRef); const messagesRef = collection( db, "chats", activeChat, "messages" ); await addDoc(messagesRef, { senderId: currentUser.uid, text: "", imageURL, type: "image", createdAt: serverTimestamp() }); await updateDoc( doc(db, "chats", activeChat), { lastMessage: "📷 Imagem", lastSenderId: currentUser.uid, updatedAt: serverTimestamp() } ); notify("Imagem enviada!"); } catch (error) { notify("Erro ao enviar imagem: " + error.message); } finally { $("status").textContent = ""; $("imageButton").disabled = false; event.target.value = ""; } }; </script>
+</body> </html>
